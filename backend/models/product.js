@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // compile into Model
+//used to check commit
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;
