@@ -26,9 +26,9 @@ const orderSchema = new mongoose.Schema({
 		required: true,
 	},
 	lineProducts: { type: [lineProductSchema], required: true },
-	timePlaced: { type: Date, default: Date.now },
-	timeDue: { type: Date },
-	totalFee: { type: Number },
+	timePlaced: { type: Date, required: true, default: Date.now },
+	timeDue: { type: Date, required: true },
+	totalFee: { type: Number, required: true },
 	status: {
 		type: String,
 		enum: [
