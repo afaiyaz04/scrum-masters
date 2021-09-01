@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
 		],
 		required: true,
 	},
+	clients: { type: [mongoose.Schema.Types.ObjectId], ref: "Client" },
+	orders: { type: [mongoose.Schema.Types.ObjectId], ref: "Order" },
+	report: { type: mongoose.Schema.Types.ObjectId, ref: "Report" }
 });
 
 // compile into Model
