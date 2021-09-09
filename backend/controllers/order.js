@@ -9,12 +9,12 @@ export const createOrder = async (req, res) => {
     const { client, lineProducts, 
             timePlaced, timeDue, 
             totalFee, status, 
-            description } = req.body;
+            description, log } = req.body;
 
     const newOrder = new Order({ client, lineProducts, 
                                  timePlaced, timeDue, 
                                  totalFee, status, 
-                                 description });
+                                 description, log });
 
     try {
         await newOrder.save();
@@ -39,7 +39,7 @@ export const updateOrder = async (req, res) => {
     const { client, lineProducts, 
             timePlaced, timeDue, 
             totalFee, status, 
-            description } = req.body;
+            description, log } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No order with id: ${id}`);
@@ -48,7 +48,7 @@ export const updateOrder = async (req, res) => {
     const updatedOrder = { client, lineProducts, 
                            timePlaced, timeDue, 
                            totalFee, status, 
-                           description, _id: id };
+                           description, log, _id: id };
 
     await Order.findByIdAndUpdate(id, updatedORder, {new: true});
     res.json(updatedOrder);
