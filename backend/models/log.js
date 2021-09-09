@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const logSchema = new mongoose.Schema({
-    order: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Order",
-		required: true,
-	},
     user: {
         type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
