@@ -8,10 +8,10 @@ const router = express.Router();
 // Create user
 export const createUser = async (req, res) => {
     const {email, password, nameFirst, nameLast, type, clients, orders,
-    contracts, reports} = req.body;
+    contracts} = req.body;
 
     const newUser = new User({email, password, nameFirst, nameLast, type, 
-        clients, orders, contracts, reports})
+        clients, orders, contracts})
 
     try {
         await newUser.save();
@@ -39,13 +39,13 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const { id } = req.params;
     const {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts, reports, _id: id}; 
+        contracts, _id: id}; 
     
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`No user with id: ${id}`);
 
     const updatedUser = {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts, reports} = req.body;
+        contracts} = req.body;
 
     await User.findByIdAndUpdate(id, updatedUser, { new: true });
 
