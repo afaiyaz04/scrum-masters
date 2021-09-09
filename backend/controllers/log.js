@@ -6,9 +6,9 @@ import Log from '../models/log.js';
 const router = express.Router();
 
 export const createLog = async (req, res) => {
-    const { order, user, text } = req.body;
+    const { user, text } = req.body;
 
-    const newLog = new Log({ order, user, text })
+    const newLog = new Log({ user, text })
 
     try {
         await newLog.save();
@@ -33,13 +33,13 @@ export const getLog = async (req, res) => {
 
 export const updateLog = async (req, res) => {
     const { id } = req.params;
-    const { order, user, text } = req.body;
+    const { user, text } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No log with id: ${id}`);
     }
 
-    const updatedLog = { order, user, text, _id: id };
+    const updatedLog = { user, text, _id: id };
 
     await Log.findByIdAndUpdate(id, updatedLog, { new: true });
 
