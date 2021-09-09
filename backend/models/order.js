@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-var logSchema = require('./log.js');
 
 const {
 	ORDER_PENDING,
@@ -42,7 +41,7 @@ const orderSchema = new mongoose.Schema({
 		required: true,
 	},
 	description: { type: String, required: false, default: null },
-	log: { type: [logSchema], required: false }
+	log: { type: [mongoose.Schema.Types.ObjectId], ref: "Log" }
 });
 
 // compile into Model
