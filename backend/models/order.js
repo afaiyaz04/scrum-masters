@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const {
-	ORDER_PENDING,
-	ORDER_CONFIRMED,
-	ORDER_FULFILLED,
+	ORDER_CREATED,
+	ORDER_DISCUSSED,
+	ORDER_AGREED,
+	ORDER_SIGNED,
 } = require("./systemEnums");
 
 // define the ProductItem child schema
@@ -32,11 +33,12 @@ const orderSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		enum: [
-			ORDER_PENDING,
-			ORDER_CONFIRMED,
-			ORDER_FULFILLED,
+			ORDER_CREATED,
+			ORDER_DISCUSSED,
+			ORDER_AGREED,
+			ORDER_SIGNED,
 		],
-		default: ORDER_PENDING,
+		default: ORDER_CREATED,
 		required: true,
 	},
 	description: { type: String, required: false, default: null },
