@@ -39,7 +39,7 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const { id } = req.params;
     const {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts, _id: id}; 
+        contracts } = req.body; 
     
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`No user with id: ${id}`);

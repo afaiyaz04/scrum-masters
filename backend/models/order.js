@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-const {
+import {
 	ORDER_CREATED,
 	ORDER_DISCUSSED,
 	ORDER_AGREED,
-	ORDER_SIGNED,
-} = require("./systemEnums");
+	ORDER_SIGNED
+} from './systemEnums.js';
 
 // define the ProductItem child schema
 const lineProductSchema = new mongoose.Schema(
@@ -49,4 +49,4 @@ const orderSchema = new mongoose.Schema({
 // compile into Model
 const Order = mongoose.model("Order", orderSchema);
 
-module.exports = Order;
+export default Order;

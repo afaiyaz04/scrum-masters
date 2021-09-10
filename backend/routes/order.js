@@ -8,8 +8,10 @@ import { createOrder,
  
 const router = express.Router();
 
-router.get("/order", getAllOrders);
-router.post("/order", createOrder);
-router.get("/order/:orderId", getOrder);
-router.patch("/order/:orderId", updateOrder);
-router.delete("/order/:orderId", deleteOrder);
+router.get("/", getAllOrders);
+router.post("/", createOrder);
+router.get("/:id", getOrder);
+router.patch("/:id", updateOrder);
+router.delete("/:id", deleteOrder);
+
+export default router;

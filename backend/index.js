@@ -1,12 +1,23 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
+import clientRoutes from './routes/client.js';
+import logRoutes from './routes/log.js';
+import orderRoutes from './routes/order.js';
+import productRoutes from './routes/product.js';
+import userRoutes from './routes/user.js';
+
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use('/client', clientRoutes);
+app.use('/log', logRoutes);
+app.use('/order', orderRoutes);
+app.use('/product', productRoutes);
+app.use('/user', userRoutes);
+
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(cors());
 
 const CONNECTION_URL = 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -19,8 +30,6 @@ mongoose.connect(
     })
     .then(() => app.listen(PORT, () => console.log('MongoDB connected')))
     .catch((error) => console.log(error.message));
-
-mongoose.set('useFindAndModify', false);
 
 // // Set up Mongoose
 // require("dotenv").config();
@@ -45,7 +54,8 @@ mongoose.set('useFindAndModify', false);
 // });
 
 // // Require individual models
-// require("./product");
-// require("./order");
-// require("./client");
-// require("./user");
+// require("./models/product");
+// require("./models/order");
+// require("./models/client");
+// require("./models/user");
+// require("./models/log");

@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 const {
     CONTRACT_CONFIRMED,
     CONTRACT_FULFILLED,
@@ -29,4 +30,4 @@ const contractSchema = new mongoose.Schema({
 // compile into Model
 const Contract = mongoose.model("Contract", contractSchema);
 
-module.exports = Contract;
+export default Contract;

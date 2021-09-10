@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-const {
+import mongoose from 'mongoose';
+
+import {
 	ADMIN_USER,
-	GENERAL_USER,
-} = require("./systemEnums");
+	GENERAL_USER
+} from './systemEnums.js';
 
 // define the User schema
 const userSchema = new mongoose.Schema({
@@ -27,4 +28,4 @@ const userSchema = new mongoose.Schema({
 // compile into Model
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;
