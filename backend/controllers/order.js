@@ -8,24 +8,16 @@ const router = express.Router();
 export const createOrder = async (req, res) => {
     const { 
         client, 
-        lineProducts, 
-        timePlaced, 
         timeDue, 
         totalFee, 
-        status, 
-        description, 
-        log 
+        description
     } = req.body;
 
     const newOrder = new Order({ 
-        client, 
-        lineProducts, 
-        timePlaced, 
+        client,
         timeDue, 
         totalFee, 
-        status, 
-        description, 
-        log 
+        description
     });
 
     try {
@@ -53,14 +45,11 @@ export const getOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
     const { id } = req.params;
     const { 
-        client, 
-        lineProducts, 
-        timePlaced, 
+        client,
         timeDue, 
         totalFee, 
         status, 
-        description, 
-        log 
+        description
     } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -68,14 +57,11 @@ export const updateOrder = async (req, res) => {
     }
 
     const updatedOrder = { 
-        client, 
-        lineProducts, 
-        timePlaced, 
+        client,
         timeDue, 
         totalFee, 
         status, 
-        description, 
-        log, 
+        description,
         _id: id 
     };
 
@@ -97,7 +83,7 @@ export const deleteOrder = async (req, res) => {
     if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
-    res.json({ message: "Order deleted." });
+    res.json({ message: "Order deleted successfully." });
 }
 
 export default router;
