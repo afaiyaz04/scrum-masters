@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
 
 import Order from '../models/order.js';
@@ -26,11 +26,13 @@ export const createOrder = async (req, res) => {
 
 export const getOrder = async (req, res) => {
     const { id } = req.params;
+
      try {
-        const order = await postMessage.findById(id);
-        res.status(201).json(order);
+        const order = await Order.findById(id);
+
+        res.status(200).json(order);
      } catch (error) {
-         res.status(404).json({message: error.message});
+        res.status(404).json({message: error.message});
      }
 }
 
