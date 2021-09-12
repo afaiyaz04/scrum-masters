@@ -10,15 +10,15 @@ import userRoutes from './routes/user.js';
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(cors());
+
 app.use('/client', clientRoutes);
 app.use('/log', logRoutes);
 app.use('/order', orderRoutes);
 app.use('/product', productRoutes);
 app.use('/user', userRoutes);
-
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(cors());
 
 const CONNECTION_URL = 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000
