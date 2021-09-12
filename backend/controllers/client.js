@@ -41,6 +41,9 @@ export const getClient = async (req, res) => {
     try {
         const client = await Client.findById(id);
         
+        if (client == null) {
+            return res.status(404).send(`No client with id: ${id}`);
+        }
         res.status(200).json(client);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -74,7 +77,11 @@ export const updateClient = async (req, res) => {
         _id: id
     };
 
-    await Client.findByIdAndUpdate(id, updatedClient, { new: true });
+    const client = await Client.findByIdAndUpdate(id, updatedClient, 
+                                                  { new: true });
+    if (client == null) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
 
     res.json(updatedClient);
 }
@@ -86,7 +93,10 @@ export const deleteClient = async (req, res) => {
         return res.status(404).send(`No client with id: ${id}`);
     }
 
-    await Client.findByIdAndRemove(id);
+    const client = await Client.findByIdAndRemove(id);
+    if (client == null) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
 
     res.json({ message: "Client deleted successfully." });
 }
