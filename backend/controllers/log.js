@@ -8,7 +8,7 @@ const router = express.Router();
 export const createLog = async (req, res) => {
     const { user, text } = req.body;
 
-    const newLog = new Log({ user, text })
+    const newLog = new Log({ user, text });
 
     try {
         await newLog.save();
@@ -24,7 +24,9 @@ export const getLog = async (req, res) => {
 
     try {
         const log = await Log.findById(id);
-        
+        if (log == null) {
+            return res.status(404).send(`No log with id: ${id}`);
+        }
         res.status(200).json(log);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -41,9 +43,12 @@ export const updateLog = async (req, res) => {
 
     const updatedLog = { user, text, _id: id };
 
-    await Log.findByIdAndUpdate(id, updatedLog, { new: true });
+    const log = await Log.findByIdAndUpdate(id, updatedLog, { new: true });
+    if (log == null) {
+        return res.status(404).send(`No log with id: ${id}`);
+    }
 
-    res.json(updatedLog);
+    res.json(log);
 }
 
 export const deleteLog = async (req, res) => {
@@ -53,7 +58,10 @@ export const deleteLog = async (req, res) => {
         return res.status(404).send(`No log with id: ${id}`);
     }
 
-    await Log.findByIdAndRemove(id);
+    const log = await Log.findByIdAndRemove(id);
+    if (log == null) {
+        return res.status(404).send(`No log with id: ${id}`);
+    }
 
     res.json({ message: "Log deleted successfully." });
 }

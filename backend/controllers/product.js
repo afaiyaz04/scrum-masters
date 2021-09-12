@@ -8,7 +8,7 @@ const router = express.Router();
 export const createProduct = async (req, res) => {
     const { name, description, price } = req.body;
 
-    const newProduct = new Product({ name, description, price })
+    const newProduct = new Product({ name, description, price });
 
     try {
         await newProduct.save();
@@ -25,6 +25,9 @@ export const getProduct = async (req, res) => {
     try {
         const product = await Product.findById(id);
         
+        if (product == null) {
+            return res.status(404).send(`No product with id: ${id}`);
+        }
         res.status(200).json(product);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -36,14 +39,17 @@ export const updateProduct = async (req, res) => {
     const { name, description, price } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send(`No product with id: ${id}`);
+        return res.status(404).send(`Invalid id: ${id}`);
     }
 
     const updatedProduct = { name, description, price, _id: id };
 
-    await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
-
-    res.json(updatedProduct);
+    const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+    
+    if (product == null ) {
+        return res.status(404).send(`No product with id: ${id}`);
+    }
+    res.json(product);
 }
 
 export const deleteProduct = async (req, res) => {
@@ -53,8 +59,11 @@ export const deleteProduct = async (req, res) => {
         return res.status(404).send(`No product with id: ${id}`);
     }
 
-    await Product.findByIdAndRemove(id);
+    const product = await Product.findByIdAndRemove(id);
 
+    if (product == null ) {
+        return res.status(404).send(`No product with id: ${id}`);
+    }
     res.json({ message: "Product deleted successfully." });
 }
 

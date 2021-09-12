@@ -7,11 +7,21 @@ const router = express.Router();
 
 // Create user
 export const createUser = async (req, res) => {
-    const {email, password, nameFirst, nameLast, type, clients, orders,
-    contracts} = req.body;
+    const { 
+        email, 
+        password, 
+        nameFirst, 
+        nameLast, 
+        type
+    } = req.body;
 
-    const newUser = new User({email, password, nameFirst, nameLast, type, 
-        clients, orders, contracts})
+    const newUser = new User({
+        email, 
+        password, 
+        nameFirst, 
+        nameLast, 
+        type
+    });
 
     try {
         await newUser.save();
@@ -28,7 +38,9 @@ export const getUser = async (req, res) => {
 
     try {
         const user = await User.findById(id);
-        
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
         res.status(200).json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -38,18 +50,32 @@ export const getUser = async (req, res) => {
 // Update user
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts } = req.body; 
+    const {
+        email, 
+        password, 
+        nameFirst, 
+        nameLast, 
+        type
+    } = req.body; 
     
     if (!mongoose.Types.ObjectId.isValid(id)) 
+        return res.status(404).send(`Invalid user id: ${id}`);
+
+    const updatedUser = {
+        email, 
+        password, 
+        nameFirst, 
+        nameLast, 
+        type,
+        _id: id
+    };
+
+    const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
+    if (user == null) {
         return res.status(404).send(`No user with id: ${id}`);
+    }
 
-    const updatedUser = {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts} = req.body;
-
-    await User.findByIdAndUpdate(id, updatedUser, { new: true });
-
-    res.json(updatedUser);
+    res.json(user);
 }
 
 // Delete user
@@ -59,8 +85,11 @@ export const deleteUser = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`No user with id: ${id}`);
     
-    await User.findByIdAndRemove(id);
-
+    const user = await User.findByIdAndRemove(id);
+    if (user == null) {
+        return res.status(404).send(`No user with id: ${id}`);
+    }
+    
     res.json({message: "User deleted successfully."});
 }
 
