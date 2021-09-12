@@ -97,7 +97,7 @@ export const deleteOrder = async (req, res) => {
     if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
-    res.json({ massage: "Order deleted." });
+    res.json({ message: "Order deleted." });
 }
 
 export default router;
