@@ -100,15 +100,4 @@ export const deleteOrder = async (req, res) => {
     res.json({ massage: "Order deleted." });
 }
 
-
-export const getAllOrders = async(req, res) => {
-    try {
-        const orders = await Order.find();
-        res.status(200).json(orders);
-
-    } catch (error) {
-        res.status(404).json({message: error.message});
-    }
-}
-
 export default router;
