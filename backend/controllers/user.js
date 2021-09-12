@@ -12,10 +12,7 @@ export const createUser = async (req, res) => {
         password, 
         nameFirst, 
         nameLast, 
-        type, 
-        clients, 
-        orders,
-        contracts
+        type
     } = req.body;
 
     const newUser = new User({
@@ -23,10 +20,7 @@ export const createUser = async (req, res) => {
         password, 
         nameFirst, 
         nameLast, 
-        type, 
-        clients, 
-        orders, 
-        contracts 
+        type
     });
 
     try {
@@ -56,29 +50,32 @@ export const getUser = async (req, res) => {
 // Update user
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const {email, password, nameFirst, nameLast, type, clients, orders,
-        contracts } = req.body; 
+    const {
+        email, 
+        password, 
+        nameFirst, 
+        nameLast, 
+        type
+    } = req.body; 
     
     if (!mongoose.Types.ObjectId.isValid(id)) 
-        return res.status(404).send(`No user with id: ${id}`);
+        return res.status(404).send(`Invalid user id: ${id}`);
 
     const updatedUser = {
         email, 
         password, 
         nameFirst, 
         nameLast, 
-        type, 
-        clients, 
-        orders,
-        contracts
-    } = req.body;
+        type,
+        _id: id
+    };
 
     const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
     if (user == null) {
         return res.status(404).send(`No user with id: ${id}`);
     }
 
-    res.json(updatedUser);
+    res.json(user);
 }
 
 // Delete user
