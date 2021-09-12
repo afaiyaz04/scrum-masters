@@ -79,11 +79,11 @@ export const updateOrder = async (req, res) => {
         _id: id 
     };
 
-    const order = await Order.findByIdAndUpdate(id, updatedORder, {new: true});
+    const order = await Order.findByIdAndUpdate(id, updatedOrder, {new: true});
     if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
-    res.json(updatedOrder);
+    res.json(order);
 }
 
 export const deleteOrder = async (req, res) => {

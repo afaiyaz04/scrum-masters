@@ -48,7 +48,7 @@ export const updateLog = async (req, res) => {
         return res.status(404).send(`No log with id: ${id}`);
     }
 
-    res.json(updatedLog);
+    res.json(log);
 }
 
 export const deleteLog = async (req, res) => {
