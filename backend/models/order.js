@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema({
 		required: true,
 	},
 	description: { type: String, required: false, default: null },
-	log: { type: [mongoose.Schema.Types.ObjectId], ref: "Log" }
+	log: [{ type: mongoose.Schema.Types.ObjectId, ref: "Log" }]
 });
 
 // compile into Model
