@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import User from '../models/user.js';
+import Order from '../models/order.js';
 
 const router = express.Router();
 
@@ -101,6 +102,69 @@ export const getAllUsers = async (req, res) => {
         res.status(200).json(allUsers);
     } catch (error) {
         res.status(404).json({ message: error.message });
+    }
+}
+
+export const addUserOrder = async (req, res) => {
+    const { id } = req.params;
+    const { orderId } = req.body;
+
+    try {
+        // need to check id and order exist
+        const user = await User.findById(id);
+        if (user == null) {
+            // send error
+            return;
+        }
+
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            // send error
+            return;
+        }
+
+        
+        if (user.orders.indexOf(orderId) != -1) {
+            // error already in it
+            return;
+        }
+
+        user.orders.push(orderId);
+        user.save();
+        res.json(user);
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+// returns orders as a list of what they are, so that frontend doesnt need
+// to make several requests to get a list of orders.
+export const getUserOrders = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // need to check id and order exist
+        const user = await User.findById(id);
+        if (user == null) {
+            // send error
+        }
+
+        const getOrders = async () => { 
+            return Promise.all(
+                user.orders.map(async (orderId) => {
+                    return await Order.findById(orderId);
+                })
+            )
+        }; 
+
+        getOrders().then((orders) => {
+            res.json(orders);
+        });
+        
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
     }
 }
 
