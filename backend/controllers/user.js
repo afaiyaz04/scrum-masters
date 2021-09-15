@@ -113,20 +113,17 @@ export const addUserOrder = async (req, res) => {
         // need to check id and order exist
         const user = await User.findById(id);
         if (user == null) {
-            // send error
-            return;
+            return res.status(404).send(`No user with id: ${id}`);
         }
 
         const order = await Order.findById(orderId);
         if (order == null) {
-            // send error
-            return;
+            return res.status(404).send(`No order with id: ${orderId}`);
         }
 
         
         if (user.orders.indexOf(orderId) != -1) {
-            // error already in it
-            return;
+            return res.status(406).send('Cannot add order (already exists)');
         }
 
         user.orders.push(orderId);
