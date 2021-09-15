@@ -87,47 +87,115 @@ export const deleteOrder = async (req, res) => {
     res.json({ message: "Order deleted successfully." });
 }
 
-export const productInOrder = async (req, res) => {
-    const { orderId, productId} = req.params;
-    const { quantity } = req.body;
-    
-    try {
-        // Find the order
-        const order = await Order.findById(orderId);
-        if (order == null) {
-            return res.status(404).send(`No order with id: ${orderId}`);
-        }
-        
-        // Find the product
-        const product = await Product.findById(productId);
-        if (product == null) {
-            return res.status(404).send(`No product with id: ${productId}`);
-        }
 
-        // Remove any products that match this id
-        const newLineProducts = order.lineProducts.filter(obj => {
-            return obj.productId != productId;
+export const addLineProduct = async (req, res) => {
+    const { orderId, productId } = req.params;
+    const { quantity } = req.body;
+    try {
+        const [order, product] = await doesOrderProductExist(orderId, productId, res);
+        if (order == null || product == null) return;
+
+        // Check that product isnt already added
+        const productIndex = order.lineProducts.findIndex((lineProduct) => {
+            return lineProduct.productId == productId;
         });
 
-        // Only re-add if qty is more than 0
-        if (quantity > 0) {
-            // Add new
-            const newLineProduct = {productId: productId, quantity: quantity};
-            newLineProducts.push(newLineProduct);
+        if (productIndex != -1) {
+            return res.status(406).send('Cannot add product (already exists)');
         }
+
+        const newLineProduct = {productId: product._id, quantity: quantity};
+        order.lineProducts.push(newLineProduct);
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId, order, {new: true}
+        );
+        return res.json(updatedOrder);
+    } catch (error) {
+        return res.status(404).json({message: error.message});
+    }
+}
+
+export const updateLineProduct = async (req, res) => {
+    const { orderId, productId} = req.params;
+    const { quantity } = req.body;
+
+    try {
+        const [order, product] = await doesOrderProductExist(
+            orderId, productId, res
+        );
+        if (order == null || product == null) return;
         
+        // Check if product is in lineProducts
+        const productIndex = order.lineProducts.findIndex((lineProduct) => {
+            return lineProduct.productId == productId
+        });
+
+        if (productIndex == -1) {
+            return res.status(404).send(
+                'Product not found in lineProducts of order'
+            );
+        }
+
+        order.lineProducts[productIndex].quantity = quantity;
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId, order, {new: true}
+        );
+        return res.json(updatedOrder);
+    } catch (error) {
+        return res.status(404).json({message: error.message});
+    }
+}
+
+export const removeLineProduct = async (req, res) => {
+    const { orderId, productId} = req.params;
+
+    try {
+        const [order, product] = await doesOrderProductExist(orderId, productId, res);
+        if (order == null || product == null) return;
+
+        // Check if product is in lineProducts
+        const productIndex = order.lineProducts.findIndex((lineProduct) => {
+            return lineProduct.productId == productId
+        });
+        if (productIndex == -1) {
+            return res.status(404).send(
+                'Product not found in lineProducts of order'
+            );
+        }
+
+        const newLineProducts = order.lineProducts.filter((lineProduct) => {
+            return lineProduct.productId != productId;
+        });
+
         const updatedOrder = await Order.findByIdAndUpdate(
             orderId, 
             {lineProducts: newLineProducts}, 
             {new: true}
         );
-        
         return res.json(updatedOrder);
-        
-     } catch (error) {
-        return res.status(404).json({message: error.message});
-     }
 
+    } catch (error) {
+        return res.status(404).json({message: error.message});
+    }
+}
+
+async function doesOrderProductExist(orderId, productId, res) {
+    // Find the order
+    const order = await Order.findById(orderId);
+    if (order == null) {
+        res.status(404).send(`No order with id: ${orderId}`);
+        return [null, null];
+    }
+    
+    // Find the product
+    const product = await Product.findById(productId);
+    if (product == null) {
+        res.status(404).send(`No product with id: ${productId}`);
+        return [null, null];
+    }
+
+    return [order, product];
 }
 
 export default router;
