@@ -202,7 +202,29 @@ export const addUserClient = async (req, res) => {
 
 export const getUserClients = async (req, res) => {
     const { id } = req.params;
+    try {
+        // need to check id
+        const user = await User.findById(id);
+        if (user == null) {
+            // send error
+        }
 
+        const getClients = async () => { 
+            return Promise.all(
+                user.clients.map(async (clientId) => {
+                    return await Client.findById(clientId);
+                })
+            )
+        }; 
+
+        getClients().then((clients) => {
+            res.json(clients);
+        });
+        
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
 }
 
 
