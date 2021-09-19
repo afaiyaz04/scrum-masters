@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
-const {
-	ORDER_PENDING,
-	ORDER_CONFIRMED,
-	ORDER_FULFILLED,
-} = require("./systemEnums");
+import mongoose from 'mongoose';
+
+import {
+	ORDER_CREATED,
+	ORDER_DISCUSSED,
+	ORDER_AGREED,
+	ORDER_SIGNED
+} from './systemEnums.js';
 
 // define the ProductItem child schema
 const lineProductSchema = new mongoose.Schema(
@@ -32,17 +34,19 @@ const orderSchema = new mongoose.Schema({
 	status: {
 		type: String,
 		enum: [
-			ORDER_PENDING,
-			ORDER_CONFIRMED,
-			ORDER_FULFILLED,
+			ORDER_CREATED,
+			ORDER_DISCUSSED,
+			ORDER_AGREED,
+			ORDER_SIGNED,
 		],
-		default: ORDER_PENDING,
+		default: ORDER_CREATED,
 		required: true,
 	},
 	description: { type: String, required: false, default: null },
+	log: [{ type: mongoose.Schema.Types.ObjectId, ref: "Log" }]
 });
 
 // compile into Model
 const Order = mongoose.model("Order", orderSchema);
 
-module.exports = Order;
+export default Order;

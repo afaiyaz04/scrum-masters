@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-const {
+import mongoose from 'mongoose';
+
+import {
 	ADMIN_USER,
-	GENERAL_USER,
-} = require("./systemEnums");
+	GENERAL_USER
+} from './systemEnums.js';
 
 // define the User schema
 const userSchema = new mongoose.Schema({
@@ -18,13 +19,13 @@ const userSchema = new mongoose.Schema({
 		],
 		required: true,
 	},
-	clients: { type: [mongoose.Schema.Types.ObjectId], ref: "Client" },
-	orders: { type: [mongoose.Schema.Types.ObjectId], ref: "Order" },
-	contracts: { type: [mongoose.Schema.Types.ObjectId], ref: "Contract" },
+	clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],
+	orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+	contracts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contract" }],
 	report: { type: mongoose.Schema.Types.ObjectId, ref: "Report" }
 });
 
 // compile into Model
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;
