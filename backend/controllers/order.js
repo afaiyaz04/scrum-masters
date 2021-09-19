@@ -107,10 +107,9 @@ export const addLineProduct = async (req, res) => {
         const newLineProduct = {productId: product._id, quantity: quantity};
         order.lineProducts.push(newLineProduct);
 
-        const updatedOrder = await Order.findByIdAndUpdate(
-            orderId, order, {new: true}
-        );
-        return res.json(updatedOrder);
+        order.save();
+        return res.json(order);
+        
     } catch (error) {
         return res.status(404).json({message: error.message});
     }
@@ -138,10 +137,9 @@ export const updateLineProduct = async (req, res) => {
         }
 
         order.lineProducts[productIndex].quantity = quantity;
-        const updatedOrder = await Order.findByIdAndUpdate(
-            orderId, order, {new: true}
-        );
-        return res.json(updatedOrder);
+        order.save();
+        return res.json(order);
+
     } catch (error) {
         return res.status(404).json({message: error.message});
     }
