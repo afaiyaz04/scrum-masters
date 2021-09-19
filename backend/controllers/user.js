@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import User from '../models/user.js';
 import Order from '../models/order.js';
+import Client from '../models/client.js';
 
 const router = express.Router();
 
@@ -164,5 +165,46 @@ export const getUserOrders = async (req, res) => {
         res.status(404).json({ message: error.message});
     }
 }
+
+
+
+
+
+export const addUserClient = async (req, res) => {
+    const { id } = req.params;
+    const { clientId } = req.body;
+
+    try {
+        // need to check id and order exist
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        const client = await Client.findById(clientId);
+        if (client == null) {
+            return res.status(404).send(`No client with id: ${clientId}`);
+        }
+
+        
+        if (user.clients.indexOf(clientId) != -1) {
+            return res.status(406).send('Cannot add client (already exists)');
+        }
+
+        user.clients.push(clientId);
+        user.save();
+        res.json(user);
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+export const getUserClients = async (req, res) => {
+    const { id } = req.params;
+
+}
+
+
 
 export default router;
