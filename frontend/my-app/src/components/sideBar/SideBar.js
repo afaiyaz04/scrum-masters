@@ -1,20 +1,31 @@
-import React from "react";
+import React from 'react';
+import {Link} from 'react-router-dom';
+import { SidebarData } from './SidebarData'
+import './Sidebar.css';
+import {IconContext} from 'react-icons'
 
-const SideBar = () => {
+function Navbar() {
+
     return (
-        <div className="side-bar">
-            <div className="side-bar__user">
-                <h3 className="heading">Admin User</h3>
-            </div>
-            <ul>
-                <li><a href="#"><i className="fas fa-home fa-lg"></i>Dashboard</a></li>
-                <li><a href="#"><i className="fas fa-address-book fa-lg"></i>Contacts</a></li>
-                <li><a href="#"><i className="fas fa-cash-register fa-lg"></i>Orders</a></li>
-                <li><a href="#"><i className="fas fa-lock fa-lg"></i>Contracts</a></li>
-                <li><a href="#"><i className="fas fa-users fa-lg"></i>Users</a></li>
-            </ul>
-        </div>
+        <>
+        <IconContext.Provider value={{color: '#fff'}}>
+            <nav className='sidebar'>
+                <ul className='nav-menu-items'>
+                    {SidebarData.map((item, index) => {
+                        return (
+                            <li key={index} className={item.cName}>
+                                <Link to={item.path}>
+                                    {item.icon}
+                                    <span>{item.title}</span>
+                                </Link>
+                            </li>
+                        )
+                     })}
+                </ul>
+            </nav>
+            </IconContext.Provider>
+        </>
     );
-};
+}
 
-export default SideBar;
+export default Navbar
