@@ -1,12 +1,11 @@
 .sidebar{
     background-color: #20639B;
-    width: 250px;
+    width: 20vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     position: fixed;
     left: 0;
-    transition: 350ms;
 }
 
 .nav-menu.active {
@@ -40,6 +39,12 @@
     background-color: #5698ce;
 }
 
+/* .nav-text a:active {
+    background-color: black;
+}  */
+.nav-text a:focus {
+    background-color: black;
+} 
 .nav-menu-items {
     width: 100%;
 }
