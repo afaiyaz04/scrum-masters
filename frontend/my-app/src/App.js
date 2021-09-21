@@ -1,7 +1,6 @@
 import React from "react";
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Sidebar from "./components/sideBar/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Users from './pages/Users';
 import Contacts from './pages/Contacts'
