@@ -166,10 +166,6 @@ export const getUserOrders = async (req, res) => {
     }
 }
 
-
-
-
-
 export const addUserClient = async (req, res) => {
     const { id } = req.params;
     const { clientId } = req.body;
@@ -225,6 +221,51 @@ export const getUserClients = async (req, res) => {
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
+}
+
+export const transferOrder = async (req, res) => {
+    const { orderId, transferId} = req.body;
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
+        }
+        
+        const newUser = await User.findById(transferId);
+        if (newUser == null) {
+            return res.status(404).send(`No user with id: ${transferId}`);
+        }
+
+        const userOrders = user.getUserOrders();
+        if (userOrders.includes(order)){
+            if (!(newUser.getUserOrders().includes(order)))
+            {
+                var orderIndex = userOrders.indexOf(order);
+                if (orderIndex !== -1)
+                {
+                    userOrders.splice(orderIndex, 1);
+                }
+                newUser.orders.push(order);
+                user.save();
+                newUser.save();
+        }
+    }
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+
+    
+
+
+
+
+
 }
 
 
