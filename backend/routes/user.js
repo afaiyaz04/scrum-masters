@@ -9,7 +9,8 @@ import {
     getUserOrders,
     addUserOrder,
     getUserClients,
-    addUserClient
+    addUserClient,
+    transferOrder
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.post('/:id/orders', addUserOrder);
 // Adding a client to a user
 router.get('/:id/clients', getUserClients);
 router.post('/:id/clients', addUserClient);
+
+// Transferring an order
+router.patch('/:id/transfer', transferOrder);
 export default router;
 
