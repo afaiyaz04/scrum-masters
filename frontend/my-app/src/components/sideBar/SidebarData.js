@@ -1,9 +1,13 @@
 import React from 'react'
 import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
-import * as IoIcons from "react-icons/io";
 
 export const SidebarData = [
+    {
+        icon: <FaIcons.FaUserCircle/>,
+        path: '/myprofile',
+        cName: 'nav-profile'
+    },
     {
         title: 'Dashboard',
         path: '/',
@@ -31,7 +35,7 @@ export const SidebarData = [
     {
         title: 'Contracts',
         path: '/contracts',
-        icon: <FaIcons.FaFileContract />,
+        icon: <FaIcons.FaLock />,
         cName: 'nav-text'
     }
 ]
