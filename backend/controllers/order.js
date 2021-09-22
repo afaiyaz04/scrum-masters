@@ -162,17 +162,9 @@ export const removeLineProduct = async (req, res) => {
                 'Product not found in lineProducts of order'
             );
         }
-
-        const newLineProducts = order.lineProducts.filter((lineProduct) => {
-            return lineProduct.productId != productId;
-        });
-
-        const updatedOrder = await Order.findByIdAndUpdate(
-            orderId, 
-            {lineProducts: newLineProducts}, 
-            {new: true}
-        );
-        return res.json(updatedOrder);
+        order.lineProducts.splice(productIndex, 1);
+        order.save();
+        return res.json(order);
 
     } catch (error) {
         return res.status(404).json({message: error.message});
