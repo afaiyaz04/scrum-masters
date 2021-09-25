@@ -5,7 +5,7 @@ function Header(prop) {
     const pageHeader = prop.page;
     return (
         <div className='header'>
-            <h1>{pageHeader}</h1>
+            <h1>{pageHeader} <button>+</button></h1>
             <ProfileButton></ProfileButton>
         </div>
 

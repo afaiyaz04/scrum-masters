@@ -11,8 +11,10 @@ function ItemDetails(props) {
                 <h3>Type: {type} </h3> 
                 <h3>Details: {details} </h3>
             </div>
-            <button>Edit</button>
-            <button>Delete</button>
+            <div className='edit-btns'>
+                <button>Edit</button>
+                <button>Delete</button>
+            </div>
         </div>
     )
 }
