@@ -7,21 +7,22 @@ import Product from '../models/product.js'
 
 const router = express.Router();
 
-//export const viewReport = async (req, res) => {
-
-//};
+export const viewReport = async (req, res) => {
+    const {id} = req.params();
+    const report = await generateReport(id, res);
+    res.json(report);
+};
 
 //export const viewAllReports = async (req, res) => {
 
 //};
 
-export const generateReport = async (req, res) => {
-    const { id } = req.params;
+async function generateReport(userId, res) {
     try {
         // user name
-        const user = await User.findById(id);
+        const user = await User.findById(userId);
         if (user == null) {
-            return res.status(404).send(`No user with id: ${id}`);
+            return res.status(404).send(`No user with id: ${userId}`);
         }
         const userName = user.userName;
 
@@ -33,7 +34,7 @@ export const generateReport = async (req, res) => {
         for (var i = 0; i < user.orders.length; i++) {
             var currStatus = user.orders[i].status;
             if (!(orderStatus.hasOwnProperty(currStatus))){
-                orderStatus[currStatus] = 0;
+                orderStatus[currStatus] = 1;
             }
             else {orderStatus[currStatus] += 1;}
         }
@@ -43,16 +44,22 @@ export const generateReport = async (req, res) => {
         // total revenue for the user
         const totalRevenue = 0;
         for (var i = 0; i < user.orders.length; i++) {
-            var order = user.orders[i];
-            var quantity = order.lineProducts.quantity;
-            const product = await Product.findById(order.lineProducts.productId);
-            const productPrice = product.price;
-            const productFee = order.totalFee;
-            totalRevenue += ((quantity * productPrice) + productFee)
-
+            var orderId = user.orders[i];
+            const order = Order.findById(orderId);
+            
+            for (var j = 0; j < order.lineProducts.length; j++){
+                var quantity = order.lineProducts[j].quantity;
+                const product = await Product.findById(
+                    order.lineProducts[j].productId
+                );
+                const productPrice = product.price;
+                totalRevenue += (quantity * productPrice)
+            }
+            const orderFee = order.totalFee;
+            totalRevenue += orderFee;
         }
-     res.json({User: userName, orderStatus: orderStatus, 
-        totalClients: totalClients, totalRevenue: totalRevenue});
+     return {User: userName, orderStatus: orderStatus, 
+        totalClients: totalClients, totalRevenue: totalRevenue};
 
     } catch (error) {
         res.status(404).json({ message: error.message});
