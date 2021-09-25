@@ -13,9 +13,16 @@ export const viewReport = async (req, res) => {
     res.json(report);
 };
 
-//export const viewAllReports = async (req, res) => {
+export const viewAllReports = async (req, res) => {
+    const allUsers = await User.find();
+    const allReports = [];
+    for (var i = 0; i < allUsers.length; i++){
+        const userReport = await generateReport(allUsers[i].id, res);
+        allReports.push(userReport);
+    }
+    res.json(allReports);
 
-//};
+};
 
 async function generateReport(userId, res) {
     try {
