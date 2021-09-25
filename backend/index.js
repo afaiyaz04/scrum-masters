@@ -7,6 +7,7 @@ import logRoutes from './routes/log.js';
 import orderRoutes from './routes/order.js';
 import productRoutes from './routes/product.js';
 import userRoutes from './routes/user.js';
+import reportRoutes from './routes/report.js';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/log', logRoutes);
 app.use('/order', orderRoutes);
 app.use('/product', productRoutes);
 app.use('/user', userRoutes);
+app.use('/report', reportRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000
