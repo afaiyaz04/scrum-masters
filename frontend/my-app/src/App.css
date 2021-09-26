@@ -1,43 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Side Bar styling components */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap');
 *{
     margin: 0;
@@ -48,77 +8,138 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body {
-    background: #ffffff;
+.dashboard, .contacts, .users, .orders, .contracts{
+  display: flex;
+  height: 100vh;
+  width: 80vw;
+  
+  margin-left: 20vw;
+  align-items: top;
+  font-size: 50;
+  padding: 3% 5%;
+}
+.contacts{
+  /* display: flex; */
+  flex-direction: column;
+}
+.thing{
+  display: flex;
+  flex-direction: column;
 }
 
-.wrapper{
-    display:flex;
-    position: relative;
-    
-
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.wrapper .sidebar{
-    position: fixed;
-    width: 300px;
-    height: 100%;
-    background: #20639B;
-    padding: 30px 0;
-} 
-
-/* SIDE BAR */
-.side-bar {
-	flex: 0.2;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 5px;
-	text-align: center;
-	background: #20639B;
-	box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
-	padding: 1rem 1rem;
+.header h1 button{
+  width: 20px;
 }
 
-.side-bar__user {
-	margin-bottom: 40px;
+.header-dashboard{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.wrapper .sidebar h2{
-    padding-top: 50px;
-    text-align: center;
-    margin-bottom: 30px;
+.contents{
+  padding: 3%;
+  display: flex;
+  height: 100%;
 }
 
-.wrapper .sidebar h3{
-    color: #D1C7C7;
-    text-transform: uppercase;
-    text-align: center;
-    margin-bottom: 100px;
-} 
-
-.wrapper .sidebar ul li{
-    padding: 15px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    border-top: 2px solid rgba(225,225,225,0.05);
-    margin-bottom: 20px;
+.contents-left{
+  width: 50%;
+  justify-items: flex-start;
 }
 
-.wrapper .sidebar ul li a{
-    color: #ffffff;
-    display: block;
+
+.contents-right{
+  width: 50%;
+  border: 3px solid black;
+  background-color: #EBF4FA;
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
 }
 
-.wrapper .sidebar ul li a .fas{
-    width: 40px;
+.edit-btns{
+  align-items: baseline;
+  position: absolute;
+  right: 150px;
+  bottom: 100px;
 }
 
-.wrapper .sidebar ul li:hover{
-    background: #173F5F;
+.edit-btns button{
+  width: 80px;
 }
-
-.wrapper .sidebar ul li:hover a{
-    color: #ffffff;
-}
-
 /************************************************/
+
+/* LIST ITEM */
+
+.list-item {
+	height: 60px;
+  display: flex;
+	min-height: 50px;
+	margin: 10px;
+	max-width: 300px;
+  border: 1px solid rgb(190, 194, 230);
+  background-color: #EBF4FA;
+  border-radius: 0.5rem;
+  padding:2% 2%
+}
+
+.list-item-details {
+  color: #173F5F;
+  padding:4% 0%;
+}
+
+.list-item-details h3{
+  border-bottom: 1px #173F5F;
+}
+
+.list-item:hover {
+	box-shadow: 5px 10px 10px #888888;
+	transform: translateY(-3px);
+}
+
+.list-item:active {
+	box-shadow: 5px 10px 10px #888888;
+	transform: translateY(3px);
+	transition: 50ms;
+}
+.list-item__image {
+	min-height: 100%;
+	object-fit: cover;
+	width: 40%;
+	padding: 5px;
+}
+
+.list-item__mid {
+	flex-direction: column;
+	margin-left: 9px;
+	min-height: 80%;
+	min-width: 40%;
+	align-content: flex-start;
+}
+
+.list-item__name {
+	font-weight: 900;
+}
+.list-item__price {
+	min-height: 50%;
+	min-width: 20%;
+	text-align: right;
+}
+.list-item__right {
+	padding: 5px 5px;
+}
+
+.line{
+  width: 70%;
+  height: 47px;
+  border-bottom: 1px solid black;
+  position: absolute;
+  }

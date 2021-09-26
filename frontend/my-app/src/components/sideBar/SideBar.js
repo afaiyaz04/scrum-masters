@@ -1,20 +1,56 @@
-import React from "react";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { SidebarData } from './SidebarData'
+import './Sidebar.css';
+import { IconContext } from 'react-icons'
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { setUser } from '../../redux/actions/userActions';
+import * as FaIcons from "react-icons/fa";
 
-const SideBar = () => {
+function Navbar() {
+    const user = useSelector((state) => state.users.user);
+    const { id, name, company } = user;
+    const dispatch = useDispatch();
+
+    const fetchUser = async () => {
+        const response = await axios
+            .get("https://jsonplaceholder.typicode.com/users")
+            .catch((err) => {
+                console.log("ERR", err);
+            });
+        dispatch(setUser(response.data[0]));
+    };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
-        <div className="side-bar">
-            <div className="side-bar__user">
-                <h3 className="heading">Admin User</h3>
-            </div>
-            <ul>
-                <li><a href="#"><i className="fas fa-home fa-lg"></i>Dashboard</a></li>
-                <li><a href="#"><i className="fas fa-address-book fa-lg"></i>Contacts</a></li>
-                <li><a href="#"><i className="fas fa-cash-register fa-lg"></i>Orders</a></li>
-                <li><a href="#"><i className="fas fa-lock fa-lg"></i>Contracts</a></li>
-                <li><a href="#"><i className="fas fa-users fa-lg"></i>Users</a></li>
-            </ul>
-        </div>
-    );
-};
+        <>
+            <IconContext.Provider value={{ color: '#fff' }}>
+                <nav className='sidebar'>
+                    <div className='userDetails'>
+                        <h1><FaIcons.FaUserCircle /></h1>
+                        <h2>{name}</h2>
 
-export default SideBar;
+                    </div>
+                    <ul className='nav-menu-items'>
+                        {SidebarData.map((item, index) => {
+                            return (
+                                <li key={index} className={item.cName}>
+                                    <Link to={item.path}>
+                                        {item.icon}
+                                        <span>{item.title}</span>
+                                    </Link>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </nav>
+            </IconContext.Provider>
+        </>
+    );
+}
+
+export default Navbar
