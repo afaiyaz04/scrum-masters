@@ -1,6 +1,8 @@
 import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
+import ProfileButton from '../components/buttons/ProfileButton';
 import Header from '../components/Header';
+
 
 
 function Dashboard() {
@@ -8,10 +10,12 @@ function Dashboard() {
         <div className='Master-div'>
             <Sidebar />
             <div className='contacts'>
-                <Header page='Dashboard'></Header>
-                <div className='line'></div>
-                <div className='contents'>
+                <div className='header-dashboard'>
+                    <h1>Dashboard</h1>
+                    <ProfileButton></ProfileButton>
                 </div>
+                <div className='line'></div>
+                <div className='contents'></div>
             </div>
         </div>
     )

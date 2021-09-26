@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from '../components/Header';
-//import ContactListItem from '../components/ContactListItem';
+import ContactListItem from '../components/ContactListItem';
 import ItemDetails from '../components/ItemDetails';
 import axios from 'axios';
 
@@ -27,8 +27,9 @@ export default class Contacts extends React.Component{
                 <div className='line'></div>
                 <div className='contents'>
                     <div className='contents-left'>
+                        <h3>Name</h3>
                         <ul>
-                            {this.state.contacts.map(contacts => <li key={contacts.id}>{contacts.name}</li>)}
+                            {this.state.contacts.map(contacts => <ContactListItem name={contacts.name} email={contacts.email}></ContactListItem>)}
                         </ul>
                     </div>
                     <ItemDetails item='Contact' type='Contact' details='Ahbab 04575757223 ScrumMaster'></ItemDetails>
