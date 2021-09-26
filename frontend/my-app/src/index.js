@@ -7,11 +7,8 @@ import reportWebVitals from './reportWebVitals';
 //Redux 
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { increaseCounter, decreaseCounter } from './redux/Counter/counter.actions';
 
-store.subscribe(() => console.log(store.getState()));
-store.dispatch(increaseCounter());
-store.dispatch(decreaseCounter());
+
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>

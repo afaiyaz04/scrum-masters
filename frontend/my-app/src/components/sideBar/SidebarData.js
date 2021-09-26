@@ -4,11 +4,6 @@ import * as MdIcons from "react-icons/md";
 
 export const SidebarData = [
     {
-        icon: <FaIcons.FaUserCircle/>,
-        path: '/myprofile',
-        cName: 'nav-profile'
-    },
-    {
         title: 'Dashboard',
         path: '/',
         icon: <MdIcons.MdDashboard />,

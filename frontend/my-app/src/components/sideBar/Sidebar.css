@@ -1,11 +1,27 @@
 .sidebar{
+    display: flex;
+    flex-direction: column;
     background-color: #20639B;
     width: 20vw;
     height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     position: fixed;
     left: 0;
+}
+.userDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.userDetails h1{
+    height: 130px;
+    font-size: 120px;
+}
+
+.userDetails h2{
+    font-size: 20px;
 }
 
 .nav-menu.active {
@@ -52,7 +68,7 @@
 /* .nav-text a:active {
     background-color: black;
 }  */
-.nav-text a:focus {
+.nav-text a:active {
     background-color: black;
 } 
 .nav-menu-items {
