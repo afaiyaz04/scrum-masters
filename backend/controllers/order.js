@@ -89,8 +89,8 @@ export const deleteOrder = async (req, res) => {
 
 
 export const addLineProduct = async (req, res) => {
-    const { orderId, productId } = req.params;
-    const { quantity } = req.body;
+    const { orderId } = req.params;
+    const { quantity, productId } = req.body;
     try {
         const [order, product] = await doesOrderProductExist(orderId, productId, res);
         if (order == null || product == null) return;
@@ -116,8 +116,8 @@ export const addLineProduct = async (req, res) => {
 }
 
 export const updateLineProduct = async (req, res) => {
-    const { orderId, productId} = req.params;
-    const { quantity } = req.body;
+    const { orderId} = req.params;
+    const { quantity, productId } = req.body;
 
     try {
         const [order, product] = await doesOrderProductExist(
@@ -146,7 +146,8 @@ export const updateLineProduct = async (req, res) => {
 }
 
 export const removeLineProduct = async (req, res) => {
-    const { orderId, productId} = req.params;
+    const { orderId } = req.params;
+    const { productId } = req.body;
 
     try {
         const [order, product] = await doesOrderProductExist(orderId, productId, res);

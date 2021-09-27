@@ -16,8 +16,8 @@ router.post("/", createOrder);
 router.get("/:id", getOrder);
 router.patch("/:id", updateOrder);
 router.delete("/:id", deleteOrder);
-router.post("/:orderId/product/:productId", addLineProduct);
-router.patch("/:orderId/product/:productId", updateLineProduct);
-router.delete("/:orderId/product/:productId", removeLineProduct);
+router.post("/:orderId/product", addLineProduct);
+router.patch("/:orderId/product", updateLineProduct);
+router.delete("/:orderId/product", removeLineProduct);
 
 export default router;
