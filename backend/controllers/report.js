@@ -26,15 +26,15 @@ export const viewAllReports = async (req, res) => {
 
 async function generateReport(userId, res) {
     try {
-        // user name
         const user = await User.findById(userId);
         if (user == null) {
             return res.status(404).send(`No user with id: ${userId}`);
         }
-        const userName = user.userName;
+        const name = user.nameFirst + " " + user.nameLast;
 
         // number of total clients
         const totalClients = user.clients.length;
+        const totalOrders = user.orders.length;
 
         // aggregate order properties
         const orderStatus = {}
@@ -52,7 +52,6 @@ async function generateReport(userId, res) {
                 orderStatus[currStatus] += 1;
             }
             
-
             // get revenue
             for (var j = 0; j < order.lineProducts.length; j++) {
                 var quantity = order.lineProducts[j].quantity;
@@ -67,8 +66,9 @@ async function generateReport(userId, res) {
         }
         
         return { 
-            User: userName, 
+            name: name, 
             orderStatus: orderStatus, 
+            totalOrders: totalOrders,
             totalClients: totalClients, 
             totalRevenue: totalRevenue
         };
