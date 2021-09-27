@@ -6,6 +6,7 @@ import Users from './pages/Users';
 import Contacts from './pages/Contacts'
 import Contracts from './pages/Contracts'
 import Orders from './pages/Orders'
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/orders' component={Orders} />
         <Route path='/users' component={Users} />
         <Route path='/contracts' component={Contracts} />
+        <Route path='/profile' component={Profile}/>
       </Switch>
     </Router>
   );

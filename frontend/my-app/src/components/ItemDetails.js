@@ -1,9 +1,11 @@
 import React from 'react'
+import ProfileButton from './buttons/ProfileButton';
 
 function ItemDetails(props) {
     const Item = props.item;
     const type = props.type;
     const details = props.details;
+
     return (
         <div className='contents-right'>
             <h2>{Item} Details</h2>
@@ -14,6 +16,7 @@ function ItemDetails(props) {
             <div className='edit-btns'>
                 <button>Edit</button>
                 <button>Delete</button>
+                <ProfileButton></ProfileButton>
             </div>
         </div>
     )
