@@ -11,6 +11,9 @@ export const viewReport = async (req, res) => {
     const { id } = req.params;
     try {
         const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
         const report = await generateReport(user);
         return res.json(report);
     } catch (error) {
