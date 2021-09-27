@@ -224,8 +224,9 @@ export const getUserClients = async (req, res) => {
 }
 
 export const transferOrder = async (req, res) => {
-    const { orderId, transferId} = req.body;
     const { id } = req.params;
+    const { orderId, toUserId} = req.body;
+    
     try {
         const user = await User.findById(id);
         if (user == null) {
@@ -237,35 +238,34 @@ export const transferOrder = async (req, res) => {
             return res.status(404).send(`No order with id: ${orderId}`);
         }
         
-        const newUser = await User.findById(transferId);
-        if (newUser == null) {
-            return res.status(404).send(`No user with id: ${transferId}`);
+        const toUser = await User.findById(toUserId);
+        if (toUser == null) {
+            return res.status(404).send(`No transfer user with id: ${toUserId}`);
         }
 
-        const userOrders = user.getUserOrders();
-        if (userOrders.includes(order)){
-            if (!(newUser.getUserOrders().includes(order)))
-            {
-                var orderIndex = userOrders.indexOf(order);
-                if (orderIndex !== -1)
-                {
+        const userOrders = user.orders;
+        const toUserOrders = toUser.orders;
+
+        if (userOrders.includes(orderId)) {
+            if (!(toUserOrders.includes(orderId))) {
+                var orderIndex = userOrders.indexOf(orderId);
+                // Remove from user
+                if (orderIndex !== -1) {
                     userOrders.splice(orderIndex, 1);
                 }
-                newUser.orders.push(order);
+                // Add to new user
+                toUserOrders.push(orderId);
                 user.save();
-                newUser.save();
+                toUser.save();
+                return res.json({fromUser: user, toUser: toUser});
+            }
         }
-    }
+        return res.status(404).send(
+            "User does not have order or toUser already contains this order!"
+        );
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
-
-    
-
-
-
-
-
 }
 
 
