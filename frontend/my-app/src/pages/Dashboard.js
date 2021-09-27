@@ -1,7 +1,6 @@
 import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from '../components/buttons/ProfileButton';
-import Header from '../components/Header';
 
 
 

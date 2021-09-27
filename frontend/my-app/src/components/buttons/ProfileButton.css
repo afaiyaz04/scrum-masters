@@ -1,10 +1,12 @@
 .btn {
-    border-radius: 1rem;
+    border-radius: 3rem;
+    width: 150px;
+    height: 40px;
+    border-color: black;
     background-color: white;
-    width: 100px;
-    height: 30px;
+    font-size: medium;
 }
 
-.btn:hover{
-    background-color: black;
+.btn:focus{
+    color: black;
 }
