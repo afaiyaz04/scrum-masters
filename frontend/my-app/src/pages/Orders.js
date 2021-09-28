@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from '../components/Header';
 import ItemDetails from '../components/ItemDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { setOrder } from '../redux/Order/order.actions';
 
 function Orders() {
+    const orders = useSelector((state) => state.order);
+    const dispatch = useDispatch();
+
+    const fetchOrder = async () => {
+        const response = await axios
+            .get("http://localhost:5000/user/614180facb6259ce3427029f/orders")
+            .catch((err) => {
+                console.log("ERR", err);
+            });
+        dispatch(setOrder(response.data));
+    };
+
+    useEffect(() => {
+        fetchOrder();
+    }, []);
+
     return (
         <div className='Master-div'>
             <Sidebar />

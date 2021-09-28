@@ -1,12 +1,12 @@
-import { SET_CUSTOMER, DELETE_CUSTOMER } from "redux/Customer/customer.types";
+import { SET_USER, DELETE_USER } from "./user.types";
 
-const INITIAL_STATE = null;
+const INITIAL_STATE = [];
 
 const reducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case SET_CUSTOMER:
+		case SET_USER:
 			return action.payload;
-		case DELETE_CUSTOMER:
+		case DELETE_USER:
 			return null;
 		default:
 			return state;
