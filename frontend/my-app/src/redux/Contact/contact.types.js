@@ -1,0 +1,3 @@
+export const SET_CONTACT = "SET_CONTACT";
+
+export const DELETE_CONTACT = "DELETE_CONTACT";

@@ -5,21 +5,21 @@ import './Sidebar.css';
 import { IconContext } from 'react-icons'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setUser } from '../../redux/actions/userActions';
+import { setUser } from '../../redux/User/user.actions';
 import * as FaIcons from "react-icons/fa";
 
 function Navbar() {
-    const user = useSelector((state) => state.users.user);
-    const { id, name, company } = user;
+    const user = useSelector((state) => state.user);
+    const { nameFirst, nameLast, type } = user;
     const dispatch = useDispatch();
 
     const fetchUser = async () => {
         const response = await axios
-            .get("https://jsonplaceholder.typicode.com/users")
+            .get("http://localhost:5000/user/614180facb6259ce3427029f")
             .catch((err) => {
                 console.log("ERR", err);
             });
-        dispatch(setUser(response.data[0]));
+        dispatch(setUser(response.data));
     };
 
     useEffect(() => {
@@ -32,7 +32,8 @@ function Navbar() {
                 <nav className='sidebar'>
                     <div className='userDetails'>
                         <h1><FaIcons.FaUserCircle /></h1>
-                        <h2>{name}</h2>
+                        <h2>{nameFirst} {nameLast}</h2>
+                        <h2>{type}</h2>
 
                     </div>
                     <ul className='nav-menu-items'>
