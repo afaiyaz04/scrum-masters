@@ -196,6 +196,35 @@ export const addUserClient = async (req, res) => {
     }
 }
 
+export const deleteUserClient = async (req, res) => {
+    const { id } = req.params;
+    const { clientId } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        const client = await Client.findById(clientId);
+        if (client == null) {
+            return res.status(404).send(`No client with id: ${clientId}`);
+        }
+
+        const clientIndex = user.clients.indexOf(clientId);
+        if (clientIndex !=  -1) {
+            return res.status(406).send('Cannot add client (already exists)');
+        }
+        user.clients.splice(clientIndex, 1);
+        user.save();
+        return res.json(user);
+
+
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 export const getUserClients = async (req, res) => {
     const { id } = req.params;
     try {
