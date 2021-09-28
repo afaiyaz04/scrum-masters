@@ -213,8 +213,8 @@ export const addUserClient = async (req, res) => {
         }
 
         
-        if (user.clients.indexOf(clientId) == -1) {
-            return res.status(406).send('Cannot remove client (doesnt exists)');
+        if (user.clients.indexOf(clientId) != -1) {
+            return res.status(406).send('Cannot add client (already exists)');
         }
 
         user.clients.push(clientId);
@@ -242,8 +242,8 @@ export const deleteUserClient = async (req, res) => {
         }
 
         const clientIndex = user.clients.indexOf(clientId);
-        if (clientIndex !=  -1) {
-            return res.status(406).send('Cannot add client (already exists)');
+        if (clientIndex ==  -1) {
+            return res.status(406).send('Cannot delete client (doesnt exists)');
         }
         user.clients.splice(clientIndex, 1);
         user.save();
