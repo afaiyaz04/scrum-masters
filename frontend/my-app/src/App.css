@@ -36,7 +36,9 @@
 
 .header-dashboard{
   display: flex;
-  align-items: center;
+  height: 55px;
+  border-bottom: 3px solid silver;
+  border-width: 3px;
   justify-content: space-between;
 }
 
