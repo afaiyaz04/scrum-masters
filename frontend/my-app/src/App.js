@@ -7,11 +7,13 @@ import Contacts from './pages/Contacts'
 import Contracts from './pages/Contracts'
 import Orders from './pages/Orders'
 import Profile from "./pages/Profile";
+import Welcome from "./pages/Welcome";
 
 function App() {
   return (
     <Router>
       <Switch>
+        <Route path='/scrummasters' exact component={Welcome} />
         <Route path='/' exact component={Dashboard} />
         <Route path='/contacts' component={Contacts} />
         <Route path='/orders' component={Orders} />
