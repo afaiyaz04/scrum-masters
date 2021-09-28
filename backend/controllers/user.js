@@ -137,7 +137,7 @@ export const addUserOrder = async (req, res) => {
 }
 
 
-export const deleteOrderClient = async (req, res) => {
+export const deleteUserOrder = async (req, res) => {
     const { id } = req.params;
     const { orderId } = req.body;
 
