@@ -8,7 +8,7 @@ function Dashboard() {
     return (
         <div className='Master-div'>
             <Sidebar />
-            <div className='contacts'>
+            <div className='dashboard'>
                 <div className='header-dashboard'>
                     <h1>Dashboard</h1>
                     <ProfileButton></ProfileButton>
