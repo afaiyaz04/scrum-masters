@@ -1,5 +1,4 @@
 import React from 'react'
-import ProfileButton from './buttons/ProfileButton';
 
 function ItemDetails(props) {
     const Item = props.item;
@@ -16,7 +15,6 @@ function ItemDetails(props) {
             <div className='edit-btns'>
                 <button>Edit</button>
                 <button>Delete</button>
-                <ProfileButton></ProfileButton>
             </div>
         </div>
     )

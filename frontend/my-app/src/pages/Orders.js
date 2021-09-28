@@ -9,7 +9,7 @@ function Orders() {
             <Sidebar />
             <div className='contacts'>
                 <Header page='Orders'></Header>
-                <div className='line'></div>
+                {/* <div className='line'></div> */}
                 <div className='contents'>
                     <div className='contents-left'>
                     </div>
