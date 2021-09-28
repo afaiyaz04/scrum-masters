@@ -8,7 +8,7 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.dashboard, .contacts, .users, .orders, .contracts{
+.dashboard, .contacts, .users, .orders, .contracts, .profile{
   display: flex;
   height: 100vw;
   width: 80vw;
@@ -19,21 +19,12 @@
   flex-direction: column;
 }
 
+
+
 .thing{
   display: flex;
   flex-direction: column;
 }
-
-/* .header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-} */
-
-/* .header h1 button{
-  width: 20px;
-} */
-
 .header-dashboard{
   display: flex;
   height: 55px;
@@ -58,25 +49,31 @@
 .contents-right{
   width: 50%;
   border: 3px solid black;
-  /* background-color: #EBF4FA; */
+  background-color: #EBF4FA;
   border-radius: 2rem;
   padding: 3% 5%;
   display: flex;
   flex-direction: column;
-  height: 18cm;
-  background-color: red;
+  height: 15cm;
+  /* background-color: red; */
 }
 
 .edit-btns{
   align-items: baseline;
   position: absolute;
-  right: 150px;
-  bottom: 100px;
+  right: 120px;
+  bottom: 50px;
 }
 
 .edit-btns button{
   width: 80px;
 }
+
+.profile-contents{
+  /* background-color: red; */
+}
+
+
 /************************************************/
 
 /* LIST ITEM */
@@ -86,11 +83,12 @@
   display: flex;
 	min-height: 50px;
 	margin: 10px;
-	max-width: 300px;
-  border: 1px solid rgb(190, 194, 230);
+	/* max-width: 300px; */
+  border: 1px solid silver;
   background-color: #EBF4FA;
   border-radius: 0.5rem;
-  padding:2% 2%
+  padding:2% 2%;
+  width: 45vh;
 }
 
 .list-item-details {
