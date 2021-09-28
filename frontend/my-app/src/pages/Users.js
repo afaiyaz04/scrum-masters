@@ -10,9 +10,10 @@ function Users() {
             <Sidebar />
             <div className='contacts'>
                 <Header page='Users'></Header>
-                <div className='line'></div>
+                {/* <div className='line'></div> */}
                 <div className='contents'>
                     <div className='contents-left'>
+                        <h3>Name</h3>
                     </div>
                     <ItemDetails item='User' type='Users' details='User Number- 420' ></ItemDetails>
                 </div>

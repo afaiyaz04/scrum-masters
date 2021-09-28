@@ -9,7 +9,7 @@ function Contracts() {
             <Sidebar />
             <div className='contacts'>
                 <Header page='Contract'></Header>
-                <div className='line'></div>
+                {/* <div className='line'></div> */}
                 <div className='contents'>
                     <div className='contents-left'>
                     </div>

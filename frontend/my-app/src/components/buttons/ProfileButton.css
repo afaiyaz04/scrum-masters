@@ -7,6 +7,6 @@
     font-size: medium;
 }
 
-.btn:focus{
-    color: black;
+.btn:hover{
+    background-color: silver;
 }

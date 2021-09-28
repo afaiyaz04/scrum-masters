@@ -13,7 +13,7 @@ function Dashboard() {
                     <h1>Dashboard</h1>
                     <ProfileButton></ProfileButton>
                 </div>
-                <div className='line'></div>
+                {/* <div className='line'></div> */}
                 <div className='contents'></div>
             </div>
         </div>

@@ -11,8 +11,10 @@ function Profile() {
                 <h1>Profile</h1>
                 <ProfileButton></ProfileButton>
             </div>
-            <div className='line'></div>
-            <div className='contents'></div>
+            {/* <div className='line'></div> */}
+            <div className='contents'>
+                
+            </div>
         </div>
     </div>
     )

@@ -11,7 +11,7 @@ class ProfileButton extends React.Component{
 	render(){
 		return (
 			<button className="btn" onClick={() => {this.nextPath('/profile')}}>
-				MyProfile
+				<CgProfile></CgProfile> MyProfile
 			</button>
 		);
 	}

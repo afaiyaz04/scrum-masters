@@ -23,8 +23,8 @@ export default class Contacts extends React.Component{
             <div className='Master-div'>
             <Sidebar />
             <div className='contacts'>
-                <Header page='Contact'></Header>
-                <div className='line'></div>
+                <Header page='Contacts'></Header>
+                {/* <div className='line'></div> */}
                 <div className='contents'>
                     <div className='contents-left'>
                         <h3>Name</h3>

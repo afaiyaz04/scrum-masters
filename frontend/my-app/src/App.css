@@ -10,32 +10,29 @@
 
 .dashboard, .contacts, .users, .orders, .contracts{
   display: flex;
-  height: 100vh;
+  height: 100vw;
   width: 80vw;
-  
   margin-left: 20vw;
   align-items: top;
   font-size: 50;
   padding: 3% 5%;
-}
-.contacts{
-  /* display: flex; */
   flex-direction: column;
 }
+
 .thing{
   display: flex;
   flex-direction: column;
 }
 
-.header{
+/* .header{
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
-.header h1 button{
+/* .header h1 button{
   width: 20px;
-}
+} */
 
 .header-dashboard{
   display: flex;
@@ -44,6 +41,7 @@
 }
 
 .contents{
+  /* background-color: red; */
   padding: 3%;
   display: flex;
   height: 100%;
@@ -58,11 +56,13 @@
 .contents-right{
   width: 50%;
   border: 3px solid black;
-  background-color: #EBF4FA;
+  /* background-color: #EBF4FA; */
   border-radius: 2rem;
   padding: 3% 5%;
   display: flex;
   flex-direction: column;
+  height: 18cm;
+  background-color: red;
 }
 
 .edit-btns{
