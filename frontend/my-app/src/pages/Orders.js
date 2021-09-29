@@ -5,9 +5,10 @@ import ItemDetails from '../components/ItemDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setOrder } from '../redux/Order/order.actions';
+import OrderListItem from '../components/OrderListItem'
 
 function Orders() {
-    const orders = useSelector((state) => state.order);
+    const orders = useSelector((state) => state.orderState);
     const dispatch = useDispatch();
 
     const fetchOrder = async () => {
@@ -31,6 +32,9 @@ function Orders() {
                 {/* <div className='line'></div> */}
                 <div className='contents'>
                     <div className='contents-left'>
+                        <ul>
+                            {orders.map(order => <OrderListItem order={order}></OrderListItem>)}
+                        </ul>
                     </div>
                     <ItemDetails item='Order' type='Orders' details='Order Number- 0000' ></ItemDetails>
                 </div>
