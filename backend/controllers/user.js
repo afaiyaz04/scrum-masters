@@ -136,6 +136,36 @@ export const addUserOrder = async (req, res) => {
     }
 }
 
+
+export const deleteUserOrder = async (req, res) => {
+    const { id } = req.params;
+    const { orderId } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
+        }
+
+        const orderIndex = user.orders.indexOf(orderId);
+        if (orderIndex ==  -1) {
+            return res.status(406).send('Cannot remove order (does not exist)');
+        }
+        user.orders.splice(orderIndex, 1);
+        user.save();
+        return res.json(user);
+
+
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 // returns orders as a list of what they are, so that frontend doesnt need
 // to make several requests to get a list of orders.
 export const getUserOrders = async (req, res) => {
@@ -193,6 +223,35 @@ export const addUserClient = async (req, res) => {
 
     } catch (error) {
         res.status(404).json({ message: error.message});
+    }
+}
+
+export const deleteUserClient = async (req, res) => {
+    const { id } = req.params;
+    const { clientId } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        const client = await Client.findById(clientId);
+        if (client == null) {
+            return res.status(404).send(`No client with id: ${clientId}`);
+        }
+
+        const clientIndex = user.clients.indexOf(clientId);
+        if (clientIndex ==  -1) {
+            return res.status(406).send('Cannot delete client (doesnt exists)');
+        }
+        user.clients.splice(clientIndex, 1);
+        user.save();
+        return res.json(user);
+
+
+    } catch (error) {
+        res.status(404).json({ message: error.message });
     }
 }
 
