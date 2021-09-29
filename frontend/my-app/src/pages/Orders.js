@@ -22,7 +22,7 @@ function Orders() {
 
     useEffect(() => {
         fetchOrder();
-    }, []);
+    });
 
     return (
         <div className='Master-div'>
