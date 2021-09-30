@@ -1,6 +1,6 @@
-import { SET_CONTACT, DELETE_CONTACT } from "redux/Contact/contact.types";
+import { SET_CONTACT, DELETE_CONTACT } from "./contact.types";
 
-const INITIAL_STATE = null;
+const INITIAL_STATE = [];
 
 const reducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {

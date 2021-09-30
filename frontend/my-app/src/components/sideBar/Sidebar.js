@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setUser } from '../../redux/User/user.actions';
 import * as FaIcons from "react-icons/fa";
+import { API, USER } from '../../pages/urlConfig';
+
 
 function Navbar() {
     const user = useSelector((state) => state.user);
@@ -14,8 +16,9 @@ function Navbar() {
     const dispatch = useDispatch();
 
     const fetchUser = async () => {
+        const endpoint = API + USER + "614180facb6259ce3427029f"
         const response = await axios
-            .get("http://localhost:5000/user/614180facb6259ce3427029f")
+            .get(endpoint)
             .catch((err) => {
                 console.log("ERR", err);
             });
@@ -54,4 +57,4 @@ function Navbar() {
     );
 }
 
-export default Navbar
+export default Navbar;

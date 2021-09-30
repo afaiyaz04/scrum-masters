@@ -1,18 +1,24 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
+import { useDispatch } from 'react-redux';
+import { setContact } from "../redux/Contact/contact.actions";
 
 function ContactListItem(props) {
-	const name = props.name
-	const email = props.email
+	const dispatch = useDispatch();
+	const contact = props.contact
+	const email = props.contact.email
+	const handleClick = (contact) => {
+		dispatch(setContact(contact));
+	};
 	return (
-		<div className="list-item">
+
+		<div onClick={() => handleClick(contact)} className="list-item">
 			<CgProfile></CgProfile>
 			<div className="list-item__mid">
-				<div className="list-item__name subheading">{name}</div>
+				<div className="list-item__name subheading">{contact.name}</div>
 				<div className="normaltext">{email}</div>
 			</div>
 		</div>
 	);
 }
 export default ContactListItem;
-

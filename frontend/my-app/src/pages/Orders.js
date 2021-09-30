@@ -5,13 +5,15 @@ import ItemDetails from '../components/ItemDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setOrder } from '../redux/Order/order.actions';
-import OrderListItem from '../components/OrderListItem'
+import OrderListItem from '../components/OrderListItem';
+// import { API, USER, ORDERS } from './urlConfig';
 
 function Orders() {
     const orders = useSelector((state) => state.orderState);
     const dispatch = useDispatch();
 
     const fetchOrder = async () => {
+        // const endpoint = API + 
         const response = await axios
             .get("http://localhost:5000/user/614180facb6259ce3427029f/orders")
             .catch((err) => {
