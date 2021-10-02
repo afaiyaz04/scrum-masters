@@ -11,7 +11,6 @@ function ContactListItem(props) {
   const handleClick = (contact) => {
     dispatch(setContact(contact));
     console.log("I AM PRESSED");
-  
   };
   return (
     // <div onClick={() => handleClick(contact)} className="list-item">
