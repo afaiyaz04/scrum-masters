@@ -16,6 +16,7 @@ class Contacts extends Component {
     super(props);
     this.state = {
       contacts: [],
+      edit: false
     };
   }
 
@@ -54,7 +55,7 @@ class Contacts extends Component {
               <h3>Cards</h3>
               <ul>
                 {this.state.contacts.map((contact) => (
-                  <ContactListItem key={contact._id} contact={contact} ></ContactListItem>
+                  <ContactListItem key={contact._id} contact={contact} edit={this.state.edit}></ContactListItem>
                 ))}
               </ul>
             </div>
