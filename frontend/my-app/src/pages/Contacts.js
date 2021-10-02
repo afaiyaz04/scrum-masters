@@ -7,6 +7,8 @@ import axios from 'axios';
 import { Component } from 'react';
 import { mapStateToProps } from '../redux/reduxConfig';
 import { connect } from 'react-redux';
+import {Card} from 'antd';
+import 'antd/dist/antd.css';
 
 class Contacts extends Component {
     constructor(props) {
@@ -43,10 +45,10 @@ class Contacts extends Component {
                 <Sidebar />
                 <div className='contacts'>
                     <Header page='Contacts'></Header>
-                    {/* <div className='line'></div> */}
                     <div className='contents'>
                         <div className='contents-left'>
-                            <h3>Name</h3>
+                            
+                            <h3>Cards</h3>
                             <ul>
                                 {this.state.contacts.map(contact => <ContactListItem contact={contact}></ContactListItem>)}
                             </ul>
@@ -59,25 +61,3 @@ class Contacts extends Component {
     }
 }
 export default connect(mapStateToProps)(Contacts);
-// function Contacts() {
-//     return (
-//         <div className='Master-div'>
-//             <Sidebar />
-//             <div className='contacts'>
-//                 <Header page='Contact'></Header>
-//                 <div className='line'></div>
-//                 <div className='contents'>
-//                     <div className='contents-left'>
-//                         <h2>Name</h2>
-//                         <ContactListItem name='Ahbab Faiyaz' email='gmail.com'></ContactListItem>
-//                         <ContactListItem name='Alex' email='hotmail.com'></ContactListItem>
-//                         <ContactListItem name='Saleh' email='scrum.com'></ContactListItem>
-//                     </div>
-//                     <ItemDetails item='Contact' type='Contact' details='Ahbab 04575757223 ScrumMaster'></ItemDetails>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default Contacts
