@@ -33,10 +33,6 @@ function ContactListItem(props) {
         </button>
       }
       style={{ width: 300, marginBottom: 20 }}
-
-      //   actions={(onClick) => {
-      //     () => handleClick(contact);
-      //   }}
     >
       <p>{email}</p>
     </Card>
