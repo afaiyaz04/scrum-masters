@@ -1,6 +1,6 @@
 import { SET_CONTACT, DELETE_CONTACT } from "./contact.types";
 
-const INITIAL_STATE = [];
+const INITIAL_STATE = null;
 
 const reducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {

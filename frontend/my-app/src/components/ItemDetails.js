@@ -9,26 +9,27 @@ class ItemDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contact: "placeholder",
+      editStatus: false,
     };
   }
   render() {
     const contact = this.props.contact;
+    console.log(this.state.editStatus);
     return (
       <div className="contents-right">
         <h2>Contact Details</h2>
         <div className="list-item-details">
-          <h3>Name: {contact.name}</h3>
-          <h3>Company: </h3>
-          <h3>Designation: </h3>
+          <h3>Name: {contact.nameFirst} {contact.nameLast}</h3>
+          <h3>Company: {contact.company}</h3>
+          <h3>Title: {contact.title}</h3>
           <hr></hr>
+          <h3></h3>
           <h3>Email: {contact.email}</h3>
-          <h3>Phone: {contact.phone}</h3>
-          <h3>Address: </h3>
-          <h3>Last Order: </h3>
+          <h3>Phone: {contact.phoneNumber}</h3>
+          <h3>Address: {contact.address}</h3>
 
           <div className="item-details-btns">
-            <Button type="text">Edit</Button>
+            <Button type="text" onClick={() => this.setState({editStatus: true})}>Edit</Button>
             <Button type="text">Delete</Button>
           </div>
         </div>

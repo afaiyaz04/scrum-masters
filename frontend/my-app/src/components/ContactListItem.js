@@ -1,5 +1,4 @@
 import React from "react";
-import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { setContact } from "../redux/Contact/contact.actions";
 import { Card } from "antd";
@@ -11,6 +10,8 @@ function ContactListItem(props) {
   const email = props.contact.email;
   const handleClick = (contact) => {
     dispatch(setContact(contact));
+    console.log("I AM PRESSED");
+  
   };
   return (
     // <div onClick={() => handleClick(contact)} className="list-item">

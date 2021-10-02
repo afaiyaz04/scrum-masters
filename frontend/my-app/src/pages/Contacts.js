@@ -7,37 +7,43 @@ import axios from "axios";
 import { Component } from "react";
 import { mapStateToProps } from "../redux/reduxConfig";
 import { connect } from "react-redux";
-import { Card } from "antd";
+import { Card , Button, Input} from "antd";
 import "antd/dist/antd.css";
+import { API, USER, ORDERS , CLIENTS} from './urlConfig';
 
 class Contacts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       contacts: [],
-      active: [],
     };
   }
 
   componentDidMount = async () => {
     try {
-      const endpoint1 = `https://jsonplaceholder.typicode.com/users`;
+      const endpoint1 = API + USER + this.props.user._id + CLIENTS;
       const response1 = await axios.get(endpoint1, {
         withCredentials: true,
       });
       this.setState({
         contacts: response1.data,
-        active: response1.data[0],
       });
 
       // get the objects in the order for rendering totals
     } catch (err) {
       console.log(err);
     }
-    const name = this.state.active.name;
   };
 
   render() {
+    const isShowDetails = this.state.showDetails;
+    let details;
+    if (this.props.contact) {
+        details = <ItemDetails
+              item="Contact"
+              type="Contact"
+            ></ItemDetails>
+    }
     return (
       <div className="Master-div">
         <Sidebar />
@@ -48,15 +54,11 @@ class Contacts extends Component {
               <h3>Cards</h3>
               <ul>
                 {this.state.contacts.map((contact) => (
-                  <ContactListItem contact={contact}></ContactListItem>
+                  <ContactListItem key={contact._id} contact={contact} ></ContactListItem>
                 ))}
               </ul>
             </div>
-            <ItemDetails
-              item="Contact"
-              type="Contact"
-              details={this.state.active.username}
-            ></ItemDetails>
+            { details }
           </div>
         </div>
       </div>
