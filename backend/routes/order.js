@@ -7,7 +7,8 @@ import {
         deleteOrder,
         addLineProduct,
         updateLineProduct,
-        removeLineProduct
+        removeLineProduct,
+        getLineProducts
 } from '../controllers/order.js';
  
 const router = express.Router();
@@ -19,5 +20,6 @@ router.delete("/:id", deleteOrder);
 router.post("/:orderId/product", addLineProduct);
 router.patch("/:orderId/product", updateLineProduct);
 router.delete("/:orderId/product", removeLineProduct);
+router.get("/:orderId/products", getLineProducts);
 
 export default router;
