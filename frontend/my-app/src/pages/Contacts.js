@@ -5,12 +5,15 @@ import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import { List, Input, Card, Button } from "antd";
 import "antd/dist/antd.css";
+import AddContactForm from "../components/AddContactForm";
 
 export default class Contacts extends React.Component {
   state = {
     contacts: [],
 
     showDetails: false,
+    editDetails: false,
+    addContact: false,
 
     id: "",
     nameFirst: "",
@@ -58,44 +61,50 @@ export default class Contacts extends React.Component {
   };
 
   createHandler = (newItem) => {
+    console.log(newItem);
     axios.post(`http://localhost:5000/client`, newItem).then((res) => {
       console.log(res);
       this.setState({
-        id: res._id,
-        nameFirst: res.nameFirst,
-        nameLast: res.nameLast,
-        title: res.title,
-        company: res.company,
-        email: res.email,
-        phoneNumber: res.phoneNumber,
-        address: res.address,
+        id: res.data._id,
 
         showDetails: true,
         editDetails: false,
+        addContact: false,
       });
+      console.log(this.state.id);
+      axios
+        .post(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {
+          clientId: this.state.id,
+        })
+        .then((res) => {
+          axios
+            .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
+            .then((res) => {
+              console.log(res);
+              this.setState({ contacts: res.data });
+            });
+        });
     });
-    axios.post(
-      `http://localhost:5000/user/614180facb6259ce3427029f/clients`,
-      this.state.id
-    );
-    axios
-      .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
-      .then((res) => {
-        console.log(res);
-        this.setState({ contacts: res.data });
-      });
+  };
+
+  activateAdd = () => {
+    this.setState({ addContact: true });
+  };
+
+  deactivateAdd = () => {
+    this.setState({ addContact: false });
   };
 
   render() {
-    // const isShowDetails = this.state.showDetails;
     let details;
+
     if (this.state.showDetails) {
       if (!this.state.editDetails) {
         details = (
           <div className="contents-right">
             <Card
               className="contact-details"
-              style={{ width: 300, height: 300 }}
+              style={{ width: 300, height: 320 }}
               actions={[
                 <Button onClick={() => this.setState({ editDetails: true })}>
                   Edit
@@ -170,7 +179,7 @@ export default class Contacts extends React.Component {
       <div className="Master-div">
         <Sidebar />
         <div className="contacts">
-          <Header page="Contacts"></Header>
+          <Header page="Contacts" actions={this.activateAdd}></Header>
           <div className="contents">
             <div className="contents-left">
               <span>Name</span>
@@ -214,6 +223,11 @@ export default class Contacts extends React.Component {
             </div>
             {details}
           </div>
+          <AddContactForm
+            trigger={this.state.addContact}
+            actions={this.deactivateAdd}
+            createAction={this.createHandler}
+          ></AddContactForm>
         </div>
       </div>
     );
