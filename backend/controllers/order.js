@@ -171,6 +171,34 @@ export const removeLineProduct = async (req, res) => {
     }
 }
 
+export const getLineProducts = async (req, res) => {
+    const { orderId } = req.params;
+
+    try {
+        const order = await Order.findById(orderId);
+        if (order == null) {
+
+        }
+
+        const getLineProducts = async () => {
+            return Promise.all(
+                order.lineProducts.map(async (lineProduct) => {
+                    const productId = lineProduct.productId;
+                    const quantity = lineProduct.quantity;
+                    const product = await Product.findById(productId);
+                    return { product, quantity: quantity };
+                })
+            )
+        }
+        getLineProducts().then((products) => {
+            res.json(products);
+        })
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
 async function doesOrderProductExist(orderId, productId, res) {
     // Find the order
     const order = await Order.findById(orderId);
