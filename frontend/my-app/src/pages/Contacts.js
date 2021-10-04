@@ -67,7 +67,6 @@ export default class Contacts extends React.Component {
       this.setState({
         id: res.data._id,
 
-        showDetails: true,
         editDetails: false,
         addContact: false,
       });
@@ -95,6 +94,36 @@ export default class Contacts extends React.Component {
     this.setState({ addContact: false });
   };
 
+  deleteHandler = () => {
+    if (window.confirm("Are you sure you want to delete")) {
+      axios
+        .delete(`http://localhost:5000/client/${this.state.id}`)
+        .then((res) => {
+          axios
+            .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
+            .then((res) => {
+              console.log(res);
+              this.setState({
+                contacts: res.data,
+                id: "",
+                nameFirst: "",
+                nameLast: "",
+                title: "",
+                company: "",
+                email: "",
+                phoneNumber: "",
+                address: "",
+                showDetails: false,
+              });
+            });
+        });
+    }
+  }; /* added */
+
+  removeNull(array) {
+    return array.filter((x) => x !== null);
+  }
+
   render() {
     let details;
 
@@ -109,7 +138,8 @@ export default class Contacts extends React.Component {
                 <Button onClick={() => this.setState({ editDetails: true })}>
                   Edit
                 </Button>,
-                <Button>Delete</Button>,
+
+                <Button onClick={this.deleteHandler}>Delete</Button>,
               ]}
             >
               <h2>Contact Details</h2>
@@ -134,7 +164,6 @@ export default class Contacts extends React.Component {
                 <Button onClick={() => this.updateHandler(this.state)}>
                   Update
                 </Button>,
-                <Button>Delete</Button>,
               ]}
             >
               <h2>Contact Details</h2>
@@ -185,7 +214,7 @@ export default class Contacts extends React.Component {
               <span>Name</span>
               <List
                 itemLayout="horizontal"
-                dataSource={this.state.contacts}
+                dataSource={this.removeNull(this.state.contacts)}
                 renderItem={(item) => (
                   <List.Item
                     className="contact-item"
