@@ -28,11 +28,13 @@ class Contacts extends React.Component {
       email: "",
       phoneNumber: "",
       address: "",
+
+      userId: JSON.parse(localStorage.getItem('user'))._id
     };
   }
 
   componentDidMount() {
-    const endpoint = API + USER + this.props.user._id + CLIENTS;
+    const endpoint = API + USER + this.state.userId + CLIENTS;
     axios.get(endpoint).then((res) => {
       console.log(res);
       this.setState({ contacts: res.data });
@@ -41,7 +43,7 @@ class Contacts extends React.Component {
 
   createHandler = (newItem) => {
     const path = API + CLIENT;
-    const path2 = API + USER + this.props.user._id + CLIENTS;
+    const path2 = API + USER + this.state.userId + CLIENTS;
     console.log(newItem);
     axios.post(path, newItem).then((res) => {
       console.log(res);
@@ -65,7 +67,7 @@ class Contacts extends React.Component {
 
   updateHandler = (newItem) => {
     const path = API + CLIENT + newItem.id;
-    const path2 = API + USER + this.props.user._id + CLIENTS;
+    const path2 = API + USER + this.state.userId + CLIENTS;
     axios.patch(path, newItem).then((res) => {
       console.log(res);
       this.setState({
@@ -88,7 +90,7 @@ class Contacts extends React.Component {
   };
 
   deleteHandler = () => {
-    const path = API + USER + this.props.user._id + CLIENTS;
+    const path = API + USER + this.state.userId + CLIENTS;
     if (window.confirm("Are you sure you want to delete")) {
       console.log(this.state.id);
       axios

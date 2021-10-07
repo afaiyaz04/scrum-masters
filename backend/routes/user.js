@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { 
-    createUser, 
+    createUser,
     getUser, 
     updateUser, 
     deleteUser, 
@@ -12,7 +12,7 @@ import {
     addUserClient,
     transferOrder,
     deleteUserOrder,
-    deleteUserClient
+    deleteUserClient,
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -35,5 +35,6 @@ router.delete('/:id/clients', deleteUserClient);
 
 // Transferring an order
 router.patch('/:id/transfer', transferOrder);
+
 export default router;
 

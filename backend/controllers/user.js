@@ -4,8 +4,12 @@ import mongoose from 'mongoose';
 import User from '../models/user.js';
 import Order from '../models/order.js';
 import Client from '../models/client.js';
+import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+const secret = 'test';
 
 // Create user
 export const createUser = async (req, res) => {
@@ -17,15 +21,22 @@ export const createUser = async (req, res) => {
         type
     } = req.body;
 
-    const newUser = new User({
-        email, 
-        password, 
-        nameFirst, 
-        nameLast, 
-        type
-    });
-
     try {
+        const oldUser = await User.findOne({ email });
+        
+        if (oldUser) {
+            res.status(201).json(oldUser);
+            return;
+        }
+
+        const newUser = new User({
+            email, 
+            password, 
+            nameFirst, 
+            nameLast, 
+            type
+        });
+
         await newUser.save();
         res.status(201).json(newUser);
     }
@@ -326,7 +337,6 @@ export const transferOrder = async (req, res) => {
         res.status(404).json({ message: error.message});
     }
 }
-
 
 
 export default router;
