@@ -12,7 +12,8 @@ import {
     addUserClient,
     transferOrder,
     deleteUserOrder,
-    deleteUserClient
+    deleteUserClient,
+    authUserEmail
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -35,5 +36,8 @@ router.delete('/:id/clients', deleteUserClient);
 
 // Transferring an order
 router.patch('/:id/transfer', transferOrder);
+
+router.get('/auth/:email', authUserEmail);
+
 export default router;
 

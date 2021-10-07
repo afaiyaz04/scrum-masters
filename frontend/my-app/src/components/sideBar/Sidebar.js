@@ -4,27 +4,12 @@ import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
 import { IconContext } from "react-icons";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { setUser } from "../../redux/User/user.actions";
 import * as FaIcons from "react-icons/fa";
-import { API, USER } from "../../pages/urlConfig";
+
 
 function Navbar() {
   const user = useSelector((state) => state.user);
   const { nameFirst, nameLast, type } = user;
-  const dispatch = useDispatch();
-
-  const fetchUser = async () => {
-    const endpoint = API + USER + "614180facb6259ce3427029f";
-    const response = await axios.get(endpoint).catch((err) => {
-      console.log("ERR", err);
-    });
-    dispatch(setUser(response.data));
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <>
