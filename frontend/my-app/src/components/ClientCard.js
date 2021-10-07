@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { List, Input, Card, Button } from "antd";
 
 class ClientCard extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class ClientCard extends React.Component {
         </div>
       );
     }
+    const addButton = this.props.addButton;
 
     return (
       <div
@@ -37,10 +39,21 @@ class ClientCard extends React.Component {
       >
         <h4>
           {client.nameFirst} {client.nameLast}
+          {"  "}
+          {addButton ? (
+            <button onClick={() => this.props.action(client._id)}>+</button>
+          ) : (
+            ""
+          )}
         </h4>
+
         {details}
       </div>
     );
   }
 }
+
+ClientCard.defaultProps = {
+  addButton: false,
+};
 export default ClientCard;

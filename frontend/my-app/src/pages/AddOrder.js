@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import axios from "axios";
-import { API, USER, ORDERS } from "./urlConfig";
+import { API, USER, ORDERS, CLIENTS } from "./urlConfig";
 import { List, Input, Card, Button } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -11,18 +11,11 @@ import ClientCard from "../components/ClientCard";
 import { CgProfile } from "react-icons/cg";
 import AddOrderForm from "../components/AddOrderForm";
 
-class Orders extends React.Component {
+class AddOrders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      orders: [],
-      client: "",
-
-      showDetails: false,
-      editDetails: false,
-      addOrder: false,
-
-      client: "",
+      clientID: "Select Client from list",
       lineProducts: "",
       timePlaced: "",
       timeDue: "",
@@ -30,114 +23,68 @@ class Orders extends React.Component {
       status: "",
       description: "",
       log: "",
+      contacts: [],
     };
   }
 
-  componentDidMount() {
-    const endpoint = API + USER + this.props.user._id + ORDERS;
-    axios.get(endpoint).then((res) => {
-      console.log(res);
-      this.setState({ orders: res.data });
-    });
+  removeNull(array) {
+    return array.filter((x) => x !== null);
   }
 
-  activateAdd = () => {
-    this.setState({ addOrder: true });
+  componentDidMount = async () => {
+    const endpoint = API + USER + "614180facb6259ce3427029f" + CLIENTS;
+    const response = await axios.get(endpoint).catch((err) => {
+      console.log("ERR", err);
+    });
+    console.log(response);
+    this.setState({ contacts: this.removeNull(response.data) });
   };
 
-  deactivateAdd = () => {
-    this.setState({ addOrder: false });
+  setClientID = (data) => {
+    this.setState({ clientID: data });
   };
 
   render() {
-    let details;
-    if (this.state.showDetails) {
-      details = (
-        <div className="contents-right">
-          <Card
-            className="contact-details"
-            style={{ width: 300, height: 320 }}
-            actions={[
-              <Button onClick={() => this.setState({ editDetails: true })}>
-                Edit
-              </Button>,
-              <Button onClick={this.deleteHandler}>Delete</Button>,
-            ]}
-          >
-            <h2>Order Details</h2>
-            <h3>Client</h3>
-            <ClientCard client={this.state.client}></ClientCard>
-            <div className="list-item-details">
-              <h3>Status: {this.state.status}</h3>
-              <h3>Time Placed: {this.state.timePlaced}</h3>
-              <h3>Time Due: {this.state.timeDue}</h3>
-              <h3>Total Fee: {this.state.totalFee}</h3>
-              <h3>Description: {this.state.description}</h3>
-              <h3>Log: {this.state.log}</h3>
-            </div>
-          </Card>
-        </div>
-      );
-    }
+    console.log(this.state.clientID);
     return (
       <div className="Master-div">
         <Sidebar />
         <div className="contacts">
-          <Header page="Orders" actions={this.addOrder}></Header>
-          <div className="contents">
-            <div className="contents-left">
-              <span>Name</span>
+          <Header
+            page="Add Orders"
+            addButton={false}
+            actions={this.addOrder}
+          ></Header>
+          <div className="Add-order">
+            <div className="add-top">
+              <h2>List of Clients</h2>
               <List
-                itemLayout="horizontal"
-                dataSource={this.state.orders}
-                renderItem={(order) => (
-                  <List.Item
-                    className="contact-item"
-                    key={order.id}
-                    actions={[
-                      <Button
-                        type="dashed"
-                        block
-                        onClick={() =>
-                          this.setState({
-                            client: order.client,
-                            lineProducts: order.lineProducts,
-                            timePlaced: order.timePlaced,
-                            timeDue: order.timeDue,
-                            totalFee: order.totalFee,
-                            status: order.status,
-                            description: order.description,
-                            log: order.log,
-                            showDetails: true,
-                          })
-                        }
-                      >
-                        Details
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={`${order.client} ${order.timePlaced}`}
-                      description={order.description}
-                    />
-                  </List.Item>
+                grid={{ gutter: 16, column: 4 }}
+                dataSource={this.state.contacts}
+                renderItem={(item) => (
+                  <ClientCard
+                    addButton={true}
+                    action={this.setClientID}
+                    client={item._id}
+                  ></ClientCard>
                 )}
               />
+              ,
             </div>
-            {details}
+            <div className="add-mid">
+              <h2>Add product</h2>
+            </div>
+            <div className="add-bottom">
+              <h2>Input other detail</h2>
+            </div>
           </div>
-          <AddOrderForm
-            trigger={this.state.addOrder}
-            actions={this.deactivateAdd}
-            createAction={this.createHandler}
-          ></AddOrderForm>
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Orders);
+export default connect(mapStateToProps)(AddOrders);
 //   createHandler = (newItem) => {
 //     const path = API + CLIENT;
 //     const path2 = API + USER + this.props.user._id + CLIENTS;

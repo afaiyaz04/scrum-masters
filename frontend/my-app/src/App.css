@@ -177,3 +177,49 @@
   flex-direction: column;
   position: fixed;
 }
+
+.Add-order {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5% 5%;
+}
+.add-top {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  background-color: rgb(252, 237, 196);
+  position: relative;
+  overflow: auto;
+}
+
+.add-mid {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 20vh;
+  background-color: rgb(212, 237, 245);
+  position: relative;
+}
+
+.add-bottom {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 25vh;
+  background-color: rgb(245, 212, 212);
+  position: relative;
+}
