@@ -11,4 +11,4 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchUser = (id) => API.get(`/user/${id}`);
-export const createUser = (newUser) => API.post('/user', newUser);
+export const createUser = (formData) => API.post('/user', formData);

@@ -2,11 +2,10 @@ import React from 'react'
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-
 import { Button } from 'antd'
 
-import { setUser } from '../redux/User/user.actions'
 import { SET_USER } from '../redux/User/user.types'
+import { setUser } from '../redux/User/user.actions'
 
 function SignUp() {
     const dispatch = useDispatch();
@@ -22,6 +21,7 @@ function SignUp() {
 
         try {
             dispatch({ type: SET_USER, data: { email, nameFirst, nameLast, password, type, token } });
+            dispatch(setUser({ email, nameFirst, nameLast, password, type, token }, history));
         } catch (error) {
             console.log(error);
         }

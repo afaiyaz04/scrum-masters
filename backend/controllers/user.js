@@ -21,39 +21,28 @@ export const createUser = async (req, res) => {
         type
     } = req.body;
 
-    // const newUser = new User({
-    //     email, 
-    //     password, 
-    //     nameFirst, 
-    //     nameLast, 
-    //     type
-    // });
+    try {
+        const oldUser = await User.findOne({ email });
+        
+        if (oldUser) {
+            res.status(201).json(oldUser);
+            return;
+        }
 
-    // try {
-    //     await newUser.save();
-    //     res.status(201).json(newUser);
-    // }
-    // catch (error) {
-    //     res.status(409).json({message: error.message});
-    // }
+        const newUser = new User({
+            email, 
+            password, 
+            nameFirst, 
+            nameLast, 
+            type
+        });
 
-  try {
-    const oldUser = await User.findOne({ email });
-
-    if (oldUser) return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const result = await User.create({ email, password: hashedPassword, nameFirst, nameLast });
-
-    const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
-
-    res.status(201).json({ result, token });
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-    
-    console.log(error);
-  }
+        await newUser.save();
+        res.status(201).json(newUser);
+    }
+    catch (error) {
+        res.status(409).json({message: error.message});
+    }
 }
 
 // Get user
@@ -348,19 +337,6 @@ export const transferOrder = async (req, res) => {
         res.status(404).json({ message: error.message});
     }
 }
-
-export const authUserEmail = async (req, res) => {
-    const { email } = req.params;
-
-    try {
-        const userId = await User.findOne({}, { email });
-        const user = await User.findById(userId._id);
-        res.status(200).json(user);
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-}
-
 
 
 export default router;

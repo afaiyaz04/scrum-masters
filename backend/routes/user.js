@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { 
-    createUser, 
+    createUser,
     getUser, 
     updateUser, 
     deleteUser, 
@@ -13,7 +13,6 @@ import {
     transferOrder,
     deleteUserOrder,
     deleteUserClient,
-    authUserEmail
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -36,8 +35,6 @@ router.delete('/:id/clients', deleteUserClient);
 
 // Transferring an order
 router.patch('/:id/transfer', transferOrder);
-
-router.get('/auth/:email', authUserEmail);
 
 export default router;
 
