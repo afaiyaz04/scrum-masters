@@ -97,7 +97,10 @@ export default class Contacts extends React.Component {
   deleteHandler = () => {
     if (window.confirm("Are you sure you want to delete")) {
       axios
-        .delete(`http://localhost:5000/client/${this.state.id}`)
+        // .delete(`http://localhost:5000/client/${this.state.id}`)
+        .delete(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {
+          clientId: this.state.id,
+        })
         .then((res) => {
           axios
             .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
