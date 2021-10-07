@@ -34,7 +34,32 @@ export default class Contacts extends React.Component {
       });
   }
 
-  updateHandler = (newItem) => {
+createHandler = (newItem) => {
+    console.log(newItem);
+    axios.post(`http://localhost:5000/client`, newItem).then((res) => {
+    console.log(res);
+    this.setState({
+        id: res.data._id,
+        editDetails: false,
+        addContact: false,
+    });
+    console.log(this.state.id);
+    axios
+    .post(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {
+        clientId: this.state.id,
+    })
+    .then((res) => {
+        axios
+        .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
+        .then((res) => {
+            console.log(res);
+            this.setState({ contacts: res.data });
+        });
+    });
+});
+};
+
+updateHandler = (newItem) => {
     axios
       .patch(`http://localhost:5000/client/${newItem.id}`, newItem)
       .then((res) => {
@@ -57,51 +82,15 @@ export default class Contacts extends React.Component {
       .then((res) => {
         console.log(res);
         this.setState({ contacts: res.data });
-      });
-  };
-
-  createHandler = (newItem) => {
-    console.log(newItem);
-    axios.post(`http://localhost:5000/client`, newItem).then((res) => {
-      console.log(res);
-      this.setState({
-        id: res.data._id,
-
-        editDetails: false,
-        addContact: false,
-      });
-      console.log(this.state.id);
-      axios
-        .post(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {
-          clientId: this.state.id,
-        })
-        .then((res) => {
-          axios
-            .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
-            .then((res) => {
-              console.log(res);
-              this.setState({ contacts: res.data });
-            });
-        });
     });
-  };
+};
 
-  activateAdd = () => {
-    this.setState({ addContact: true });
-  };
-
-  deactivateAdd = () => {
-    this.setState({ addContact: false });
-  };
-
-  deleteHandler = () => {
+deleteHandler = () => {
     if (window.confirm("Are you sure you want to delete")) {
-      axios
-        // .delete(`http://localhost:5000/client/${this.state.id}`)
-        .delete(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {
-          clientId: this.state.id,
-        })
+        console.log(this.state.id);
+        axios.delete(`http://localhost:5000/user/614180facb6259ce3427029f/clients`, {data: {clientId: this.state.id}})
         .then((res) => {
+            console.log(res);
           axios
             .get(`http://localhost:5000/user/614180facb6259ce3427029f/clients`)
             .then((res) => {
@@ -121,8 +110,18 @@ export default class Contacts extends React.Component {
             });
         });
     }
-  }; /* added */
+  }; 
 
+
+  activateAdd = () => {
+    this.setState({ addContact: true });
+  };
+
+  deactivateAdd = () => {
+    this.setState({ addContact: false });
+  };
+
+  
   removeNull(array) {
     return array.filter((x) => x !== null);
   }
