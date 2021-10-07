@@ -8,6 +8,7 @@ import Contracts from './pages/Contracts'
 import Orders from './pages/Orders'
 import Profile from "./pages/Profile";
 import Welcome from "./pages/Welcome";
+import auth from './components/auth/auth';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/users' component={Users} />
         <Route path='/contracts' component={Contracts} />
         <Route path='/profile' component={Profile}/>
+        <Route path='/auth' component={auth}/>
       </Switch>
     </Router>
   );
