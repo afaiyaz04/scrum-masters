@@ -83,7 +83,7 @@ class Orders extends React.Component {
       <div className="Master-div">
         <Sidebar />
         <div className="contacts">
-          <Header page="Orders" actions={this.addOrder}></Header>
+          <Header page="Orders" actions={this.activateAdd}></Header>
           <div className="contents">
             <div className="contents-left">
               <span>Name</span>
