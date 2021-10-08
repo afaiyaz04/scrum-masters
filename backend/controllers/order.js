@@ -15,7 +15,7 @@ export const createOrder = async (req, res) => {
     } = req.body;
 
     const newOrder = new Order({ 
-        client,
+        client: mongoose.Types.ObjectId(client),
         timeDue, 
         totalFee, 
         description

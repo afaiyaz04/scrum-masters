@@ -1,13 +1,14 @@
 import React from "react";
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Users from './pages/Users';
-import Contacts from './pages/Contacts'
-import Contracts from './pages/Contracts'
-import Orders from './pages/Orders'
+import Users from "./pages/Users";
+import Contacts from "./pages/Contacts";
+import Contracts from "./pages/Contracts";
+import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import Welcome from "./pages/Welcome";
+import AddOrder from "./pages/AddOrder";
 
 function App() {
   return (
