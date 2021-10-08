@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 class ClientCard extends React.Component {
   constructor(props) {
@@ -20,6 +21,10 @@ class ClientCard extends React.Component {
 
   render() {
     const client = this.state.client;
+    const client2 = this.props.client;
+    if (client._id != client2) {
+      this.componentDidMount();
+    }
     let details;
     if (this.state.showDetails) {
       details = (
