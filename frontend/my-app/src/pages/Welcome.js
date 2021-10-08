@@ -1,13 +1,13 @@
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import { Carousel, Button, Layout } from 'antd'
+import { Carousel, Layout } from 'antd'
 
 import { SET_USER } from '../redux/User/user.types'
 import { setUser } from '../redux/User/user.actions'
 import React from 'react'
 import "./Welcome.css";
-import {GoogleButton} from 'react-google-button'
+import { GoogleButton } from 'react-google-button'
 import styled from 'styled-components'
 
 
