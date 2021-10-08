@@ -96,6 +96,7 @@ function User() {
                 user={user}
                 showDetails={showDetails}
                 closeAction={closeFormHandler}
+                promoteAction={promoteHandler}
               />
             </div>
           }
