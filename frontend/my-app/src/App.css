@@ -206,9 +206,10 @@
   padding: 3% 5%;
   display: flex;
   flex-direction: column;
-  height: 20vh;
+  height: 30vh;
   background-color: rgb(212, 237, 245);
   position: relative;
+  overflow: auto;
 }
 
 .add-bottom {
@@ -219,7 +220,12 @@
   padding: 3% 5%;
   display: flex;
   flex-direction: column;
-  height: 25vh;
+  height: 30vh;
   background-color: rgb(245, 212, 212);
   position: relative;
+}
+
+.horizontal {
+  display: flex;
+  align-items: baseline;
 }

@@ -1,6 +1,3 @@
-import axios from "axios";
-
-// get total price from lineItemObjects
 // (as line Items do not store an item price so an api call must provide objects)
 export const getTotalPrice = (lineItemObjects) => {
   const totalPrice = lineItemObjects

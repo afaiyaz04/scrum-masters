@@ -1,29 +1,29 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import axios from "axios";
-import { API, USER, ORDERS, CLIENTS } from "./urlConfig";
-import { List, Input, Card, Button } from "antd";
+import { API, USER, ORDER, CLIENTS, ORDERS } from "./urlConfig";
+import { List, Input, Card, Button, InputNumber, DatePicker } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { mapStateToProps } from "../redux/reduxConfig";
 import ClientCard from "../components/ClientCard";
-import { CgProfile } from "react-icons/cg";
-import AddOrderForm from "../components/AddOrderForm";
+import AddProductForm from "../components/AddProductForm";
 
 class AddOrders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientID: "Select Client from list",
+      client: "Select Client from list",
       lineProducts: "",
-      timePlaced: "",
       timeDue: "",
-      totalFee: "",
-      status: "",
+      totalFee: 0,
+      status: "CREATED",
       description: "",
       log: "",
+
       contacts: [],
+      initialOrderID: "",
     };
   }
 
@@ -31,7 +31,23 @@ class AddOrders extends React.Component {
     return array.filter((x) => x !== null);
   }
 
+  initializeOrder = () => {
+    const emptyOrder = {
+      client: "615e66d22220e3f875485748", //dummy false id for initiation
+      timeDue: Date.now(),
+      totalFee: 0,
+      description: "",
+    };
+    const path = API + ORDER;
+    console.log(emptyOrder);
+    axios.post(path, emptyOrder).then((res) => {
+      console.log(res);
+      this.setState({ initialOrderID: res.data._id });
+    });
+  };
+
   componentDidMount = async () => {
+    this.initializeOrder();
     const endpoint = API + USER + "614180facb6259ce3427029f" + CLIENTS;
     const response = await axios.get(endpoint).catch((err) => {
       console.log("ERR", err);
@@ -41,11 +57,30 @@ class AddOrders extends React.Component {
   };
 
   setClientID = (data) => {
-    this.setState({ clientID: data });
+    this.setState({ client: data });
+  };
+
+  onOk = (value) => {
+    const date = new Date(Date.parse(value));
+    this.setState({ timeDue: date });
+  };
+
+  updateHandler = (order) => {
+    const path = API + ORDER + this.state.initialOrderID;
+    const path2 = API + USER + this.props.user._id + ORDERS;
+    axios.patch(path, order).then((res) => {
+      console.log(res);
+      axios
+        .post(path2, {
+          orderId: res.data._id,
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    });
   };
 
   render() {
-    console.log(this.state.clientID);
     return (
       <div className="Master-div">
         <Sidebar />
@@ -56,6 +91,7 @@ class AddOrders extends React.Component {
             actions={this.addOrder}
           ></Header>
           <div className="Add-order">
+            <h2>Order Form</h2>
             <div className="add-top">
               <h2>List of Clients</h2>
               <List
@@ -73,10 +109,36 @@ class AddOrders extends React.Component {
             </div>
             <div className="add-mid">
               <h2>Add product</h2>
+              <AddProductForm
+                orderID={this.state.initialOrderID}
+              ></AddProductForm>
             </div>
-            <div className="add-bottom">
-              <h2>Input other detail</h2>
-            </div>
+
+            <h2>Input other detail</h2>
+            <Card>
+              <h3>Client:</h3>
+              <Input placeholder={this.state.client} />
+
+              <Input
+                placeholder="Order Description"
+                onChange={(e) => this.setState({ description: e.target.value })}
+              />
+              <DatePicker showTime onOk={this.onOk} />
+              <div className="horizontal">
+                <h3>Total Fee: </h3>
+                <br></br>
+                <InputNumber
+                  onChange={(value) => {
+                    this.setState({ totalFee: value });
+                  }}
+                  min={0}
+                  defaultValue={this.state.totalFee}
+                />{" "}
+              </div>
+              <Button onClick={() => this.updateHandler(this.state)}>
+                Submit
+              </Button>
+            </Card>
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { List, Input, Card, Button } from "antd";
 
 class ClientCard extends React.Component {
   constructor(props) {
@@ -25,6 +24,7 @@ class ClientCard extends React.Component {
     if (this.state.showDetails) {
       details = (
         <div className="contact-popup">
+          <h6>{client._id}</h6>
           <h4>{client.email}</h4>
           <h4>{client.phoneNumber}</h4>
         </div>
