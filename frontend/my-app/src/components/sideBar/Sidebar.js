@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
 import { IconContext } from "react-icons";
-import { useDispatch, useSelector } from "react-redux";
 import * as FaIcons from "react-icons/fa";
 
 
 function Navbar() {
-  const user = useSelector((state) => state.user);
+  const user = JSON.parse(localStorage.getItem('user'));
   const { nameFirst, nameLast, type } = user;
 
   return (
