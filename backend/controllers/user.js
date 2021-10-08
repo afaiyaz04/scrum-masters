@@ -6,6 +6,7 @@ import Order from '../models/order.js';
 import Client from '../models/client.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
+import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
 
 const router = express.Router();
 
@@ -333,6 +334,23 @@ export const transferOrder = async (req, res) => {
         );
     } catch (error) {
         res.status(404).json({ message: error.message});
+    }
+}
+
+export const promoteUser = async (req, res) => {
+    const { id } = req.params;
+    const { toUserId } = req.body;
+
+    try {
+        const user = await User.findById(id);
+
+        if (user.type == GENERAL_USER) return res.status(403).json('Forbidden action');
+
+        await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
+
+        res.status(201);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
     }
 }
 
