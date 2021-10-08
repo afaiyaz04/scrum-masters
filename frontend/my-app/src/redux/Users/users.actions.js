@@ -1,4 +1,4 @@
-import { PROMOTE_USER, GET_ALL_USERS } from "redux/Users/users.types";
+import { PROMOTE_USER, GET_ALL_USERS } from "./users.types";
 import * as api from '../../redux/api/index';
 
 export const promoteUser = (userId, toUserId) => async (dispatch) => {
@@ -10,7 +10,7 @@ export const promoteUser = (userId, toUserId) => async (dispatch) => {
 	}
 };
 
-export const fetchUsers = () => {
+export const fetchUsers = () => async (dispatch) => {
 	try {
 		const { data } = await api.fetchUsers();
 		dispatch({ type: GET_ALL_USERS, payload: data });

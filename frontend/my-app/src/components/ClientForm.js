@@ -7,7 +7,6 @@ const ClientForm = (props) => {
 
     useEffect(() => {
         setContact({ ...props.contact });
-        console.log(contact);
     })
 
     const layout = {
