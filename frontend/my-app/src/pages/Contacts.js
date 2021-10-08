@@ -29,7 +29,7 @@ class Contacts extends React.Component {
       phoneNumber: "",
       address: "",
 
-      userId: JSON.parse(localStorage.getItem('user'))._id
+      userId: JSON.parse(localStorage.getItem('userData'))._id
     };
   }
 
