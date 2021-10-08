@@ -34,11 +34,10 @@ function SignUp() {
         const nameFirst = res.profileObj.givenName;
         const nameLast = res.profileObj.familyName;
         const password = 'pass';
-        const type = 'ADMIN';
 
         try {
-            dispatch({ type: SET_USER, data: { email, nameFirst, nameLast, password, type, token } });
-            dispatch(setUser({ email, nameFirst, nameLast, password, type, token }, history));
+            dispatch({ type: SET_USER, data: { email, nameFirst, nameLast, password, token } });
+            dispatch(setUser({ email, nameFirst, nameLast, password, token }, history));
         } catch (error) {
             console.log(error);
         }

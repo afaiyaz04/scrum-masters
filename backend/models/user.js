@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
 			ADMIN_USER,
 			GENERAL_USER,
 		],
+		default: GENERAL_USER,
 		required: true,
 	},
 	clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],

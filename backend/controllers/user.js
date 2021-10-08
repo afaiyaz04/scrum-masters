@@ -17,8 +17,7 @@ export const createUser = async (req, res) => {
         email, 
         password, 
         nameFirst, 
-        nameLast, 
-        type
+        nameLast
     } = req.body;
 
     try {
@@ -33,8 +32,7 @@ export const createUser = async (req, res) => {
             email, 
             password, 
             nameFirst, 
-            nameLast, 
-            type
+            nameLast
         });
 
         await newUser.save();
