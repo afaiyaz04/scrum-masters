@@ -1,5 +1,3 @@
-
-
 import { GoogleLogin } from 'react-google-login'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -50,7 +48,7 @@ function SignUp() {
 
 
     const contentStyle = {
-        height: window.innerHeight - (64+70+10),
+        height: window.innerHeight - (64+70),
         color: '#696969',
         lineHeight: '160px',
         textAlign: 'center',
@@ -82,18 +80,18 @@ function SignUp() {
                 
                 <Content>
                     <div>
-                        <CarouselWrapper autoplay>
+                        <CarouselWrapper autoplay style={contentStyle}>
                             <div>
-                            <h3 style={contentStyle}>Screen 1</h3>
+                            <h1>Screen 1</h1>
                             </div>
                             <div>
-                            <h3 style={contentStyle}>Screen 2</h3>
+                            <h1>Screen 2</h1>
                             </div>
                             <div>
-                            <h3 style={contentStyle}>Screen 3</h3>
+                            <h1>Screen 3</h1>
                             </div>
                             <div>
-                            <h3 style={contentStyle}>Screen 4</h3>
+                            <h1>Screen 4</h1>
                             </div>
                         </CarouselWrapper>
                     </div>
