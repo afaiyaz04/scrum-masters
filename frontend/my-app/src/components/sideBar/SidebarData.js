@@ -5,7 +5,7 @@ import * as MdIcons from "react-icons/md";
 export const SidebarData = [
     {
         title: 'Dashboard',
-        path: '/',
+        path: '/dashboard',
         icon: <MdIcons.MdDashboard />,
         cName: 'nav-text'
     },
