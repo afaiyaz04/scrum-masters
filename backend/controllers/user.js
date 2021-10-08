@@ -346,9 +346,9 @@ export const promoteUser = async (req, res) => {
 
         if (user.type == GENERAL_USER) return res.status(403).json('Forbidden action');
 
-        await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
+        const toUser = await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
 
-        res.status(201);
+        res.status(201).json(toUser);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

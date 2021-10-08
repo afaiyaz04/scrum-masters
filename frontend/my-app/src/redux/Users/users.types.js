@@ -1,3 +1,3 @@
-export const SET_USERS = "SET_USERS";
+export const PROMOTE_USER = "PROMOTE_USER";
 
-export const DELETE_USERS = "DELETE_USERS";
+export const GET_ALL_USERS = "GET_ALL_USERS";

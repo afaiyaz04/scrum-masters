@@ -19,3 +19,6 @@ export const addUserClient = (userId, clientId) => API.post(`/user/${userId}/cli
 export const updateClient = (clientId, formData) => API.patch(`/client/${clientId}`, formData);
 export const deleteUserClient = (userId, clientId) => API.delete(`/user/${userId}/clients`, { data: { clientId } });
 export const deleteClient = (clientId) => API.delete(`/client/${clientId}`);
+
+export const fetchUsers = () => API.get('/user');
+export const promoteUser = (userId, toUserId) => API.patch(`/user/${userId}/promote`, { toUserId });

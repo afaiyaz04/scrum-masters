@@ -1,14 +1,20 @@
-import { SET_USERS, DELETE_USERS } from "redux/Users/users.types";
+import { PROMOTE_USER, GET_ALL_USERS } from "redux/Users/users.types";
+import * as api from '../../redux/api/index';
 
-export const setUsers = (users) => {
-	return {
-		type: SET_USERS,
-		payload: users,
-	};
+export const promoteUser = (userId, toUserId) => async (dispatch) => {
+	try {
+		const { data } = await api.promoteUser(userId, toUserId);
+		dispatch({ type: PROMOTE_USER, payload: data });
+	} catch (error) {
+		console.log(error);
+	}
 };
 
-export const deleteContact = () => {
-	return {
-		type: DELETE_USERS,
-	};
+export const fetchUsers = () => {
+	try {
+		const { data } = await api.fetchUsers();
+		dispatch({ type: GET_ALL_USERS, payload: data });
+	} catch (error) {
+		console.log(error);
+	}
 };
