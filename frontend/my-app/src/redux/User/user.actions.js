@@ -5,7 +5,7 @@ export const setUser = (formData, router) => async (dispatch) => {
 	try {
 		const { data } = await api.createUser(formData);
 		dispatch({ type: SET_USER, data });
-		router.push('/');
+		router.push('/dashboard');
 	} catch (error) {
 		console.log(error);
 	}
