@@ -95,12 +95,6 @@ export const updateUser = async (req, res) => {
         return res.json({ message: "Unauthenticated!"});
     }
 
-    // Check admin requested or is self
-
-    if (!isAdminOrSelf(req.userId, user.oauthId)) {
-        return res.json({ message: "No permission!"});
-    }
-
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`Invalid user id: ${id}`);
 
@@ -115,6 +109,11 @@ export const updateUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(id, updatedUser, { new: true });
     if (user == null) {
         return res.status(404).send(`No user with id: ${id}`);
+    }
+
+     // Check admin requested or is self
+     if (!isAdminOrSelf(req.userId, user.oauthId)) {
+        return res.json({ message: "No permission!"});
     }
 
     res.json(user);
