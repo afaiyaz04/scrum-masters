@@ -5,10 +5,12 @@ import {
         viewAllReports
         
 } from '../controllers/report.js';
+
+import auth from '../middleware/auth.js';
  
 const router = express.Router();
 
-router.get("/:id", viewReport);
-router.get("/", viewAllReports);
+router.get("/:id", auth, viewReport);
+router.get("/", auth, viewAllReports);
 
 export default router;

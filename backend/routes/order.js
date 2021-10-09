@@ -10,16 +10,17 @@ import {
         removeLineProduct,
         getLineProducts
 } from '../controllers/order.js';
+import auth from '../middleware/auth.js';
  
 const router = express.Router();
 
-router.post("/", createOrder);
-router.get("/:id", getOrder);
-router.patch("/:id", updateOrder);
-router.delete("/:id", deleteOrder);
-router.post("/:orderId/products", addLineProduct);
-router.patch("/:orderId/products", updateLineProduct);
-router.delete("/:orderId/products", removeLineProduct);
-router.get("/:orderId/products", getLineProducts);
+router.post("/", auth, createOrder);
+router.get("/:id", auth, getOrder);
+router.patch("/:id", auth, updateOrder);
+router.delete("/:id", auth, deleteOrder);
+router.post("/:orderId/products", auth, addLineProduct);
+router.patch("/:orderId/products", auth, updateLineProduct);
+router.delete("/:orderId/products", auth, removeLineProduct);
+router.get("/:orderId/products", auth, getLineProducts);
 
 export default router;

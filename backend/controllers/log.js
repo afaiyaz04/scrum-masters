@@ -8,6 +8,10 @@ const router = express.Router();
 export const createLog = async (req, res) => {
     const { user, text } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     const newLog = new Log({ user, text });
 
     try {
@@ -21,6 +25,10 @@ export const createLog = async (req, res) => {
 
 export const getLog = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     try {
         const log = await Log.findById(id);
@@ -36,6 +44,10 @@ export const getLog = async (req, res) => {
 export const updateLog = async (req, res) => {
     const { id } = req.params;
     const { user, text } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No log with id: ${id}`);
@@ -53,6 +65,10 @@ export const updateLog = async (req, res) => {
 
 export const deleteLog = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No log with id: ${id}`);
