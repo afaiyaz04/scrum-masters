@@ -45,12 +45,12 @@ export const createUser = async (req, res) => {
     }
 }
 
-async function isAdmin(reqId) {
+export async function isAdmin(reqId) {
     const user = await User.findOne( { oauthId: reqId } );
     return user.type == ADMIN_USER;
 }
 
-async function isAdminOrSelf(reqId, oauthId) {
+export async function isAdminOrSelf(reqId, oauthId) {
     // Find the user of reqId
     const user = await User.findOne( { oauthId: reqId } );
     return user.type == ADMIN_USER || reqId == oauthId;
