@@ -6,7 +6,7 @@ const UsersForm = (props) => {
 
     useEffect(() => {
         setUser({ ...props.user });
-    })
+    }, [props.user])
 
     const layout = {
         labelCol: {
