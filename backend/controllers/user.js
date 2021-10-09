@@ -132,14 +132,15 @@ export const deleteUser = async (req, res) => {
         return res.status(404).send(`No user with id: ${id}`);
     
 
+    const user = await User.findById(id);
     // Check admin requested or is self
     if (!isAdminOrSelf(req.userId, user.oauthId)) {
         return res.json({ message: "No permission!"});
     }
 
 
-    const user = await User.findByIdAndRemove(id);
-    if (user == null) {
+    const toUser = await User.findByIdAndRemove(id);
+    if (toUser == null) {
         return res.status(404).send(`No user with id: ${id}`);
     }
 
