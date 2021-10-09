@@ -15,7 +15,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   const fetchUser = async () => {
-    const endpoint = API + USER + "614180facb6259ce3427029f";
+    const endpoint = API + USER + "616211812b32244bfc3e1a2d";
     const response = await axios.get(endpoint).catch((err) => {
       console.log("ERR", err);
     });
