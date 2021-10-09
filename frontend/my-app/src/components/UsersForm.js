@@ -62,6 +62,7 @@ const UsersForm = (props) => {
             </Form.Item>
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                 <Button onClick={() => props.promoteAction(user.id)}>Promote</Button>
+                <Button onClick={() => props.controlAction(user.id)}>Control</Button>
             </Form.Item>
         </Form>
     );

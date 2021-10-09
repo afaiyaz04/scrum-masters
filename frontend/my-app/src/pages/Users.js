@@ -5,6 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
 import { fetchUsers, promoteUser } from "../redux/Users/users.actions";
+import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 
@@ -34,6 +35,18 @@ class Users extends React.Component {
   promoteHandler = (toUserId) => {
     this.props.dispatch(promoteUser(this.state.userId, toUserId));
   };
+
+  controlUser = (toUserId) => {
+    if (!localStorage.getItem('originalData')) {
+      console.log('out');
+      localStorage.setItem('originalData', localStorage.getItem('userData'));
+    }
+    fetchUser(toUserId).then((res) => {
+      console.log(res);
+      localStorage.setItem('userData', JSON.stringify(res.data));
+      this.props.history.push('/dashboard');
+    });
+  }
 
   render () {
     return (
@@ -94,6 +107,7 @@ class Users extends React.Component {
                   showDetails={ this.state.showDetails }
                   closeAction={() => this.setState({ showDetails: false })}
                   promoteAction={ this.promoteHandler }
+                  controlAction={ this.controlUser }
                 />
               </div>
             }
@@ -106,6 +120,7 @@ class Users extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.user,
     users: state.users
   }
 }
