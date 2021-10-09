@@ -3,7 +3,6 @@ import express from 'express'
 import {
         viewReport,
         viewAllReports
-        
 } from '../controllers/report.js';
 
 import auth from '../middleware/auth.js';

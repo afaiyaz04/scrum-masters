@@ -13,8 +13,7 @@ import {
     transferOrder,
     deleteUserOrder,
     deleteUserClient,
-    promoteUser,
-    signIn
+    promoteUser
 } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 
@@ -39,7 +38,6 @@ router.delete('/:id/clients', auth, deleteUserClient);
 // Management
 router.patch('/:id/transfer', auth, transferOrder);
 router.patch('/:id/promote', auth, promoteUser);
-router.post('/signIn', auth, signIn);
 
 export default router;
 

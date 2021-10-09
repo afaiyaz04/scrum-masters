@@ -20,6 +20,10 @@ export const createUser = async (req, res) => {
         return res.json({ message: "Unauthenticated!"});
     }
 
+    if (!isAdmin(req.userId)) {
+        return res.json({ message: "No permission!"});
+    }
+
     try {
         const newUser = new User({
             email: email, 
