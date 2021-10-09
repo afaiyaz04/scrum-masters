@@ -8,7 +8,7 @@ class ProductCard extends React.Component {
     this.state = {
       product: "",
       quantiy: this.props.quantity,
-      showDetails: false,
+      showDetails: true,
     };
   }
   componentDidMount = async () => {
