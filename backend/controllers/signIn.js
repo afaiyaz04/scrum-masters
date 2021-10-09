@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/user.js';
+import { ADMIN_USER } from '../models/systemEnums.js';
 
 const router = express.Router();
 
@@ -15,6 +16,19 @@ export const signIn = async (req, res) => {
     }
 
     try {
+        // 0. First user of the system should just become admin
+        if (await User.count() === 0) {
+            const newUser = new User({
+                email: email,
+                nameFirst: nameFirst,
+                nameLast: nameLast,
+                oauthId: req.userId,
+                type: ADMIN_USER
+            });
+            await newUser.save();
+            return res.status(201).json(newUser);
+        }
+
         // 1. Check if account has already been authenticated with oatuh
         // This is an existing account
         const existingUser = await User.findOne({ oauthId: req.userId });
@@ -29,8 +43,8 @@ export const signIn = async (req, res) => {
         // This is a registered account but not fully created.
         const createdUser = await User.findOne({ email: email });
         if (!createdUser) {
-            return res.status(403).send(
-                "An admin needs to register an account with this email!"
+            return res.status(403).json(
+                { message: "An admin needs to register an account with this email!" }
             );
         }
 

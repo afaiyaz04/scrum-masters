@@ -11,7 +11,7 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
-export const setUser = (formData) => API.post('/user', formData);
+export const setUser = (formData) => API.post('/signIn', formData);
 export const deleteUser = (userId) => API.delete(`user/${userId}`);
 
 export const fetchClients = (userId) => API.get(`/user/${userId}/clients`);
@@ -23,3 +23,5 @@ export const deleteClient = (clientId) => API.delete(`/client/${clientId}`);
 
 export const fetchUsers = () => API.get('/user');
 export const promoteUser = (userId, toUserId) => API.patch(`/user/${userId}/promote`, { toUserId });
+
+export const registerUser = (formData) => API.post('/user', formData);
