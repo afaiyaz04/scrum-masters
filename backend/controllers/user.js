@@ -14,6 +14,28 @@ const router = express.Router();
 export const createUser = async (req, res) => {
     const { 
         email, 
+    } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    try {
+        const newUser = new User({
+            email: email, 
+        });
+
+        await newUser.save();
+        res.status(201).json(newUser);
+    }
+    catch (error) {
+        res.status(409).json({message: error.message});
+    }
+}
+
+export const signIn = async (req, res) => {
+    const { 
+        email, 
         nameFirst, 
         nameLast
     } = req.body;
@@ -23,22 +45,31 @@ export const createUser = async (req, res) => {
     }
 
     try {
-        const oldUser = await User.findOne({ oauthId: req.userId });
+        // 1. Check if account has already been authenticated with oatuh
+        // This is an existing account
+        const existingUser = await User.findOne({ oauthId: req.userId });
         
-        if (oldUser) {
+        if (existingUser) {
             res.status(201).json(oldUser);
             return;
         }
 
-        const newUser = new User({
-            email: email, 
-            oauthId: req.userId,
-            nameFirst: nameFirst, 
-            nameLast: nameLast
-        });
 
-        await newUser.save();
-        res.status(201).json(newUser);
+        // 2. Check if a "blank" account has been created with email by admin
+        // This is a registered account but not fully created.
+        const createdUser = await User.findOne({ email: email });
+        if (!createdUser) {
+            return res.status(403).send(
+                "An admin needs to register an account with this email!"
+            );
+        }
+
+        // 3. Update this existing user with oauthId + additional info
+        createdUser.nameFirst = nameFirst;
+        createdUser.nameLast = nameLast;
+        createdUser.oauthId = req.userId;
+        await createdUser.save();
+        return res.status(201).json(createdUser);
     }
     catch (error) {
         res.status(409).json({message: error.message});
