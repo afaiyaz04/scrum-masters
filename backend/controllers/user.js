@@ -10,8 +10,6 @@ import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
 
 const router = express.Router();
 
-const secret = 'test';
-
 // Create user
 export const createUser = async (req, res) => {
     const { 
@@ -47,15 +45,36 @@ export const createUser = async (req, res) => {
     }
 }
 
+async function isAdmin(reqId) {
+    const user = await User.findOne( { oauthId: reqId } );
+    return user.type == ADMIN_USER;
+}
+
+async function isAdminOrSelf(reqId, oauthId) {
+    // Find the user of reqId
+    const user = await User.findOne( { oauthId: reqId } );
+    return user.type == ADMIN_USER || reqId == oauthId;
+}
+
 // Get user
 export const getUser = async (req, res) => { 
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     try {
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
         }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
+        }
+
         res.status(200).json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -66,19 +85,27 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const { id } = req.params;
     const {
-        email, 
-        password, 
+        email,
         nameFirst, 
         nameLast, 
         type
     } = req.body; 
     
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    // Check admin requested or is self
+
+    if (!isAdminOrSelf(req.userId, user.oauthId)) {
+        return res.json({ message: "No permission!"});
+    }
+
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`Invalid user id: ${id}`);
 
     const updatedUser = {
         email, 
-        password, 
         nameFirst, 
         nameLast, 
         type,
@@ -97,20 +124,40 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     const {id} = req.params;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`No user with id: ${id}`);
     
+
+    // Check admin requested or is self
+    if (!isAdminOrSelf(req.userId, user.oauthId)) {
+        return res.json({ message: "No permission!"});
+    }
+
+
     const user = await User.findByIdAndRemove(id);
     if (user == null) {
         return res.status(404).send(`No user with id: ${id}`);
     }
+
     
     res.json({message: "User deleted successfully."});
 }
 
 // Get all users
 export const getAllUsers = async (req, res) => { 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
+        if (!(await isAdmin(req.userId))) {
+            return res.json({ message: "No permission!" });
+        }
+
         const allUsers = await User.find();
                 
         res.status(200).json(allUsers);
@@ -123,11 +170,20 @@ export const addUserOrder = async (req, res) => {
     const { id } = req.params;
     const { orderId } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         // need to check id and order exist
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const order = await Order.findById(orderId);
@@ -154,10 +210,19 @@ export const deleteUserOrder = async (req, res) => {
     const { id } = req.params;
     const { orderId } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const order = await Order.findById(orderId);
@@ -184,11 +249,20 @@ export const deleteUserOrder = async (req, res) => {
 export const getUserOrders = async (req, res) => {
     const { id } = req.params;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         // need to check id and order exist
         const user = await User.findById(id);
         if (user == null) {
             // send error
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const getOrders = async () => { 
@@ -213,11 +287,20 @@ export const addUserClient = async (req, res) => {
     const { id } = req.params;
     const { clientId } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         // need to check id and order exist
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const client = await Client.findById(clientId);
@@ -243,10 +326,19 @@ export const deleteUserClient = async (req, res) => {
     const { id } = req.params;
     const { clientId } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const client = await Client.findById(clientId);
@@ -270,11 +362,21 @@ export const deleteUserClient = async (req, res) => {
 
 export const getUserClients = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         // need to check id
         const user = await User.findById(id);
         if (user == null) {
             // send error
+        }
+
+        // Check admin requested or is self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const getClients = async () => { 
@@ -298,11 +400,20 @@ export const getUserClients = async (req, res) => {
 export const transferOrder = async (req, res) => {
     const { id } = req.params;
     const { orderId, toUserId} = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
     
     try {
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check if either is admin, or is user self
+        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+            return res.json({ message: "No permission!"});
         }
 
         const order = await Order.findById(orderId);
@@ -344,10 +455,14 @@ export const promoteUser = async (req, res) => {
     const { id } = req.params;
     const { toUserId } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         const user = await User.findById(id);
 
-        if (user.type == GENERAL_USER) return res.status(403).json('Forbidden action');
+        if (!(await isAdmin(req.userId))) return res.status(403).json('Forbidden action');
 
         const toUser = await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
 
