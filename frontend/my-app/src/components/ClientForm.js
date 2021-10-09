@@ -3,7 +3,6 @@ import { Form, Input, Button } from 'antd';
 
 const ClientForm = (props) => {
     const [contact, setContact] = useState({ ...props.contact });
-    const userId = JSON.parse(localStorage.getItem('userData'))._id;
 
     useEffect(() => {
         setContact({ ...props.contact });
@@ -71,7 +70,7 @@ const ClientForm = (props) => {
                 props.showDetails &&
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button onClick={() => props.updateAction(contact)}>Update</Button>
-                    <Button onClick={() => props.deleteAction(userId, contact.id)}>Delete</Button>
+                    <Button onClick={() => props.deleteAction(contact.id)}>Delete</Button>
                 </Form.Item>
             }
             {

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
-import { List, Input, Card, Button } from "antd";
+import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { useSelector, useDispatch } from "react-redux";
 import { createContact, deleteContact, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
+import { connect } from "react-redux";
 
 const initialContact = {
   id: "",
@@ -19,73 +19,65 @@ const initialContact = {
   address: "",
 }
 
-function Contacts() {
-  const [contact, setContact] = useState(initialContact);
-  const [showDetails, setShowDetails] = useState(false);
-  const [addContact, setAddContact] = useState(false);
-  const contacts = useSelector((state) => state.contacts);
-  const dispatch = useDispatch();
+class Contacts extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      contact: initialContact,
 
-  const userId = JSON.parse(localStorage.getItem('userData'))._id;
+      showDetails: false,
+      addContact: false,
 
-  useEffect(() => {
-    dispatch(fetchContacts(userId));
-  });
-
-  const createHandler = (newItem) => {
-    setAddContact(false);
-    dispatch(createContact(userId, newItem));
-  };
-
-  const updateHandler = (newItem) => {
-    setShowDetails(false);
-    dispatch(updateContact(contact.id, newItem));
-  };
-
-  const deleteHandler = (userId, clientId) => {
-    setShowDetails(false);
-    dispatch(deleteContact(userId, clientId));
-  };
-
-  const closeFormHandler = () => {
-    setShowDetails(false);
-    setAddContact(false);
+      userId: JSON.parse(localStorage.getItem('userData'))._id
+    }
   }
 
-  const removeNull = (array) => {
-    return array.filter((x) => x !== null);
+  componentDidMount() {
+    this.props.dispatch(fetchContacts(this.state.userId));
   }
 
-  return (
-    <div className="Master-div">
-      <Sidebar />
-      <div className="contacts">
-        <Header
-          page="Contacts"
-          actions={() => {
-            setAddContact(true);
-            setShowDetails(false);
-            setContact(initialContact)
-          }}
-        />
-        <div className="contents">
-          <div className="contents-left">
-            <span>Name</span>
-            <List
-              itemLayout="horizontal"
-              dataSource={removeNull(contacts)}
-              renderItem={(item) => (
-                <List.Item
-                  className="contact-item"
-                  key={item.id}
-                  actions={[
-                    <Button
-                      type="dashed"
-                      block
-                      onClick={() => {
-                          setShowDetails(true);
-                          setAddContact(false);
-                          setContact({
+  createHandler = (newItem) => {
+    this.setState({ addContact: false });
+    this.props.dispatch(createContact(this.state.userId, newItem));
+  };
+
+  updateHandler = (newItem) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(updateContact(this.state.contact.id, newItem));
+  };
+
+  deleteHandler = (clientId) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(deleteContact(this.state.userId, clientId));
+  };
+
+  render () {
+    return (
+      <div className="Master-div">
+        <Sidebar />
+        <div className="contacts">
+          <Header
+            page="Contacts"
+            actions={() => {
+              this.setState({ addContact: true, showDetails: false, contact: initialContact })
+            }}
+          />
+          <div className="contents">
+            <div className="contents-left">
+              <span>Name</span>
+              <List
+                itemLayout="horizontal"
+                dataSource={this.props.contacts}
+                renderItem={(item) => (
+                  <List.Item
+                    className="contact-item"
+                    key={item.id}
+                    actions={[
+                      <Button
+                        type="dashed"
+                        block
+                        onClick={() => 
+                          this.setState({ showDetails: true, addContact: false, contact: {
                             id: item._id,
                             nameFirst: item.nameFirst,
                             nameLast: item.nameLast,
@@ -94,41 +86,47 @@ function Contacts() {
                             email: item.email,
                             phoneNumber: item.phoneNumber,
                             address: item.address
-                          })
+                          }})
                         }
-                      }
-                    >
-                      Details
-                    </Button>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={`${item.nameFirst} ${item.nameLast}`}
-                    description={item.email}
-                    avatar={<CgProfile />}
-                  />
-                </List.Item>
-              )}
-            />
-          </div>
-          {
-            (showDetails || addContact) &&
-            <div className="contents-right">
-              <ClientForm
-                contact={contact}
-                addContact={addContact}
-                showDetails={showDetails}
-                updateAction={updateHandler}
-                deleteAction={deleteHandler}
-                createAction={createHandler}
-                closeAction={closeFormHandler}
+                      >
+                        Details
+                      </Button>,
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={`${item.nameFirst} ${item.nameLast}`}
+                      description={item.email}
+                      avatar={<CgProfile />}
+                    />
+                  </List.Item>
+                )}
               />
             </div>
-          }
+            {
+              (this.state.showDetails || this.state.addContact) &&
+              <div className="contents-right">
+                <ClientForm
+                  contact={ this.state.contact }
+                  addContact={ this.state.addContact }
+                  showDetails={ this.state.showDetails }
+                  updateAction={ this.updateHandler }
+                  deleteAction={ this.deleteHandler }
+                  createAction={ this.createHandler }
+                  closeAction={() => this.setState({ addContact: false, showDetails: false })}
+                />
+              </div>
+            }
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-export default Contacts;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts
+  }
+}
+
+export default connect(mapStateToProps)(Contacts);

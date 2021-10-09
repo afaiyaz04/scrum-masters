@@ -14,7 +14,7 @@ export const createContact = (userId, formData) => async (dispatch) => {
 	try {
 		const data = await api.createClient(formData);
 		await api.addUserClient(userId, data.data._id);
-		dispatch({ type: CREATE_CONTACT, payload: { data } });
+		dispatch({ type: CREATE_CONTACT, payload: data.data });
 	} catch (error) {
 		console.log(error);
 	}
