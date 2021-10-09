@@ -15,11 +15,12 @@ import {
     deleteUserClient,
     promoteUser,
 } from '../controllers/user.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 // CRUD
 router.get('/', getAllUsers);
-router.post('/', createUser);
+router.post('/', auth, createUser);
 router.get('/:id', getUser);
 router.patch('/:id', updateUser);
 router.delete('/:id', deleteUser);
@@ -36,7 +37,6 @@ router.delete('/:id/clients', deleteUserClient);
 
 // Transferring an order
 router.patch('/:id/transfer', transferOrder);
-
 router.patch('/:id/promote', promoteUser);
 
 export default router;

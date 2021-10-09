@@ -16,13 +16,16 @@ const secret = 'test';
 export const createUser = async (req, res) => {
     const { 
         email, 
-        password, 
         nameFirst, 
         nameLast
     } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
-        const oldUser = await User.findOne({ email });
+        const oldUser = await User.findOne({ oauthId: req.userId });
         
         if (oldUser) {
             res.status(201).json(oldUser);
@@ -30,10 +33,10 @@ export const createUser = async (req, res) => {
         }
 
         const newUser = new User({
-            email, 
-            password, 
-            nameFirst, 
-            nameLast
+            email: email, 
+            oauthId: req.userId,
+            nameFirst: nameFirst, 
+            nameLast: nameLast
         });
 
         await newUser.save();
