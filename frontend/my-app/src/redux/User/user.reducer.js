@@ -1,4 +1,4 @@
-import { SET_USER, DELETE_USER, SET_USER_DATA, SIGN_OUT } from "./user.types";
+import { SET_USER, SET_USER_DATA, SIGN_OUT } from "./user.types";
 
 const INITIAL_STATE = { authData: null };
 
@@ -16,8 +16,6 @@ const reducer = (state = INITIAL_STATE, action) => {
 			localStorage.clear();
 			return { ...state, authData: null, loading: false, errors:null };
 
-		case DELETE_USER:
-			return null;
 		default:
 			return state;
 	}

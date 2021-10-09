@@ -12,6 +12,7 @@ API.interceptors.request.use((req) => {
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
 export const setUser = (formData) => API.post('/user', formData);
+export const deleteUser = (userId) => API.delete(`user/${userId}`);
 
 export const fetchClients = (userId) => API.get(`/user/${userId}/clients`);
 export const createClient = (formData) => API.post('/client', formData);

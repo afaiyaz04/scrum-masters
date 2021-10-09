@@ -5,9 +5,10 @@ import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
 import { fetchUsers, promoteUser } from "../redux/Users/users.actions";
-import { fetchUser } from "../redux/api";
+import { deleteUser, fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
+import { SIGN_OUT } from "../redux/User/user.types";
 
 const initialUser = {
     id: "",
@@ -38,7 +39,6 @@ class Users extends React.Component {
 
   controlUser = (toUserId) => {
     if (!localStorage.getItem('originalData')) {
-      console.log('out');
       localStorage.setItem('originalData', localStorage.getItem('userData'));
     }
     fetchUser(toUserId).then((res) => {
@@ -46,6 +46,21 @@ class Users extends React.Component {
       localStorage.setItem('userData', JSON.stringify(res.data));
       this.props.history.push('/dashboard');
     });
+  }
+
+  deleteHandler = (userId) => {
+    if (this.state.userId === userId && !localStorage.getItem('originalData')) {
+      deleteUser(userId);
+      this.props.dispatch({ type: SIGN_OUT });
+      this.props.history.push('/');
+    } else if (this.state.userId === userId && localStorage.getItem('originalData')) {
+      localStorage.setItem('userData', localStorage.getItem('originalData'));
+      localStorage.removeItem('originalData');
+      deleteUser(userId);
+      this.props.history.push('/dashboard');
+    } else {
+      deleteUser(userId);
+    }
   }
 
   render () {
@@ -108,6 +123,7 @@ class Users extends React.Component {
                   closeAction={() => this.setState({ showDetails: false })}
                   promoteAction={ this.promoteHandler }
                   controlAction={ this.controlUser }
+                  deleteAction={ this.deleteHandler }
                 />
               </div>
             }
