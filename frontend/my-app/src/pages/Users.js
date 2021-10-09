@@ -4,11 +4,12 @@ import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { fetchUsers, promoteUser } from "../redux/Users/users.actions";
-import { deleteUser, fetchUser } from "../redux/api";
+import { fetchUsers, promoteUser, deleteUser } from "../redux/Users/users.actions";
+import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
+import { DELETE_USER } from "../redux/Users/users.types";
 
 const initialUser = {
     id: "",
@@ -35,6 +36,7 @@ class Users extends React.Component {
 
   promoteHandler = (toUserId) => {
     this.props.dispatch(promoteUser(this.state.userId, toUserId));
+    this.setState({ showDetails: false });
   };
 
   controlUser = (toUserId) => {
@@ -50,17 +52,18 @@ class Users extends React.Component {
 
   deleteHandler = (userId) => {
     if (this.state.userId === userId && !localStorage.getItem('originalData')) {
-      deleteUser(userId);
+      this.props.dispatch(deleteUser(userId));
       this.props.dispatch({ type: SIGN_OUT });
       this.props.history.push('/');
     } else if (this.state.userId === userId && localStorage.getItem('originalData')) {
       localStorage.setItem('userData', localStorage.getItem('originalData'));
       localStorage.removeItem('originalData');
-      deleteUser(userId);
+      this.props.dispatch(deleteUser(userId));
       this.props.history.push('/dashboard');
     } else {
-      deleteUser(userId);
+      this.props.dispatch(deleteUser(userId));
     }
+    this.setState({ showDetails: false });
   }
 
   render () {
