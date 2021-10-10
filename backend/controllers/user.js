@@ -173,6 +173,16 @@ export const deleteUser = async (req, res) => {
         return res.json({ message: "No permission!"});
     }
 
+    for (var i = 0; i < user.clients.length; i++){
+        var clientId = user.clients[i];
+        await Client.findByIdAndRemove(clientId);
+    }
+
+    for (var i = 0; i < user.orders.length; i++){
+        var orderId = user.orders[i];
+        removeOrder(orderId);
+    }
+    
 
     const toUser = await User.findByIdAndRemove(id);
     if (toUser == null) {
