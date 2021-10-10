@@ -36,7 +36,9 @@ jobs:
         
         
     - name: Install dependencies
-      run: npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
+      run: | 
+        ls
+        npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
       
       
     - name: Run the Backend
