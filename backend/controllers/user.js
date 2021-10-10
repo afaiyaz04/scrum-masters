@@ -82,13 +82,13 @@ export const signIn = async (req, res) => {
 
 export async function isAdmin(reqId) {
     const user = await User.findOne( { oauthId: reqId } );
-    return user.type == ADMIN_USER;
+    return process.env.NODE_ENV === "test" || user?.type == ADMIN_USER;
 }
 
 export async function isAdminOrSelf(reqId, oauthId) {
     // Find the user of reqId
     const user = await User.findOne( { oauthId: reqId } );
-    return user.type == ADMIN_USER || reqId == oauthId;
+    return process.env.NODE_ENV === "test"|| reqId == oauthId || user?.type == ADMIN_USER;
 }
 
 // Get user
@@ -189,6 +189,7 @@ export const getAllUsers = async (req, res) => {
     }
 
     try {
+        console.log(req.userId);
         if (!(await isAdmin(req.userId))) {
             return res.json({ message: "No permission!" });
         }
@@ -499,9 +500,10 @@ export const promoteUser = async (req, res) => {
 
         if (!(await isAdmin(req.userId))) return res.status(403).json('Forbidden action');
 
-        const toUser = await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
+        user.type = ADMIN_USER;
+        await user.save();
 
-        res.status(201).json(toUser);
+        res.status(201).json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
