@@ -7,6 +7,7 @@ import Client from '../models/client.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
+import removeOrder from '../controllers/order.js';
 
 const router = express.Router();
 
@@ -272,6 +273,8 @@ export const deleteUserOrder = async (req, res) => {
         }
         user.orders.splice(orderIndex, 1);
         user.save();
+        // here
+        removeOrder(orderId);
         return res.json(user);
 
 

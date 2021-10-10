@@ -95,11 +95,7 @@ export const deleteOrder = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No order with id: ${id}`);
     }
-
-    const order = await Order.findByIdAndRemove(id);
-    if (order == null) {
-        return res.status(404).send(`No order with id: ${id}`);
-    }
+    removeOrder(id);
     res.json({ message: "Order deleted successfully." });
 }
 
@@ -249,6 +245,17 @@ async function doesOrderProductExist(orderId, productId, res) {
     }
 
     return [order, product];
+}
+
+export async function removeOrder(orderId) {
+    const order = await Order.findById(orderId);
+    const orderProducts = order.lineProducts;
+    for (var i = 0; i < orderProducts.length; i++)
+    {
+        var productId = orderProducts[i].productId;
+        await Product.findByIdAndRemove(productId);
+    }
+    await Order.findByIdAndRemove(orderId);
 }
 
 export default router;
