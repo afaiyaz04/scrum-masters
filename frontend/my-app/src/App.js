@@ -21,6 +21,7 @@ function App() {
         <Route path='/users' component={Users} />
         <Route path='/contracts' component={Contracts} />
         <Route path='/profile' component={Profile}/>
+        <Route path='/addorder' component={AddOrder}/>
       </Switch>
     </Router>
   );
