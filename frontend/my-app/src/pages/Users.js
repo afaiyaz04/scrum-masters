@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { fetchUsers, promoteUser, deleteUser } from "../redux/Users/users.actions";
+import { fetchUsers, promoteUser, deleteUser, registerUser } from "../redux/Users/users.actions";
 import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
@@ -26,6 +26,7 @@ class Users extends React.Component {
     this.state = {
       user: initialUser,
       showDetails: false,
+      addUser: false,
       userId: JSON.parse(localStorage.getItem('userData'))._id
     }
   }
@@ -39,12 +40,11 @@ class Users extends React.Component {
     this.setState({ showDetails: false });
   };
 
-  controlUser = (toUserId) => {
+  controlHandler = (toUserId) => {
     if (!localStorage.getItem('originalData')) {
       localStorage.setItem('originalData', localStorage.getItem('userData'));
     }
     fetchUser(toUserId).then((res) => {
-      console.log(res);
       localStorage.setItem('userData', JSON.stringify(res.data));
       this.props.history.push('/dashboard');
     });
@@ -66,6 +66,11 @@ class Users extends React.Component {
     this.setState({ showDetails: false });
   }
 
+  registerHandler = (newUser) => {
+    this.setState({ addUser: false });
+    this.props.dispatch(registerUser(newUser));
+  }
+
   render () {
     return (
       <div className="Master-div">
@@ -73,7 +78,7 @@ class Users extends React.Component {
         <div className="users">
           <Header
             page="Users"
-            actions={() => {}}
+            actions={() => {this.setState({ addUser: true, showDetails:false, user: initialUser })}}
           />
           <div className="contents">
             <div className="contents-left">
@@ -92,6 +97,7 @@ class Users extends React.Component {
                         onClick={() => {
                             this.setState({
                               showDetails: true,
+                              addUser: false,
                               user: {
                                 id: item._id,
                                 nameFirst: item.nameFirst,
@@ -118,15 +124,17 @@ class Users extends React.Component {
               />
             </div>
             {
-              (this.state.showDetails) &&
+              (this.state.showDetails || this.state.addUser) &&
               <div className="contents-right">
                 <UsersForm
                   user={ this.state.user }
                   showDetails={ this.state.showDetails }
-                  closeAction={() => this.setState({ showDetails: false })}
+                  addUser={ this.state.addUser }
+                  closeAction={() => this.setState({ showDetails: false, addUser: false })}
                   promoteAction={ this.promoteHandler }
-                  controlAction={ this.controlUser }
+                  controlAction={ this.controlHandler }
                   deleteAction={ this.deleteHandler }
+                  registerAction={ this.registerHandler }
                 />
               </div>
             }

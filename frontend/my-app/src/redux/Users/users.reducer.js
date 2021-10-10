@@ -1,4 +1,4 @@
-import { PROMOTE_USER, GET_ALL_USERS, DELETE_USER } from "./users.types";
+import { PROMOTE_USER, GET_ALL_USERS, DELETE_USER, REGISTER_USER } from "./users.types";
 
 const INITIAL_STATE = [];
 
@@ -10,6 +10,8 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return action.payload;
 		case DELETE_USER:
 			return state.filter((user) => user._id !== action.payload);
+		case REGISTER_USER:
+			return [...state, action.payload];
 		default:
 			return state;
 	}
