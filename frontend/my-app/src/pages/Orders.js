@@ -107,7 +107,7 @@ class Orders extends React.Component {
                         onClick={() => 
                           this.setState({
                             showDetails: true,
-                            addContact: false,
+                            addOrder: false,
                             order: {
                               id: item._id,
                               timeDue: item.timeDue,
