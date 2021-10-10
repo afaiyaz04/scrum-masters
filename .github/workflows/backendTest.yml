@@ -1,0 +1,57 @@
+# This is a basic workflow to help you get started with Actions
+
+name: postman-test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ deploy ]
+  pull_request:
+    branches: [ deploy ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.8.0]
+        
+    defaults:
+      run:
+        working-directory: ./backend        
+        
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org/
+        
+        
+    - name: Install dependencies
+      run: npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
+      
+      
+    - name: Run the Backend
+      run: | 
+        npm run start
+      env:
+        DB_URL: "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/test?retryWrites=true&w=majority"
+        PORT: "5000"
+        TEST: "true"
+        NODE_ENV: "develop"
+        
+    - name: Run postman report test   
+    - uses: matt-ball/newman-action@master
+      with:
+        apiKey: ${{ secrets.postmanApiKey }}
+        collection: 964bce0c-d1fd-4199-a6de-d7721259234
+        environment: 17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928
+        envVar: '[{ "key": "url", "value": "http://localhost:5000" }]'
