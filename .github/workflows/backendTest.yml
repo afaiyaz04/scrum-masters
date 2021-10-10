@@ -23,12 +23,10 @@ jobs:
         
     defaults:
       run:
-        working-directory: ./backend        
+        working-directory: backend        
         
     steps:
     - uses: actions/checkout@v1
-      with:
-        path: backend
       
     - name: Set up Node.js
       uses: actions/setup-node@v1
