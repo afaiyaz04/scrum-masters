@@ -46,6 +46,11 @@ const initialProduct = {
 //  this.props.dispatch(fetchProducts(orderId))
 //  this.props.dispatch(fetchContacts(userId))
 // when an update is needed.
+//
+// to access data, call:
+//  this.props.contacts
+//  this.props.orders
+//  this.props.products
 
 class Orders extends React.Component {
   constructor(props) {
