@@ -388,6 +388,7 @@ export const deleteUserClient = async (req, res) => {
         }
         user.clients.splice(clientIndex, 1);
         user.save();
+        await Client.findByIdAndRemove(clientId)
         return res.json(user);
 
 
