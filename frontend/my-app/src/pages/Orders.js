@@ -79,9 +79,9 @@ class Orders extends React.Component {
     return (
       <div className="Master-div">
         <Sidebar />
-        <div className="contacts">
+        <div className="orders">
           <Header
-            page="Contacts"
+            page="Orders"
             actions={() => {
               this.setState({
                 addOrder: true,
@@ -98,7 +98,7 @@ class Orders extends React.Component {
                 dataSource={this.props.orders}
                 renderItem={(item) => (
                   <List.Item
-                    className="contact-item"
+                    className="order-item"
                     key={item.id}
                     actions={[
                       <Button
