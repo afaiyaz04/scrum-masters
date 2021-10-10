@@ -82,13 +82,13 @@ export const signIn = async (req, res) => {
 
 export async function isAdmin(reqId) {
     const user = await User.findOne( { oauthId: reqId } );
-    return process.env.NODE_ENV === "test" || user?.type == ADMIN_USER;
+    return user?.type == ADMIN_USER;
 }
 
 export async function isAdminOrSelf(reqId, oauthId) {
     // Find the user of reqId
     const user = await User.findOne( { oauthId: reqId } );
-    return process.env.NODE_ENV === "test"|| reqId == oauthId || user?.type == ADMIN_USER;
+    return reqId == oauthId || user?.type == ADMIN_USER;
 }
 
 // Get user

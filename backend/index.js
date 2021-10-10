@@ -25,7 +25,7 @@ app.use('/user', userRoutes);
 app.use('/report', reportRoutes);
 app.use('/signin', signInRoutes);
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'test') {
     dotenv.config();
 }
 
