@@ -40,8 +40,7 @@ jobs:
       
       
     - name: Run the Backend
-      run: | 
-        npm run start
+      run: npm run start
       env:
         DB_URL: "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/test?retryWrites=true&w=majority"
         PORT: "5000"
