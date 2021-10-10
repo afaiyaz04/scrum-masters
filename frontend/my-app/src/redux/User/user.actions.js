@@ -1,14 +1,20 @@
-import { SET_USER, DELETE_USER } from "./user.types";
+import { SET_USER_DATA } from "./user.types";
+import * as api from '../api/index';
 
-export const setUser = (user) => {
-	return {
-		type: SET_USER,
-		payload: user,
-	};
+export const setUser = (formData, router) => async (dispatch) => {
+	try {
+		const { data } = await api.setUser(formData);
+		dispatch({ type: SET_USER_DATA, data });
+		router.push('/dashboard');
+	} catch (error) {
+		console.log(error);
+	}
 };
 
-export const deleteContact = () => {
-	return {
-		type: DELETE_USER,
-	};
+export const deleteUser = (userId) => async () => {
+	try {
+		await api.deleteUser(userId);
+	} catch (error) {
+		console.log(error);
+	}
 };

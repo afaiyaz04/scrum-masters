@@ -1,3 +1,21 @@
-.logo{
-    background-color: green;
+.logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+.title {
+    float: left;
+    color: aliceblue;
+}
+
+
+.ant-carousel .slick-prev,
+.ant-carousel .slick-next,
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover {
+font-size: inherit;
+color: black;
 }

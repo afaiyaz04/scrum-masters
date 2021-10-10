@@ -19,11 +19,13 @@ class AddOrderForm extends React.Component {
       description: "",
       log: "",
       contacts: [],
+
+      userId: JSON.parse(localStorage.getItem('userData'))._id
     };
   }
 
   componentDidMount = async () => {
-    const endpoint = API + USER + this.props.user._id + CLIENTS;
+    const endpoint = API + USER + this.state.userId + CLIENTS;
     const response = await axios.get(endpoint).catch((err) => {
       console.log("ERR", err);
     });

@@ -8,7 +8,7 @@ import {
 // define the User schema
 const userSchema = new mongoose.Schema({
 	email: { type: String, required: true },
-	password: { type: String, required: true },
+	oauthId: { type: String, required: true },
 	nameFirst: { type: String, required: true },
 	nameLast: { type: String, required: true },
 	type: {
@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
 			ADMIN_USER,
 			GENERAL_USER,
 		],
+		default: GENERAL_USER,
 		required: true,
 	},
 	clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],

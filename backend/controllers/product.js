@@ -8,6 +8,10 @@ const router = express.Router();
 export const createProduct = async (req, res) => {
     const { name, description, price } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     const newProduct = new Product({ name, description, price });
 
     try {
@@ -21,6 +25,10 @@ export const createProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     try {
         const product = await Product.findById(id);
@@ -38,6 +46,10 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, description, price } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`Invalid id: ${id}`);
     }
@@ -54,6 +66,10 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No product with id: ${id}`);

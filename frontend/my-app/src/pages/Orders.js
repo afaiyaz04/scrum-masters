@@ -21,6 +21,8 @@ class Orders extends React.Component {
       editDetails: false,
       addOrder: false,
 
+      id: "",
+      client: "",
       lineProducts: "",
       timePlaced: "",
       timeDue: "",
@@ -28,11 +30,13 @@ class Orders extends React.Component {
       status: "",
       description: "",
       log: "",
+
+      userId: JSON.parse(localStorage.getItem('userData'))._id
     };
   }
 
   componentDidMount() {
-    const endpoint = API + USER + this.props.user._id + ORDERS;
+    const endpoint = API + USER + this.state.userId + ORDERS;
     axios.get(endpoint).then((res) => {
       console.log(res);
       this.setState({ orders: res.data });
@@ -45,6 +49,29 @@ class Orders extends React.Component {
 
   deactivateAdd = () => {
     this.setState({ addOrder: false });
+  };
+
+  createHandler = (newItem) => {
+    const path = API + '/order';
+    const path2 = API + USER + this.state.userId + ORDERS;
+    axios.post(path, newItem).then((res) => {
+      console.log(res);
+      this.setState({
+        id: res.data._id,
+        editDetails: false,
+        addOrder: false,
+      });
+      axios
+        .post(path2, {
+          orderId: this.state.id,
+        })
+        .then((res) => {
+          axios.get(path2).then((res) => {
+            console.log(res);
+            this.setState({ orders: res.data });
+          });
+        });
+    });
   };
 
   render() {
@@ -64,7 +91,6 @@ class Orders extends React.Component {
           >
             <h2>Order Details</h2>
             <h3>Client</h3>
-            <ClientCard client={this.state.client}></ClientCard>
             <div className="list-item-details">
               <h3>Status: {this.state.status}</h3>
               <h3>Time Placed: {this.state.timePlaced}</h3>

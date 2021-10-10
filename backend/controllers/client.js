@@ -16,6 +16,10 @@ export const createClient = async (req, res) => {
         address
     } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     const newClient = new Client({
         nameFirst,
         nameLast,
@@ -37,6 +41,10 @@ export const createClient = async (req, res) => {
 
 export const getClient = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     try {
         const client = await Client.findById(id);
@@ -61,6 +69,10 @@ export const updateClient = async (req, res) => {
         phoneNumber,
         address
     } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No client with id: ${id}`);
@@ -87,6 +99,10 @@ export const updateClient = async (req, res) => {
 
 export const deleteClient = async (req, res) => {
     const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No client with id: ${id}`);
