@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const auth = async (req, res, next) => {
   try {
-    if (process.env.NODE_ENV === "test") {
+    if (process.env.TEST === "true") {
         var id = req.headers.postman;
         if (!id) {
             // no id provided, use admin
