@@ -193,6 +193,7 @@ export const removeLineProduct = async (req, res) => {
         }
         order.lineProducts.splice(productIndex, 1);
         order.save();
+        await Product.findByIdAndRemove(productId);
         return res.json(order);
 
     } catch (error) {
