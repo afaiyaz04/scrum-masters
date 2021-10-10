@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 import clientRoutes from './routes/client.js';
 import logRoutes from './routes/log.js';
@@ -24,7 +25,12 @@ app.use('/user', userRoutes);
 app.use('/report', reportRoutes);
 app.use('/signin', signInRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+if (process.env.NODE_ENV === 'test') {
+    dotenv.config();
+}
+
+// hardcoded values will be provided to process.env once deployed
+const CONNECTION_URL = process.env.DB_URL || 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000
 
 mongoose.connect(
