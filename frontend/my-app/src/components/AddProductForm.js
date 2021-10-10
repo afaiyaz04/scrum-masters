@@ -18,6 +18,7 @@ class AddProductForm extends React.Component {
       price: 0,
       quantity: 1,
 
+      oldQuantity: 0,
       products: [],
     };
   }
@@ -38,6 +39,7 @@ class AddProductForm extends React.Component {
         name: "",
         description: "",
         price: 0,
+        oldQuantity: this.state.quantity,
         quantity: 1,
       });
       axios
@@ -52,6 +54,7 @@ class AddProductForm extends React.Component {
   };
 
   render() {
+    console.log(this.state.oldQuantity);
     return (
       <div>
         <List
@@ -61,6 +64,7 @@ class AddProductForm extends React.Component {
             <ProductCard
               productID={item._id}
               quantity={this.state.oldQuantity}
+              orderID={this.props.orderID}
             ></ProductCard>
           )}
         />
