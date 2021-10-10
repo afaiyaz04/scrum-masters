@@ -49,7 +49,7 @@ jobs:
         NODE_ENV: "develop"
         
     - name: Run postman report test   
-    - uses: matt-ball/newman-action@master
+      uses: matt-ball/newman-action@master
       with:
         apiKey: ${{ secrets.postmanApiKey }}
         collection: 964bce0c-d1fd-4199-a6de-d7721259234
