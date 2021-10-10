@@ -8,9 +8,9 @@ import {
 // define the User schema
 const userSchema = new mongoose.Schema({
 	email: { type: String, required: true },
-	oauthId: { type: String, required: true },
-	nameFirst: { type: String, required: true },
-	nameLast: { type: String, required: true },
+	oauthId: { type: String, required: false },
+	nameFirst: { type: String, required: false },
+	nameLast: { type: String, required: false },
 	type: {
 		type: String,
 		enum: [

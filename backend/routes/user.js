@@ -13,7 +13,7 @@ import {
     transferOrder,
     deleteUserOrder,
     deleteUserClient,
-    promoteUser,
+    promoteUser
 } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 
@@ -35,7 +35,7 @@ router.get('/:id/clients', auth, getUserClients);
 router.post('/:id/clients', auth, addUserClient);
 router.delete('/:id/clients', auth, deleteUserClient);
 
-// Transferring an order
+// Management
 router.patch('/:id/transfer', auth, transferOrder);
 router.patch('/:id/promote', auth, promoteUser);
 
