@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
       const token = req.headers.authorization?.split(" ")[1];
       if (!token) {
         next();
-        return console.log("Authorisation error");
+        return;
       }
 
       // Grab googleId
