@@ -44,7 +44,7 @@ jobs:
       run: |
         npm run start &
         sleep 60
-        newman run https://api.getpostman.com/collections/17378209-964bce0c-d1fd-4199-a6de-d77212592348?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-964bce0c-d1fd-4199-a6de-d77212592348?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
       working-directory: ./backend 
       env:
         DB_URL: "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/test?retryWrites=true&w=majority"
@@ -56,6 +56,6 @@ jobs:
       uses: matt-ball/newman-action@master
       with:
         apiKey: ${{ secrets.postmanApiKey }}
-        collection: 964bce0c-d1fd-4199-a6de-d7721259234
+        collection: 17378209-964bce0c-d1fd-4199-a6de-d77212592348
         environment: 17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928
         envVar: '[{ "key": "url", "value": "http://localhost:5000" }]'
