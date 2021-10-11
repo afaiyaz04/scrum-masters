@@ -1,0 +1,19 @@
+.signout-btn {
+    border-radius: 3rem;
+    width: 150px;
+    height: 40px;
+    border-color: #FD0000;
+    background-color: white;
+    font-size: medium;
+    color: #FD0000;
+    font-weight: 600;
+    border-width: 3px;
+}
+
+.signout-btn:hover{
+    background-color: rgb(241, 185, 185);
+}
+
+.signout-btn:focus{
+    outline: none;
+}

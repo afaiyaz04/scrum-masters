@@ -1,0 +1,12 @@
+.btn {
+    border-radius: 3rem;
+    width: 150px;
+    height: 40px;
+    border-color: black;
+    background-color: white;
+    font-size: medium;
+}
+
+.btn:hover{
+    background-color: silver;
+}

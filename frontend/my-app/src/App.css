@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+}
+
+.dashboard,
+.contacts,
+.users,
+.orders,
+.contracts,
+.profile {
+  display: flex;
+  height: 100vh;
+  width: 80vw;
+  margin-left: 20vw;
+  align-items: top;
+  font-size: 50;
+  padding: 3% 5%;
+  flex-direction: column;
+}
+
+.thing {
+  display: flex;
+  flex-direction: column;
+}
+.header-dashboard {
+  display: flex;
+  height: 55px;
+  border-bottom: 3px solid silver;
+  border-width: 3px;
+  justify-content: space-between;
+}
+
+.contents {
+  /* background-color: red; */
+  padding: 3%;
+  display: flex;
+  height: 100%;
+}
+
+.contents-left {
+  width: 50%;
+  justify-items: flex-start;
+}
+
+.contents-right {
+  width: 50%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 15cm;
+  /* background-color: blue; */
+  position: relative;
+}
+
+.item-details-btns {
+  /* background-color: green; */
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  right: 20px;
+  bottom: 50px;
+}
+/************************************************/
+
+/* LIST ITEM */
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  min-height: 30px;
+  margin: 10px;
+  border: 1px solid silver;
+  background-color: #ebf4fa;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 1%;
+}
+
+.contact-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-item-details {
+  /* background-color: #ebf4fa; */
+  color: #173f5f;
+  padding: 4% 0%;
+  height: 250px;
+}
+
+.list-item-details h3 {
+  border-bottom: 1px #173f5f;
+}
+
+.list-item:hover {
+  box-shadow: 5px 10px 10px #888888;
+  transform: translateY(-3px);
+}
+
+.list-item:active {
+  box-shadow: 5px 10px 10px #888888;
+  transform: translateY(3px);
+  transition: 50ms;
+}
+.list-item__image {
+  min-height: 100%;
+  object-fit: cover;
+  width: 40%;
+  padding: 5px;
+}
+
+.list-item__mid {
+  flex-direction: column;
+  margin-left: 9px;
+  min-height: 80%;
+  min-width: 40%;
+  align-content: flex-start;
+}
+
+.list-item__name {
+  font-weight: 900;
+}
+.list-item__price {
+  min-height: 50%;
+  min-width: 20%;
+  text-align: right;
+}
+.list-item__right {
+  padding: 5px 5px;
+}
+
+.line {
+  width: 70%;
+  height: 47px;
+  border-bottom: 1px solid black;
+  position: absolute;
+}
+
+.contact-card:hover {
+  box-shadow: 5px 10px 10px #888888;
+  transform: translateY(-3px);
+}
+
+.contents-right {
+  position: sticky;
+  top: 20px;
+}
+
+.contents-left {
+  overflow: auto;
+}
+
+.contact-item {
+  /* background-color: #173f5f; */
+  margin: 10px;
+  border-color: #888888;
+}
+
+.contact-item:hover {
+  box-shadow: 5px 10px 10px #888888;
+  transform: translateY(-3px);
+}
+.contact-details {
+  /* background-color: #ebf4fa; */
+  /* color: #ebf4fa; */
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+}
+
+.Add-order {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5% 5%;
+}
+.add-top {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  background-color: rgb(252, 237, 196);
+  position: relative;
+  overflow: auto;
+}
+
+.add-mid {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  background-color: rgb(212, 237, 245);
+  position: relative;
+  overflow: auto;
+}
+
+.add-bottom {
+  width: 100%;
+  border: 3px solid black;
+  /* background-color: #ebf4fa; */
+  border-radius: 2rem;
+  padding: 3% 5%;
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  background-color: rgb(245, 212, 212);
+  position: relative;
+}
+
+.horizontal {
+  display: flex;
+  align-items: baseline;
+}

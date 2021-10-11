@@ -1,0 +1,3 @@
+export const SET_CONTRACT = "SET_CONTRACT";
+
+export const DELETE_CONTRACT = "DELETE_CONTRACT";
