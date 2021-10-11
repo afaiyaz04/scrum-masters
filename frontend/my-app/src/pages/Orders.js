@@ -6,8 +6,19 @@ import { List, Button } from "antd";
 import "antd/dist/antd.css";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
-import { createOrder, fetchOrders, updateOrder, deleteOrder } from "../redux/Order/order.actions";
-import { createProduct, fetchProducts, updateProduct, deleteProduct } from "../redux/Product/product.actions";
+import {
+  createOrder,
+  fetchOrders,
+  updateOrder,
+  deleteOrder,
+} from "../redux/Order/order.actions";
+import {
+  createProduct,
+  fetchProducts,
+  updateProduct,
+  deleteProduct,
+} from "../redux/Product/product.actions";
+
 import { fetchContacts } from "../redux/Contact/contact.actions";
 
 const initialOrder = {
@@ -15,14 +26,15 @@ const initialOrder = {
   timeDue: Date,
   totalFee: 0,
   description: "",
-}
+  client: "",
+};
 
 const initialProduct = {
   id: "",
   name: "",
   description: "",
   price: 0,
-}
+};
 
 //** FUNCTIONS *//
 //
@@ -61,13 +73,14 @@ class Orders extends React.Component {
       showDetails: false,
       addOrder: false,
 
-      userId: JSON.parse(localStorage.getItem('userData'))._id
-    }
+      userId: JSON.parse(localStorage.getItem("userData"))._id,
+    };
   }
 
   componentDidMount() {
     this.props.dispatch(fetchOrders(this.state.userId));
     this.props.dispatch(fetchContacts(this.state.userId));
+    console.log(this.props.contacts);
   }
 
   createOrderHandler = (newItem) => {
@@ -75,7 +88,7 @@ class Orders extends React.Component {
     this.props.dispatch(createOrder(this.state.userId, newItem));
   };
 
-  render () {
+  render() {
     return (
       <div className="Master-div">
         <Sidebar />
@@ -86,8 +99,8 @@ class Orders extends React.Component {
               this.setState({
                 addOrder: true,
                 showDetails: false,
-                order: initialOrder
-              })
+                order: initialOrder,
+              });
             }}
           />
           <div className="contents">
@@ -104,7 +117,7 @@ class Orders extends React.Component {
                       <Button
                         type="dashed"
                         block
-                        onClick={() => 
+                        onClick={() =>
                           this.setState({
                             showDetails: true,
                             addOrder: false,
@@ -113,7 +126,7 @@ class Orders extends React.Component {
                               timeDue: item.timeDue,
                               totalFee: item.totalFee,
                               description: item.description,
-                            }
+                            },
                           })
                         }
                       >
@@ -129,24 +142,23 @@ class Orders extends React.Component {
                 )}
               />
             </div>
-            {
-              ( this.state.showDetails || this.state.addOrder ) &&
+            {(this.state.showDetails || this.state.addOrder) && (
               <div className="contents-right">
                 <OrderForm
-                  order={ this.state.order }
-
+                  contacts={this.props.contacts}
+                  order={this.state.order}
                   // Boolean values to check if component should have features on/off
-                  addOrder={ this.state.addOrder }
-                  showOrderDetails={ this.state.showOrderDetails }
-
+                  addOrder={this.state.addOrder}
+                  showOrderDetails={this.state.showOrderDetails}
                   // Button handlers
-                  createOrderAction={ this.createOrderHandler }
-
+                  createOrderAction={this.createOrderHandler}
                   // Closes form
-                  closeAction={() => this.setState({ addOrder: false, showOrder: false })}
+                  closeAction={() =>
+                    this.setState({ addOrder: false, showOrder: false })
+                  }
                 />
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
@@ -159,8 +171,8 @@ const mapStateToProps = (state) => {
     orders: state.orders,
     products: state.products,
     contacts: state.contacts,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(Orders);
 
