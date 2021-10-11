@@ -30,6 +30,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         registry-url: https://registry.npmjs.org/
         
+    - name: Install newman
+      run: npm install -g newman
+      working-directory: ./backend  
+      
         
     - name: Install dependencies
       run: npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
@@ -37,7 +41,9 @@ jobs:
       
       
     - name: Run the Backend
-      run: npm run start
+      run: |
+        npm run start &
+        newman run https://api.getpostman.com/collections/964bce0c-d1fd-4199-a6de-d7721259234?apikey=${{ secrets.postmanApiKey }}
       working-directory: ./backend 
       env:
         DB_URL: "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/test?retryWrites=true&w=majority"
