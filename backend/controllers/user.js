@@ -7,7 +7,7 @@ import Client from '../models/client.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
-import removeOrder from '../controllers/order.js';
+import { removeOrder } from '../controllers/order.js';
 
 const router = express.Router();
 
@@ -32,49 +32,6 @@ export const createUser = async (req, res) => {
 
         await newUser.save();
         res.status(201).json(newUser);
-    }
-    catch (error) {
-        res.status(409).json({message: error.message});
-    }
-}
-
-export const signIn = async (req, res) => {
-    const { 
-        email, 
-        nameFirst, 
-        nameLast
-    } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        // 1. Check if account has already been authenticated with oatuh
-        // This is an existing account
-        const existingUser = await User.findOne({ oauthId: req.userId });
-        
-        if (existingUser) {
-            res.status(201).json(oldUser);
-            return;
-        }
-
-
-        // 2. Check if a "blank" account has been created with email by admin
-        // This is a registered account but not fully created.
-        const createdUser = await User.findOne({ email: email });
-        if (!createdUser) {
-            return res.status(403).send(
-                "An admin needs to register an account with this email!"
-            );
-        }
-
-        // 3. Update this existing user with oauthId + additional info
-        createdUser.nameFirst = nameFirst;
-        createdUser.nameLast = nameLast;
-        createdUser.oauthId = req.userId;
-        await createdUser.save();
-        return res.status(201).json(createdUser);
     }
     catch (error) {
         res.status(409).json({message: error.message});
@@ -168,26 +125,30 @@ export const deleteUser = async (req, res) => {
     
 
     const user = await User.findById(id);
+    if (user == null) {
+        return res.status(404).send(`No user with id: ${id}`);
+    }
     // Check admin requested or is self
     if (!isAdminOrSelf(req.userId, user.oauthId)) {
         return res.json({ message: "No permission!"});
     }
 
-    for (var i = 0; i < user.clients.length; i++){
+    for (var i = 0; i < user.clients.length; i++) {
         var clientId = user.clients[i];
         await Client.findByIdAndRemove(clientId);
+
     }
 
     for (var i = 0; i < user.orders.length; i++){
         var orderId = user.orders[i];
-        removeOrder(orderId);
+        await removeOrder(orderId);
+
     }
-    
 
     const toUser = await User.findByIdAndRemove(id);
-    if (toUser == null) {
-        return res.status(404).send(`No user with id: ${id}`);
-    }
+    // if (toUser == null) {
+    //     return res.status(404).send(`No user with id: ${id}`);
+    // }
 
     
     res.json({message: "User deleted successfully."});
@@ -200,7 +161,6 @@ export const getAllUsers = async (req, res) => {
     }
 
     try {
-        console.log(req.userId);
         if (!(await isAdmin(req.userId))) {
             return res.json({ message: "No permission!" });
         }
@@ -284,7 +244,7 @@ export const deleteUserOrder = async (req, res) => {
         user.orders.splice(orderIndex, 1);
         user.save();
         // here
-        removeOrder(orderId);
+        await removeOrder(orderId);
         return res.json(user);
 
 
