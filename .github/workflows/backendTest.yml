@@ -43,8 +43,18 @@ jobs:
     - name: Run the Backend
       run: |
         npm run start &
-        sleep 60
+        sleep 20
+        newman run https://api.getpostman.com/collections/17378209-1a91ec5c-f1d9-4a30-b3d5-e6e8c120d14e?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-2635c65f-652e-4a0f-8210-b289a9072821?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-5d09801b-fb73-4f92-b913-48174911ad8f?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-6b3d2ba1-8c1c-44aa-821b-aa6235678bd6?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         newman run https://api.getpostman.com/collections/17378209-964bce0c-d1fd-4199-a6de-d77212592348?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-9859dbef-2d2b-4af8-aeab-1a9673b2dee9?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-9d38163e-449b-41e8-9c3a-f790597cb5f3?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-b3e9fa03-b3d1-4bc1-9a99-5a73d6fc39bb?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-dcf4787e-47f6-47b0-a104-b28bea73ef00?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        newman run https://api.getpostman.com/collections/17378209-f222e0b8-8529-4435-9bac-9f65827c60ca?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
+        
       working-directory: ./backend 
       env:
         DB_URL: "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/test?retryWrites=true&w=majority"
@@ -52,10 +62,3 @@ jobs:
         TEST: "true"
         NODE_ENV: "develop"
         
-    - name: Run postman report test   
-      uses: matt-ball/newman-action@master
-      with:
-        apiKey: ${{ secrets.postmanApiKey }}
-        collection: 17378209-964bce0c-d1fd-4199-a6de-d77212592348
-        environment: 17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928
-        envVar: '[{ "key": "url", "value": "http://localhost:5000" }]'
