@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, InputNumber, Button, Select, DatePicker } from "antd";
 
 const OrderForm = (props) => {
   const [order, setOrder] = useState({ ...props.order });
@@ -18,8 +18,6 @@ const OrderForm = (props) => {
     },
   };
 
-  console.log(contacts);
-
   return (
     <Form {...layout}>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
@@ -28,14 +26,15 @@ const OrderForm = (props) => {
       <Form.Item>
         <Select
           showArrow={false}
-          placeholder="Select Client"
+          placeholder={order.client}
           style={{ width: "150%" }}
+          onChange={(value) => setOrder({ ...order, client: value })}
         >
           {Object.keys(contacts).map((contact, index) => {
             return (
               <Select.Option
                 key={contacts[contact]._id}
-                value={contacts[contact].nameFirst}
+                value={contacts[contact]._id}
               >
                 {contacts[contact].nameFirst + " " + contacts[contact].nameLast}
               </Select.Option>
@@ -43,6 +42,40 @@ const OrderForm = (props) => {
           })}
         </Select>
       </Form.Item>
+      <Form.Item label="Time Due">
+        <DatePicker
+          showTime
+          onOk={(value) =>
+            setOrder({ ...order, timeDue: new Date(Date.parse(value)) })
+          }
+        />
+      </Form.Item>
+      <Form.Item label="Total Fee">
+        <InputNumber
+          onChange={(value) => {
+            setOrder({ ...order, totalFee: value });
+          }}
+          min={0}
+          defaultValue={order.totalFee}
+        />
+      </Form.Item>
+      <Form.Item label="Description:">
+        <Input
+          placeholder={order.description}
+          onChange={(e) => setOrder({ ...order, description: e.target.value })}
+        />
+      </Form.Item>
+      {props.showOrderDetails && (
+        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+          <Button onClick={() => props.updateAction(order)}>Update</Button>
+          <Button onClick={() => props.deleteAction(order.id)}>Delete</Button>
+        </Form.Item>
+      )}
+      {props.addOrder && (
+        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+          <Button onClick={() => props.createOrderAction(order)}>Create</Button>
+        </Form.Item>
+      )}
     </Form>
   );
 };

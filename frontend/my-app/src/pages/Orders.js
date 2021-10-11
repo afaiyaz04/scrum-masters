@@ -89,6 +89,7 @@ class Orders extends React.Component {
   };
 
   render() {
+    console.log(this.state.order.client);
     return (
       <div className="Master-div">
         <Sidebar />
@@ -123,6 +124,7 @@ class Orders extends React.Component {
                             addOrder: false,
                             order: {
                               id: item._id,
+                              client: item.client,
                               timeDue: item.timeDue,
                               totalFee: item.totalFee,
                               description: item.description,
@@ -136,6 +138,7 @@ class Orders extends React.Component {
                   >
                     <List.Item.Meta
                       title={`${item._id}`}
+                      description={item.description}
                       avatar={<CgProfile />}
                     />
                   </List.Item>
@@ -149,12 +152,12 @@ class Orders extends React.Component {
                   order={this.state.order}
                   // Boolean values to check if component should have features on/off
                   addOrder={this.state.addOrder}
-                  showOrderDetails={this.state.showOrderDetails}
+                  showOrderDetails={this.state.showDetails}
                   // Button handlers
                   createOrderAction={this.createOrderHandler}
                   // Closes form
                   closeAction={() =>
-                    this.setState({ addOrder: false, showOrder: false })
+                    this.setState({ addOrder: false, showDetails: false })
                   }
                 />
               </div>
