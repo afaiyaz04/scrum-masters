@@ -2,13 +2,13 @@ import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from '../components/buttons/ProfileButton';
 import { connect } from 'react-redux';
-import { Timeline, Card } from 'antd';
+import { Timeline, Card, Progress } from 'antd';
 import { fetchOrders } from '../redux/Order/order.actions';
 import 'antd/dist/antd.css';
 import '../App.css';
+import './Dashboard.css'
 import { CgProfile } from 'react-icons/cg';
-
-const { Meta } = Card;
+import { fetchContacts } from '../redux/Contact/contact.actions';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -17,17 +17,55 @@ class Dashboard extends React.Component {
       orders: this.props.orders.sort((a,b) => {
         return a.timeDue - b.timeDue;
       }),
-      contacts: this.props.contacts.reverse().slice(0,3),
+      ordersCreated: this.props.orders.filter((order) => {
+        return order.status === "CREATED";
+      }),
+      ordersDiscussed: this.props.orders.filter((order) => {
+        return order.status === "DISCUSSED";
+      }),
+      ordersAgreed: this.props.orders.filter((order) => {
+        return order.status === "AGREED";
+      }),
+      ordersSigned: this.props.orders.filter((order) => {
+        return order.status === "SIGNED";
+      }),
+
+      contacts: this.props.contacts.reverse(),
       
-      userId: JSON.parse(localStorage.getItem('userData'))._id
+      userId: JSON.parse(localStorage.getItem('userData'))._id,
     };
   }
 
   componentDidMount() {
     this.props.dispatch(fetchOrders(this.state.userId));
+    this.props.dispatch(fetchContacts(this.state.userId));
   }
 
-  render () {
+  componentDidUpdate() {
+    if (this.state.orders.length != this.props.orders.length || this.state.contacts.length != this.props.contacts.length ) {
+      this.setState({
+        orders: this.props.orders.sort((a,b) => {
+          return a.timeDue - b.timeDue;
+        }),
+        ordersCreated: this.props.orders.filter((order) => {
+          return order.status === "CREATED";
+        }),
+        ordersDiscussed: this.props.orders.filter((order) => {
+          return order.status === "DISCUSSED";
+        }),
+        ordersAgreed: this.props.orders.filter((order) => {
+          return order.status === "AGREED";
+        }),
+        ordersSigned: this.props.orders.filter((order) => {
+          return order.status === "SIGNED";
+        }),
+
+        contacts: this.props.contacts.reverse(),
+      });
+    }
+  }
+
+  render() {
     return (
       <div className='Master-div'>
         <Sidebar />
@@ -36,8 +74,15 @@ class Dashboard extends React.Component {
             <h1>Dashboard</h1>
             <ProfileButton></ProfileButton>
           </div>
+          <div className='progress'>
+            <Progress percent={ (this.state.ordersCreated.length * 100) / this.state.orders.length } format={() => `${this.state.ordersCreated.length} Orders Created`} strokeColor='red'/>
+            <Progress percent={ (this.state.ordersDiscussed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersDiscussed.length} Orders Discussed`} strokeColor='orange'/>
+            <Progress percent={ (this.state.ordersAgreed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersAgreed.length} Orders Agreed`} strokeColor='blue'/>
+            <Progress percent={ (this.state.ordersSigned.length * 100) / this.state.orders.length } format={() => `${this.state.ordersSigned.length} Orders Signed`} strokeColor='green'/>
+          </div>
           <div className='contents'>
             <div className='dashboard-left'>
+              <h3>Timeline</h3>
               <Timeline>
                 <Timeline.Item color='white'/>
                 {
@@ -45,25 +90,25 @@ class Dashboard extends React.Component {
                     switch (order.status) {
                       case "CREATED":
                         return (
-                          <Timeline.Item color='red'>
+                          <Timeline.Item key={order._id} color='red'>
                             Order { order._id }, due: { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "DISCUSSED":
                         return (
-                          <Timeline.Item color='grey'>
+                          <Timeline.Item key={order._id} color='orange'>
                             Order { order._id } { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "AGREED":
                         return (
-                          <Timeline.Item color='blue'>
+                          <Timeline.Item key={order._id} color='blue'>
                             Order { order._id }{ order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "SIGNED":
                         return (
-                          <Timeline.Item color='green'>
+                          <Timeline.Item key={order._id} color='green'>
                             Order { order._id } { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
@@ -72,21 +117,31 @@ class Dashboard extends React.Component {
                 }
               </Timeline>
             </div>
-            {
-                this.state.contacts.map((contact) => {
-                  return (
-                    <Card
-                      hoverable
-                      cover={
-                        <CgProfile style={{ fontSize: '40px', height: 100, bottom: 100, padding: 10 }}/>
-                      }
-                      style={{ width: 240, height: 300 }}
-                      bodyStyle={{ height: 200 }}>
-                      <Meta title={ contact.nameFirst + ' ' + contact.nameLast }/>
-                    </Card>
-                  )
-                })
-              }
+            <div className='dashboard-right'>
+              <div className='favourite-contacts'>
+                <h3>Favourite Contacts</h3>
+                <div className='favourite-contact-list'>
+                  {
+                    this.state.contacts.map((contact) => {
+                      return (
+                        <Card
+                          key={contact._id}
+                          hoverable
+                          cover={
+                            <CgProfile style={{ fontSize: '40px', height: 150, bottom: 150, padding: 10 }}/>
+                          }
+                          style={{ width: 240, height: 300 }}
+                          bodyStyle={{ height: 200, width: 230 }}>
+                          <h3 style={{ textAlign: 'center' }}>{`${contact.nameFirst} ${contact.nameLast}`}</h3>
+                          <h4>{ contact.email }</h4>
+                          <h4>{ contact.phoneNumber }</h4>
+                        </Card>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

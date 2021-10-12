@@ -1,0 +1,39 @@
+.dashboard-left {
+  width: 100%;
+  display: block;
+  justify-items: flex-start;
+  padding-right: 3%;
+}
+
+.progress {
+  display: block;
+  height: 55px;
+  border-width: 3px;
+  justify-content: space-between;
+  padding-top: 1%;
+  padding-bottom: 5%;
+  width: 95%;
+}
+
+.dashboard-right {
+  display: flex;
+  justify-items: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 3%;
+  min-width: 1000px;
+}
+
+.favourite-contacts {
+  width: 100%;
+  display: block;
+}
+
+.favourite-contact-list {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 320px;
+  white-space: nowrap;
+  width: 100%;
+  display: flex;
+}

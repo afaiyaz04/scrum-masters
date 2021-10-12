@@ -32,7 +32,6 @@ export const updateContact = (clientId, formData) => async (dispatch) => {
 export const deleteContact = (userId, clientId) => async (dispatch) => {
 	try {
 		await api.deleteUserClient(userId, clientId);
-		await api.deleteClient(clientId);
 		dispatch({ type: DELETE_CONTACT, payload: clientId });
 	} catch (error) {
 		console.log(error);
