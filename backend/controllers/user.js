@@ -7,6 +7,7 @@ import Client from '../models/client.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
+import { removeOrder } from '../controllers/order.js';
 
 const router = express.Router();
 
@@ -37,58 +38,15 @@ export const createUser = async (req, res) => {
     }
 }
 
-export const signIn = async (req, res) => {
-    const { 
-        email, 
-        nameFirst, 
-        nameLast
-    } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        // 1. Check if account has already been authenticated with oatuh
-        // This is an existing account
-        const existingUser = await User.findOne({ oauthId: req.userId });
-        
-        if (existingUser) {
-            res.status(201).json(oldUser);
-            return;
-        }
-
-
-        // 2. Check if a "blank" account has been created with email by admin
-        // This is a registered account but not fully created.
-        const createdUser = await User.findOne({ email: email });
-        if (!createdUser) {
-            return res.status(403).send(
-                "An admin needs to register an account with this email!"
-            );
-        }
-
-        // 3. Update this existing user with oauthId + additional info
-        createdUser.nameFirst = nameFirst;
-        createdUser.nameLast = nameLast;
-        createdUser.oauthId = req.userId;
-        await createdUser.save();
-        return res.status(201).json(createdUser);
-    }
-    catch (error) {
-        res.status(409).json({message: error.message});
-    }
-}
-
 export async function isAdmin(reqId) {
     const user = await User.findOne( { oauthId: reqId } );
-    return user.type == ADMIN_USER;
+    return user?.type == ADMIN_USER;
 }
 
 export async function isAdminOrSelf(reqId, oauthId) {
     // Find the user of reqId
     const user = await User.findOne( { oauthId: reqId } );
-    return user.type == ADMIN_USER || reqId == oauthId;
+    return reqId == oauthId || user?.type == ADMIN_USER;
 }
 
 // Get user
@@ -167,16 +125,30 @@ export const deleteUser = async (req, res) => {
     
 
     const user = await User.findById(id);
+    if (user == null) {
+        return res.status(404).send(`No user with id: ${id}`);
+    }
     // Check admin requested or is self
     if (!isAdminOrSelf(req.userId, user.oauthId)) {
         return res.json({ message: "No permission!"});
     }
 
+    for (var i = 0; i < user.clients.length; i++) {
+        var clientId = user.clients[i];
+        await Client.findByIdAndRemove(clientId);
+
+    }
+
+    for (var i = 0; i < user.orders.length; i++){
+        var orderId = user.orders[i];
+        await removeOrder(orderId);
+
+    }
 
     const toUser = await User.findByIdAndRemove(id);
-    if (toUser == null) {
-        return res.status(404).send(`No user with id: ${id}`);
-    }
+    // if (toUser == null) {
+    //     return res.status(404).send(`No user with id: ${id}`);
+    // }
 
     
     res.json({message: "User deleted successfully."});
@@ -271,6 +243,8 @@ export const deleteUserOrder = async (req, res) => {
         }
         user.orders.splice(orderIndex, 1);
         user.save();
+        // here
+        await removeOrder(orderId);
         return res.json(user);
 
 
@@ -387,6 +361,7 @@ export const deleteUserClient = async (req, res) => {
         }
         user.clients.splice(clientIndex, 1);
         user.save();
+        await Client.findByIdAndRemove(clientId)
         return res.json(user);
 
 
@@ -499,9 +474,10 @@ export const promoteUser = async (req, res) => {
 
         if (!(await isAdmin(req.userId))) return res.status(403).json('Forbidden action');
 
-        const toUser = await User.findOneAndUpdate({ _id: toUserId }, { $set: { type: ADMIN_USER } }, { new: true });
+        user.type = ADMIN_USER;
+        await user.save();
 
-        res.status(201).json(toUser);
+        res.status(201).json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

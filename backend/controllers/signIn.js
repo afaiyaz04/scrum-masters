@@ -32,10 +32,9 @@ export const signIn = async (req, res) => {
         // 1. Check if account has already been authenticated with oatuh
         // This is an existing account
         const existingUser = await User.findOne({ oauthId: req.userId });
-        
+    
         if (existingUser) {
-            res.status(201).json(existingUser);
-            return;
+            return res.status(201).json(existingUser);
         }
 
 

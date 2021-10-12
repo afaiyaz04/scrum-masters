@@ -96,8 +96,7 @@ export const deleteOrder = async (req, res) => {
         return res.status(404).send(`No order with id: ${id}`);
     }
 
-    const order = await Order.findByIdAndRemove(id);
-    if (order == null) {
+    if (!await removeOrder(id)) {
         return res.status(404).send(`No order with id: ${id}`);
     }
     res.json({ message: "Order deleted successfully." });
@@ -193,6 +192,7 @@ export const removeLineProduct = async (req, res) => {
         }
         order.lineProducts.splice(productIndex, 1);
         order.save();
+        await Product.findByIdAndRemove(productId);
         return res.json(order);
 
     } catch (error) {
@@ -248,6 +248,19 @@ async function doesOrderProductExist(orderId, productId, res) {
     }
 
     return [order, product];
+}
+
+export async function removeOrder(orderId) {
+    const order = await Order.findById(orderId);
+    if (!order) return false;
+
+    const orderProducts = order.lineProducts;
+    for (var i = 0; i < orderProducts.length; i++) {
+        var productId = orderProducts[i].productId;
+        await Product.findByIdAndRemove(productId);
+    }
+    await Order.findByIdAndRemove(orderId);
+    return true;
 }
 
 export default router;
