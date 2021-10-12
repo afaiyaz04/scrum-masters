@@ -69,6 +69,11 @@
   right: 20px;
   bottom: 50px;
 }
+
+.dashboard-left {
+  width: 30%;
+  justify-items: flex-start;
+}
 /************************************************/
 
 /* LIST ITEM */
