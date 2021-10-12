@@ -23,6 +23,7 @@
   padding: 3% 5%;
   flex-direction: column;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .thing {
