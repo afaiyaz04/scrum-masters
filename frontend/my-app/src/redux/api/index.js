@@ -25,3 +25,19 @@ export const fetchUsers = () => API.get('/user');
 export const promoteUser = (userId, toUserId) => API.patch(`/user/${userId}/promote`, { toUserId });
 
 export const registerUser = (formData) => API.post('/user', formData);
+
+export const createOrder = (formData) => API.post('/order', formData);
+export const addUserOrder = (userId, orderId) => API.post(`/user/${userId}/orders`, { orderId });
+export const fetchOrders = (userId) => API.get(`/user/${userId}/orders`);
+export const updateOrder = (orderId, formData) => API.patch(`/order/${orderId}`, formData);
+export const deleteOrder = (orderId) => API.delete(`/order/${orderId}`);
+export const deleteUserOrder = (userId, orderId) => API.delete(`/user/${userId}/orders`, { data: { orderId } });
+
+export const createProduct = (formData) => API.post('/product', formData);
+export const addLineProduct = (orderId, productData) => API.post(`/order/${orderId}/products`, productData);
+export const fetchLineProducts = (orderId) => API.get(`/order/${orderId}/products`);
+export const fetchProduct = (productId) => API.get(`/product/${productId}`);
+export const updateProduct = (productId, formData) => API.patch(`/product/${productId}`, formData);
+export const updateLineProduct = (orderId, productData) => API.patch(`/order/${orderId}/products`, productData);
+export const deleteProduct = (productId) => API.delete(`/product/${productId}`);
+export const deleteLineProduct = (orderId, productId) => API.delete(`/order/${orderId}/products`, { data: { productId } });
