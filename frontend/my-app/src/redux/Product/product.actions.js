@@ -33,7 +33,6 @@ export const updateProduct = (orderId, productId, formData, quantity) => async (
 export const deleteProduct = (orderId, productId) => async (dispatch) => {
 	try {
 		await api.deleteLineProduct(orderId, productId);
-		await api.deleteProduct(productId);
 		dispatch({ type: DELETE_PRODUCT, payload: productId });
 	} catch (error) {
 		console.log(error);

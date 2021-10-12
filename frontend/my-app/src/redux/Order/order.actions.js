@@ -32,7 +32,6 @@ export const updateOrder = (orderId, formData) => async (dispatch) => {
 export const deleteOrder = (userId, orderId) => async (dispatch) => {
 	try {
 		await api.deleteUserOrder(userId, orderId);
-		await api.deleteOrder(orderId);
 		dispatch({ type: DELETE_ORDER, payload: orderId });
 	} catch (error) {
 		console.log(error);
