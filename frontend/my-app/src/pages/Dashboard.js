@@ -2,13 +2,41 @@ import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from '../components/buttons/ProfileButton';
 import { connect } from 'react-redux';
-import { Timeline, Card, Progress } from 'antd';
+import { Timeline, Card, Progress, Table } from 'antd';
 import { fetchOrders } from '../redux/Order/order.actions';
 import 'antd/dist/antd.css';
 import '../App.css';
 import './Dashboard.css'
 import { CgProfile } from 'react-icons/cg';
 import { fetchContacts } from '../redux/Contact/contact.actions';
+
+const columns = [
+  {
+    title: 'id',
+    dataIndex: '_id',
+    key: '_id',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+  },
+  {
+    title: 'Created',
+    dataIndex: 'timePlaced',
+    key: 'timePlaced',
+  },
+  {
+    title: 'Deadline',
+    dataIndex: 'timeDue',
+    key: 'timeDue',
+  },
+  {
+    title: 'Fee',
+    dataIndex: 'totalFee',
+    key: 'totalFee',
+  },
+]
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -139,6 +167,10 @@ class Dashboard extends React.Component {
                       )
                     })
                   }
+                </div>
+                <div className='recent-orders'>
+                  <h3>Recent Orders</h3>
+                  <Table columns={columns} dataSource={this.state.orders} />
                 </div>
               </div>
             </div>
