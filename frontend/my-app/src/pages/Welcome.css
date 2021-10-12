@@ -19,3 +19,8 @@
 font-size: inherit;
 color: black;
 }
+
+.welcome-page {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}

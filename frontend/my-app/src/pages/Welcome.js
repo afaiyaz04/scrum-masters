@@ -59,7 +59,7 @@ function SignUp() {
       
 
     return (
-        <div>
+        <div className='welcome-page'>
             <Layout>
                 <Header style={{backgroundColor: "#20639B"}}>
                     {/* <div className='logo'/> */}
