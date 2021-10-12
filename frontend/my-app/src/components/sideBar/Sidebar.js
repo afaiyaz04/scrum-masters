@@ -18,10 +18,12 @@ function Navbar() {
             <h1>
               <FaIcons.FaUserCircle />
             </h1>
-            <h2>
+            <h2 className='userDetails'>
               {nameFirst} {nameLast}
             </h2>
-            <h2>{type}</h2>
+            <h2 className='userDetails'>
+              {type}
+            </h2>
           </div>
           <ul className="nav-menu-items">
             {SidebarData.map((item, index) => {
