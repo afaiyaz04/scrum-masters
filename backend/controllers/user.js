@@ -118,20 +118,25 @@ export const deleteUser = async (req, res) => {
         return res.status(404).send(`No user with id: ${id}`);
     }
     // Check admin requested or is self
-    if (!await await isAdminOrSelf(req.userId, user)) {
+    if (!await isAdminOrSelf(req.userId, user)) {
         return res.json({ message: "No permission!"});
     }
 
-    for (var i = 0; i < user.clients.length; i++) {
-        var clientId = user.clients[i];
-        await Client.findByIdAndRemove(clientId);
+    // for (var i = 0; i < user.clients.length; i++) {
+    //     var clientId = user.clients[i];
+    //     await Client.findByIdAndRemove(clientId);
 
-    }
+    // }
 
-    for (var i = 0; i < user.orders.length; i++){
+    for (var i = 0; i < user.orders.length; i++) {
         var orderId = user.orders[i];
         await removeOrder(orderId);
 
+    }
+
+    for (var i = 0; i < user.receivedOrders.length; i++) {
+        var orderId = user.receivedOrders[i].order;
+        await removeOrder(orderId);
     }
 
     const toUser = await User.findByIdAndRemove(id);
@@ -350,7 +355,7 @@ export const deleteUserClient = async (req, res) => {
         }
         user.clients.splice(clientIndex, 1);
         user.save();
-        await Client.findByIdAndRemove(clientId)
+        // await Client.findByIdAndRemove(clientId)
         return res.json(user);
 
 
