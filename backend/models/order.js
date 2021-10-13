@@ -50,6 +50,7 @@ const orderSchema = new mongoose.Schema({
     default: ORDER_CREATED,
     required: true,
   },
+  orderNumber: { type: Number, required: true },
   description: { type: String, required: false, default: null },
   log: { type: [logSchema], required: true },
   lastModified: { type: Date, required: true, default: Date.now },
