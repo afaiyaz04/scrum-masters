@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import Order from '../models/order.js';
 import Product from '../models/product.js';
+import User from '../models/user.js';
 
 const router = express.Router();
 
@@ -211,7 +212,7 @@ export const getLineProducts = async (req, res) => {
     try {
         const order = await Order.findById(orderId);
         if (order == null) {
-
+            return;
         }
 
         const getLineProducts = async () => {
@@ -228,6 +229,31 @@ export const getLineProducts = async (req, res) => {
             res.json(products);
         })
 
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+export const addLog = async (req, res) => {
+    const { id } = req.params;
+    const { userId, text } = req.body;
+
+    try {
+        const order = await Order.findById(id);
+        if (order == null) {
+            return;
+        }
+        
+        const user = await User.findById(id);
+        if (user) {
+            return;
+        }
+
+        const newLog = { user: userId, text: text };
+        order.log.push(newLog);
+
+        await order.save();
+        res.json(order);
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
