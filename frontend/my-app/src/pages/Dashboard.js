@@ -9,6 +9,7 @@ import '../App.css';
 import './Dashboard.css'
 import { CgProfile } from 'react-icons/cg';
 import { fetchContacts } from '../redux/Contact/contact.actions';
+import { getFavourites } from '../redux/api';
 
 const columns = [
   {
@@ -58,7 +59,7 @@ class Dashboard extends React.Component {
         return order.status === "SIGNED";
       }),
 
-      contacts: this.props.contacts.reverse(),
+      contacts: this.props.contacts,
       
       userId: JSON.parse(localStorage.getItem('userData'))._id,
     };
@@ -88,7 +89,7 @@ class Dashboard extends React.Component {
           return order.status === "SIGNED";
         }),
 
-        contacts: this.props.contacts.reverse(),
+        contacts: this.props.contacts,
       });
     }
   }
@@ -149,14 +150,14 @@ class Dashboard extends React.Component {
               <div className='favourite-contacts'>
                 <h3>Favourite Contacts</h3>
                   {
-                    (this.props.contacts.length === 0) &&
+                    (this.props.contacts.filter((c) => {if (c.fav) return c}).length === 0) &&
                     <Empty className='empty-contact-list' image={Empty.PRESENTED_IMAGE_SIMPLE} />
                   }
                   {
-                    (this.props.contacts.length > 0) &&
+                    (this.props.contacts.filter((c) => {if (c.fav) return c}).length > 0) &&
                     <div className='favourite-contact-list'>
                       {
-                        this.state.contacts.map((contact) => {
+                        this.state.contacts.filter((c) => {if (c.fav) return c}).map((contact) => {
                           return (
                             <Card
                               key={contact._id}

@@ -168,10 +168,6 @@
   border-color: #888888;
 }
 
-.contact-item:hover {
-  box-shadow: 5px 10px 10px #888888;
-  transform: translateY(-3px);
-}
 .contact-details {
   /* background-color: #ebf4fa; */
   /* color: #ebf4fa; */

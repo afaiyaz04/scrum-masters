@@ -1,4 +1,4 @@
-import { FETCH_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT } from "./contact.types";
+import { FETCH_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT, FAVOURITE_CONTACT } from "./contact.types";
 
 const INITIAL_STATE = [];
 
@@ -12,6 +12,8 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return state.map((contact) => (contact._id === action.payload._id ? action.payload : contact));
 		case DELETE_CONTACT:
 			return state.filter((contact) => contact._id !== action.payload);
+		case FAVOURITE_CONTACT:
+			return state.map((contact) => (contact._id === action.payload._id ? action.payload : contact));
 		default:
 			return state;
 	}
