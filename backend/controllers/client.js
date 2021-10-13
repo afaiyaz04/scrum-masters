@@ -116,4 +116,27 @@ export const deleteClient = async (req, res) => {
     res.json({ message: "Client deleted successfully." });
 }
 
+export const makeFavourite = async (req, res) => {
+    const { id } = req.params;
+    const { isFav } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
+
+    const client = await Client.findById(id);
+    if (client == null) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
+
+    client.fav = isFav;
+    await client.save();
+    return res.json(client);
+}
+
+
 export default router;
