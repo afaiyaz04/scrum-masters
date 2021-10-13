@@ -7,7 +7,6 @@ import Client from '../models/client.js';
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { ADMIN_USER, GENERAL_USER } from '../models/systemEnums.js';
-import { removeOrder } from '../controllers/order.js';
 
 const router = express.Router();
 
@@ -118,7 +117,7 @@ export const deleteUser = async (req, res) => {
         return res.status(404).send(`No user with id: ${id}`);
     }
     // Check admin requested or is self
-    if (!await await isAdminOrSelf(req.userId, user)) {
+    if (!await isAdminOrSelf(req.userId, user)) {
         return res.json({ message: "No permission!"});
     }
 
@@ -130,8 +129,7 @@ export const deleteUser = async (req, res) => {
 
     for (var i = 0; i < user.orders.length; i++){
         var orderId = user.orders[i];
-        await removeOrder(orderId);
-
+        await Order.findByIdAndRemove(orderId);
     }
 
     const toUser = await User.findByIdAndRemove(id);

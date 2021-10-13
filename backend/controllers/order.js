@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import Order from '../models/order.js';
-import Product from '../models/product.js';
 import User from '../models/user.js';
 import { isAdminOrSelf } from './user.js';
 
@@ -110,7 +109,9 @@ export const deleteOrder = async (req, res) => {
         return res.status(404).send(`No order with id: ${id}`);
     }
 
-    if (!await removeOrder(id)) {
+    const order = await Order.findByIdAndRemove(id);
+
+    if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
     res.json({ message: "Order deleted successfully." });
@@ -251,37 +252,6 @@ export const addLog = async (req, res) => {
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
-}
-
-async function doesOrderProductExist(orderId, productId, res) {
-    // Find the order
-    const order = await Order.findById(orderId);
-    if (order == null) {
-        res.status(404).send(`No order with id: ${orderId}`);
-        return [null, null];
-    }
-    
-    // Find the product
-    const product = await Product.findById(productId);
-    if (product == null) {
-        res.status(404).send(`No product with id: ${productId}`);
-        return [null, null];
-    }
-
-    return [order, product];
-}
-
-export async function removeOrder(orderId) {
-    const order = await Order.findById(orderId);
-    if (!order) return false;
-
-    const orderProducts = order.lineProducts;
-    for (var i = 0; i < orderProducts.length; i++) {
-        var productId = orderProducts[i].productId;
-        await Product.findByIdAndRemove(productId);
-    }
-    await Order.findByIdAndRemove(orderId);
-    return true;
 }
 
 export default router;
