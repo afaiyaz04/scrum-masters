@@ -1,0 +1,56 @@
+.dashboard-left {
+  width: 60%;
+  display: block;
+  justify-items: flex-start;
+  padding-right: 3%;
+}
+
+.progress {
+  display: block;
+  height: 55px;
+  border-width: 3px;
+  justify-content: space-between;
+  padding-top: 1%;
+  padding-bottom: 5%;
+  width: 95%;
+}
+
+.dashboard-right {
+  display: flex;
+  justify-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 3%;
+}
+
+.favourite-contacts {
+  width: 100%;
+  display: block;
+  padding-bottom: 5%;
+}
+
+.favourite-contact-list {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 320px;
+  white-space: nowrap;
+  width: 100%;
+  display: flex;
+}
+
+.empty-contact-list {
+  height: 320px;
+  width: 100%;
+  display: block;
+  align-items: center;
+  align-content: center;
+}
+
+.recent-orders {
+  width: 100%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  box-sizing: border-box;
+}

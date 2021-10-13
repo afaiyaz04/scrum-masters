@@ -117,6 +117,7 @@ class Orders extends React.Component {
                     actions={[
                       <Button
                         type="dashed"
+                        style={{ paddingLeft: 2, textAlign: 'center' }}
                         block
                         onClick={() =>
                           this.setState({
@@ -137,7 +138,7 @@ class Orders extends React.Component {
                     ]}
                   >
                     <List.Item.Meta
-                      title={`${item._id}`}
+                      title={`Order No. ${item.orderNumber}`}
                       description={item.description}
                       avatar={<CgProfile />}
                     />

@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 
 import Order from '../models/order.js';
 import Product from '../models/product.js';
+import User from '../models/user.js';
+import { isAdminOrSelf } from './user.js';
 
 const router = express.Router();
 
@@ -18,11 +20,22 @@ export const createOrder = async (req, res) => {
         return res.json({ message: "Unauthenticated!"});
     }
 
+    // find an order number
+    const orders = await Order.find();
+    const orderNumbers = orders.map((order) => order.orderNumber);
+
+    var nextOrderNum = orderNumbers.length + 1;
+
+    while (orderNumbers.findIndex(on => on == nextOrderNum) != -1) {
+        nextOrderNum++;
+    }
+
     const newOrder = new Order({ 
         client: mongoose.Types.ObjectId(client),
-        timeDue, 
-        totalFee, 
-        description
+        timeDue: timeDue, 
+        totalFee: totalFee, 
+        description: description,
+        orderNumber: nextOrderNum
     });
 
     try {
@@ -70,11 +83,12 @@ export const updateOrder = async (req, res) => {
     }
 
     const updatedOrder = { 
-        client,
-        timeDue, 
-        totalFee, 
-        status, 
-        description,
+        client: client,
+        timeDue: timeDue, 
+        totalFee: totalFee, 
+        status: status, 
+        description: description,
+        lastModified: Date.now(),
         _id: id 
     };
 
@@ -210,7 +224,7 @@ export const getLineProducts = async (req, res) => {
     try {
         const order = await Order.findById(orderId);
         if (order == null) {
-
+            return;
         }
 
         const getLineProducts = async () => {
@@ -227,6 +241,39 @@ export const getLineProducts = async (req, res) => {
             res.json(products);
         })
 
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+export const addLog = async (req, res) => {
+    const { id } = req.params;
+    const { userId, text } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    try {
+        const order = await Order.findById(id);
+        if (order == null) {
+            return;
+        }
+        
+        const user = await User.findById(id);
+        if (user) {
+            return;
+        }
+
+        if (!await isAdminOrSelf(req.userId, user)) {
+            return res.json({ message: "No permission!"});
+        }
+
+        const newLog = { user: userId, text: text };
+        order.log.push(newLog);
+
+        await order.save();
+        res.json(order);
     } catch (error) {
         res.status(404).json({ message: error.message});
     }

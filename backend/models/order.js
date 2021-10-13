@@ -20,6 +20,19 @@ const lineProductSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// define the log child scheme
+const logSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    },
+    timeCreated: { type: Date, required: true, default: Date.now },
+    text: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 // define the Order schema
 const orderSchema = new mongoose.Schema({
   client: {
@@ -37,8 +50,10 @@ const orderSchema = new mongoose.Schema({
     default: ORDER_CREATED,
     required: true,
   },
+  orderNumber: { type: Number, required: true },
   description: { type: String, required: false, default: null },
-  log: [{ type: mongoose.Schema.Types.ObjectId, ref: "Log" }],
+  log: { type: [logSchema], required: true },
+  lastModified: { type: Date, required: true, default: Date.now },
 });
 
 // compile into Model
