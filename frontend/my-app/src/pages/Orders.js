@@ -22,11 +22,12 @@ import {
 import { fetchContacts } from "../redux/Contact/contact.actions";
 
 const initialOrder = {
-  id: "",
+  id: null,
   timeDue: Date,
   totalFee: 0,
   description: "",
   client: "",
+  status: "CREATED",
 };
 
 const initialProduct = {
@@ -80,7 +81,6 @@ class Orders extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetchOrders(this.state.userId));
     this.props.dispatch(fetchContacts(this.state.userId));
-    console.log(this.props.contacts);
   }
 
   createOrderHandler = (newItem) => {
@@ -88,8 +88,25 @@ class Orders extends React.Component {
     this.props.dispatch(createOrder(this.state.userId, newItem));
   };
 
+  updateOrderHandler = (newItem) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(updateOrder(this.state.order.id, newItem));
+  }
+
+  deleteOrderHandler = (orderId) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(deleteOrder(this.state.userId, orderId));
+  }
+
+  descriptionLimit = (description) => {
+    if (description.length > 50) {
+      return `${description.slice(0,50)}...`;
+    } else {
+      return description;
+    }
+  }
+
   render() {
-    console.log(this.state.order.client);
     return (
       <div className="Master-div">
         <Sidebar />
@@ -129,6 +146,7 @@ class Orders extends React.Component {
                               timeDue: item.timeDue,
                               totalFee: item.totalFee,
                               description: item.description,
+                              status: item.status,
                             },
                           })
                         }
@@ -139,8 +157,7 @@ class Orders extends React.Component {
                   >
                     <List.Item.Meta
                       title={`Order No. ${item.orderNumber}`}
-                      description={item.description}
-                      avatar={<CgProfile />}
+                      description={this.descriptionLimit(item.description)}
                     />
                   </List.Item>
                 )}
@@ -156,6 +173,8 @@ class Orders extends React.Component {
                   showOrderDetails={this.state.showDetails}
                   // Button handlers
                   createOrderAction={this.createOrderHandler}
+                  updateOrderAction={this.updateOrderHandler}
+                  deleteOrderAction={this.deleteOrderHandler}
                   // Closes form
                   closeAction={() =>
                     this.setState({ addOrder: false, showDetails: false })
