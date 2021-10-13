@@ -118,20 +118,25 @@ export const deleteUser = async (req, res) => {
         return res.status(404).send(`No user with id: ${id}`);
     }
     // Check admin requested or is self
-    if (!await await isAdminOrSelf(req.userId, user)) {
+    if (!await isAdminOrSelf(req.userId, user)) {
         return res.json({ message: "No permission!"});
     }
 
-    for (var i = 0; i < user.clients.length; i++) {
-        var clientId = user.clients[i];
-        await Client.findByIdAndRemove(clientId);
+    // for (var i = 0; i < user.clients.length; i++) {
+    //     var clientId = user.clients[i];
+    //     await Client.findByIdAndRemove(clientId);
 
-    }
+    // }
 
-    for (var i = 0; i < user.orders.length; i++){
+    for (var i = 0; i < user.orders.length; i++) {
         var orderId = user.orders[i];
         await removeOrder(orderId);
 
+    }
+
+    for (var i = 0; i < user.receivedOrders.length; i++) {
+        var orderId = user.receivedOrders[i].order;
+        await removeOrder(orderId);
     }
 
     const toUser = await User.findByIdAndRemove(id);
@@ -350,7 +355,7 @@ export const deleteUserClient = async (req, res) => {
         }
         user.clients.splice(clientIndex, 1);
         user.save();
-        await Client.findByIdAndRemove(clientId)
+        // await Client.findByIdAndRemove(clientId)
         return res.json(user);
 
 
@@ -425,23 +430,20 @@ export const transferOrder = async (req, res) => {
             return res.status(404).send(`No transfer user with id: ${toUserId}`);
         }
 
-        const userOrders = user.orders;
-        const toUserOrders = toUser.orders;
+        const orderIndex = user.orders.findIndex(o => {return o._id == orderId});
+        if (orderIndex != -1) {
+            const receivedOrder = { fromUser: user._id, order: order._id };
+            if (!toUser.receivedOrders.includes(receivedOrder)) {
+                toUser.receivedOrders.push(receivedOrder);
+                user.orders.splice(orderIndex, 1);
 
-        if (userOrders.includes(orderId)) {
-            if (!(toUserOrders.includes(orderId))) {
-                var orderIndex = userOrders.indexOf(orderId);
-                // Remove from user
-                if (orderIndex !== -1) {
-                    userOrders.splice(orderIndex, 1);
-                }
-                // Add to new user
-                toUserOrders.push(orderId);
-                user.save();
-                toUser.save();
+                await toUser.save();
+                await user.save();
                 return res.json({fromUser: user, toUser: toUser});
             }
         }
+
+
         return res.status(404).send(
             "User does not have order or toUser already contains this order!"
         );
@@ -449,6 +451,102 @@ export const transferOrder = async (req, res) => {
         res.status(404).json({ message: error.message});
     }
 }
+
+
+export const acceptOrder = async (req, res) => {
+    const { id } = req.params;
+    const { orderId } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check if either is admin, or is user self
+        if (!await isAdminOrSelf(req.userId, user)) {
+            return res.json({ message: "No permission!"});
+        }
+
+        const result = await respondToTransfer(res, user, orderId, true);
+        result && res.json(result);
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+export const declineOrder = async (req, res) => {
+    const { id } = req.params;
+    const { orderId } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return res.status(404).send(`No user with id: ${id}`);
+        }
+
+        // Check if either is admin, or is user self
+        if (!await isAdminOrSelf(req.userId, user)) {
+            return res.json({ message: "No permission!"});
+        }
+
+        const result = await respondToTransfer(res, user, orderId, false);
+        result && res.json(result);
+
+    } catch (error) {
+        res.status(404).json({ message: error.message});
+    }
+}
+
+async function respondToTransfer(res, toUser, orderId, accept) {
+    // Check if this order is in our received list
+    const rOrderIndex = toUser.receivedOrders.findIndex(rOrder => {
+        return rOrder.order == orderId;
+    });
+
+    if (rOrderIndex == -1) {
+        res.status(404).send("User doesn't contain order");
+        return null;
+    }
+
+    const receivedOrder = toUser.receivedOrders[rOrderIndex];
+
+    const fromUser = await User.findById(receivedOrder.fromUser);
+    const order = await Order.findById(orderId);
+    if (fromUser == null || order == null) {
+        // We need to maybe force an accept or kill order
+        res.status(404).send("Order or from user no longer exists");
+        return null;
+    }
+
+    
+    if (accept) {
+        toUser.orders.push(orderId);
+    } else {
+        // return to sender
+        fromUser.receivedOrders.push({ 
+            fromUser: toUser._id, 
+            order: order._id
+        });
+    }
+
+    // Remove from receivedOrders
+    toUser.receivedOrders.splice(rOrderIndex, 1);
+    await fromUser.save();
+    await toUser.save();
+
+    return { fromUser: fromUser, toUser: toUser };
+}
+
 
 export const promoteUser = async (req, res) => {
     const { id } = req.params;

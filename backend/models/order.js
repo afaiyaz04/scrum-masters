@@ -23,9 +23,9 @@ const lineProductSchema = new mongoose.Schema(
 // define the log child scheme
 const logSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     timeCreated: { type: Date, required: true, default: Date.now },
     text: { type: String, required: true },
