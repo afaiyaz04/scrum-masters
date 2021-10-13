@@ -5,6 +5,12 @@ import {
 	GENERAL_USER
 } from './systemEnums.js';
 
+const receivedOrdersSchema = new mongoose.Schema({
+	fromUser: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+	order: {type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true}
+}, 
+{ _id: false });
+
 // define the User schema
 const userSchema = new mongoose.Schema({
 	email: { type: String, required: true },
@@ -22,8 +28,7 @@ const userSchema = new mongoose.Schema({
 	},
 	clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],
 	orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
-	contracts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contract" }],
-	report: { type: mongoose.Schema.Types.ObjectId, ref: "Report" }
+	receivedOrders: { type: [receivedOrdersSchema], required: true}
 });
 
 // compile into Model
