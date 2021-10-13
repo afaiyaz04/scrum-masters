@@ -2,7 +2,7 @@ import React from 'react'
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from '../components/buttons/ProfileButton';
 import { connect } from 'react-redux';
-import { Timeline, Card, Progress, Table } from 'antd';
+import { Timeline, Card, Progress, Table, Empty } from 'antd';
 import { fetchOrders } from '../redux/Order/order.actions';
 import 'antd/dist/antd.css';
 import '../App.css';
@@ -148,29 +148,36 @@ class Dashboard extends React.Component {
             <div className='dashboard-right'>
               <div className='favourite-contacts'>
                 <h3>Favourite Contacts</h3>
-                <div className='favourite-contact-list'>
                   {
-                    this.state.contacts.map((contact) => {
-                      return (
-                        <Card
-                          key={contact._id}
-                          hoverable
-                          cover={
-                            <CgProfile style={{ fontSize: '40px', height: 150, bottom: 150, padding: 10 }}/>
-                          }
-                          style={{ width: 240, height: 300 }}
-                          bodyStyle={{ height: 200, width: 230 }}>
-                          <h3 style={{ textAlign: 'center' }}>{`${contact.nameFirst} ${contact.nameLast}`}</h3>
-                          <h4>{ contact.email }</h4>
-                          <h4>{ contact.phoneNumber }</h4>
-                        </Card>
-                      )
-                    })
+                    (this.props.contacts.length === 0) &&
+                    <Empty className='empty-contact-list' image={Empty.PRESENTED_IMAGE_SIMPLE} />
                   }
-                </div>
+                  {
+                    (this.props.contacts.length > 0) &&
+                    <div className='favourite-contact-list'>
+                      {
+                        this.state.contacts.map((contact) => {
+                          return (
+                            <Card
+                              key={contact._id}
+                              hoverable
+                              cover={
+                                <CgProfile style={{ fontSize: '40px', height: 150, bottom: 150, padding: 10 }}/>
+                              }
+                              style={{ width: 240, height: 300 }}
+                              bodyStyle={{ height: 200, width: 230 }}>
+                              <h3 style={{ textAlign: 'center' }}>{`${contact.nameFirst} ${contact.nameLast}`}</h3>
+                              <h4>{ contact.email }</h4>
+                              <h4>{ contact.phoneNumber }</h4>
+                            </Card>
+                          )
+                        })
+                      }
+                    </div>
+                  }
                 <div className='recent-orders'>
                   <h3>Recent Orders</h3>
-                  <Table columns={columns} dataSource={this.state.orders} />
+                  <Table columns={columns} dataSource={this.state.orders} pagination={false}/>
                 </div>
               </div>
             </div>

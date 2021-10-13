@@ -41,6 +41,14 @@
   display: flex;
 }
 
+.empty-contact-list {
+  height: 320px;
+  width: 100%;
+  display: block;
+  align-items: center;
+  align-content: center;
+}
+
 .recent-orders {
   width: 100%;
   padding-top: 5%;
