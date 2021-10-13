@@ -5,7 +5,7 @@ export const createProduct = (orderId, formData, quantity) => async (dispatch) =
 	try {
 		const { data } = await api.createProduct(formData);
 		await api.addLineProduct(orderId, data._id, quantity);
-		dispatch({ type: CREATE_PRODUCT, payload: { ...data, ...quantity } });
+		dispatch({ type: CREATE_PRODUCT, payload: { product: data, quantity } });
 	} catch (error) {
 		console.log(error);
 	}
@@ -23,8 +23,8 @@ export const fetchProducts = (orderId) => async (dispatch) => {
 export const updateProduct = (orderId, productId, formData, quantity) => async (dispatch) => {
 	try {
 		const { data } = await api.updateProduct(productId, formData);
-        await api.updateLineProduct(orderId, { ...productId, quantity });
-		dispatch({ type: UPDATE_PRODUCT, payload: { ...data, ...quantity } });
+        await api.updateLineProduct(orderId, { productId, quantity });
+		dispatch({ type: UPDATE_PRODUCT, payload: { product: data, quantity } });
 	} catch (error) {
 		console.log(error);
 	}

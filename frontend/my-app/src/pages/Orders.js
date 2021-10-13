@@ -20,6 +20,7 @@ import {
 } from "../redux/Product/product.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
+import ProductForm from "../components/ProductForm";
 
 const initialOrder = {
   id: null,
@@ -28,13 +29,6 @@ const initialOrder = {
   description: "",
   client: "",
   status: "CREATED",
-};
-
-const initialProduct = {
-  id: "",
-  name: "",
-  description: "",
-  price: 0,
 };
 
 //** FUNCTIONS *//
@@ -74,6 +68,8 @@ class Orders extends React.Component {
       showDetails: false,
       addOrder: false,
 
+      showProducts: false,
+
       userId: JSON.parse(localStorage.getItem("userData"))._id,
     };
   }
@@ -98,6 +94,18 @@ class Orders extends React.Component {
     this.props.dispatch(deleteOrder(this.state.userId, orderId));
   }
 
+  createProductHandler = (newItem, quantity) => {
+    this.props.dispatch(createProduct(this.state.order.id, newItem, quantity));
+  };
+
+  updateProductHandler = (productId, newItem, quantity) => {
+    this.props.dispatch(updateProduct(this.state.order.id, productId, newItem, quantity));
+  }
+
+  deleteProductHandler = (productId) => {
+    this.props.dispatch(deleteProduct(this.state.order.id, productId));
+  }
+
   descriptionLimit = (description) => {
     if (description.length > 50) {
       return `${description.slice(0,50)}...`;
@@ -117,6 +125,7 @@ class Orders extends React.Component {
               this.setState({
                 addOrder: true,
                 showDetails: false,
+                showProducts: false,
                 order: initialOrder,
               });
             }}
@@ -133,6 +142,28 @@ class Orders extends React.Component {
                     key={item.id}
                     actions={[
                       <Button
+                        style={{ paddingLeft: 2, textAlign: 'center' }}
+                        block
+                        onClick={() => {
+                          this.props.dispatch(fetchProducts(item._id));
+                          this.setState({
+                            showDetails: false,
+                            addOrder: false,
+                            showProducts: true,
+                            order: {
+                              id: item._id,
+                              client: item.client,
+                              timeDue: item.timeDue,
+                              totalFee: item.totalFee,
+                              description: item.description,
+                              status: item.status,
+                            },
+                          })
+                        }}
+                      >
+                        Items
+                      </Button>,
+                      <Button
                         type="dashed"
                         style={{ paddingLeft: 2, textAlign: 'center' }}
                         block
@@ -140,6 +171,7 @@ class Orders extends React.Component {
                           this.setState({
                             showDetails: true,
                             addOrder: false,
+                            showProducts: false,
                             order: {
                               id: item._id,
                               client: item.client,
@@ -182,6 +214,20 @@ class Orders extends React.Component {
                 />
               </div>
             )}
+            {
+              (this.state.showProducts) &&
+              <div className="contents-right">
+                <ProductForm
+                  order={this.state.order}
+                  createProductAction={this.createProductHandler}
+                  updateProductAction={this.updateProductHandler}
+                  deleteProductAction={this.deleteProductHandler}
+                  closeAction={() =>
+                    this.setState({ showProducts: false })
+                  }
+                />
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -192,7 +238,6 @@ class Orders extends React.Component {
 const mapStateToProps = (state) => {
   return {
     orders: state.orders,
-    products: state.products,
     contacts: state.contacts,
   };
 };
