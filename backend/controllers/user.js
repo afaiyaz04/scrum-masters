@@ -425,23 +425,16 @@ export const transferOrder = async (req, res) => {
             return res.status(404).send(`No transfer user with id: ${toUserId}`);
         }
 
-        const userOrders = user.orders;
-        const toUserOrders = toUser.orders;
+        if (user.orders.includes(orderId)) {
+            const receivedOrder = { fromUser: user._id, order: order._id };
+            if (!toUser.receivedOrders.includes(receivedOrder)) {
+                toUser.receivedOrders.push(receivedOrder);
 
-        if (userOrders.includes(orderId)) {
-            if (!(toUserOrders.includes(orderId))) {
-                var orderIndex = userOrders.indexOf(orderId);
-                // Remove from user
-                if (orderIndex !== -1) {
-                    userOrders.splice(orderIndex, 1);
-                }
-                // Add to new user
-                toUserOrders.push(orderId);
-                user.save();
-                toUser.save();
                 return res.json({fromUser: user, toUser: toUser});
             }
         }
+
+
         return res.status(404).send(
             "User does not have order or toUser already contains this order!"
         );
