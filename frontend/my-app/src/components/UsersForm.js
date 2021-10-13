@@ -43,7 +43,7 @@ const UsersForm = (props) => {
                         disabled={true}
                     />
                 </Form.Item>
-                <Form.Item label='E-mail:'>
+                <Form.Item label='Email:'>
                     <Input
                         placeholder={user.email}
                         disabled={true}

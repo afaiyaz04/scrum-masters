@@ -13,7 +13,8 @@ import {
     transferOrder,
     deleteUserOrder,
     deleteUserClient,
-    promoteUser
+    promoteUser,
+    getFavourites
 } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 
@@ -34,6 +35,7 @@ router.delete('/:id/orders', auth, deleteUserOrder);
 router.get('/:id/clients', auth, getUserClients);
 router.post('/:id/clients', auth, addUserClient);
 router.delete('/:id/clients', auth, deleteUserClient);
+router.get('/:id/favourites', auth, getFavourites);
 
 // Management
 router.patch('/:id/transfer', auth, transferOrder);

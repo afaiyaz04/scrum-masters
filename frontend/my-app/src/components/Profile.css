@@ -1,0 +1,12 @@
+.user-pic{
+    font-size: 80px;
+    color: silver;
+    height: 170px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    width: 40%;
+    padding-bottom: 50%;
+}
+

@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: postman-test
+name: backend api test
 
 # Controls when the workflow will run
 on:
@@ -33,14 +33,13 @@ jobs:
     - name: Install newman
       run: npm install -g newman
       working-directory: ./backend  
-      
-        
+
     - name: Install dependencies
       run: npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
       working-directory: ./backend   
       
       
-    - name: Run the Backend
+    - name: Run the backend and test api
       run: |
         npm run start &
         sleep 20
@@ -51,7 +50,6 @@ jobs:
         newman run https://api.getpostman.com/collections/17378209-964bce0c-d1fd-4199-a6de-d77212592348?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         newman run https://api.getpostman.com/collections/17378209-9859dbef-2d2b-4af8-aeab-1a9673b2dee9?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         newman run https://api.getpostman.com/collections/17378209-9d38163e-449b-41e8-9c3a-f790597cb5f3?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
-        newman run https://api.getpostman.com/collections/17378209-b3e9fa03-b3d1-4bc1-9a99-5a73d6fc39bb?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         newman run https://api.getpostman.com/collections/17378209-dcf4787e-47f6-47b0-a104-b28bea73ef00?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         newman run https://api.getpostman.com/collections/17378209-f222e0b8-8529-4435-9bac-9f65827c60ca?apikey=${{ secrets.postmanApiKey }} -e https://api.getpostman.com/environments/17378209-b44603e1-ff21-40a2-bab3-db7bc02e4928?apikey=${{ secrets.postmanApiKey }}
         

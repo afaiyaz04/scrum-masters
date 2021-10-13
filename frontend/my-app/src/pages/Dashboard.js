@@ -104,10 +104,10 @@ class Dashboard extends React.Component {
             <ProfileButton></ProfileButton>
           </div>
           <div className='progress'>
-            <Progress percent={ (this.state.ordersCreated.length * 100) / this.state.orders.length } format={() => `${this.state.ordersCreated.length} Orders Created`} strokeColor='red'/>
+            <Progress percent={ (this.state.ordersCreated.length * 100) / this.state.orders.length } format={() => `${this.state.ordersCreated.length} Orders Created`} strokeColor='#ff4d4f'/>
             <Progress percent={ (this.state.ordersDiscussed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersDiscussed.length} Orders Discussed`} strokeColor='orange'/>
-            <Progress percent={ (this.state.ordersAgreed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersAgreed.length} Orders Agreed`} strokeColor='blue'/>
-            <Progress percent={ (this.state.ordersSigned.length * 100) / this.state.orders.length } format={() => `${this.state.ordersSigned.length} Orders Signed`} strokeColor='green'/>
+            <Progress percent={ (this.state.ordersAgreed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersAgreed.length} Orders Agreed`} strokeColor='#1890ff'/>
+            <Progress percent={ (this.state.ordersSigned.length * 100) / this.state.orders.length } format={() => `${this.state.ordersSigned.length} Orders Signed`} strokeColor='#52c418'/>
           </div>
           <div className='contents'>
             <div className='dashboard-left'>
@@ -178,7 +178,13 @@ class Dashboard extends React.Component {
                   }
                 <div className='recent-orders'>
                   <h3>Recent Orders</h3>
-                  <Table columns={columns} dataSource={this.state.orders} pagination={false}/>
+                  <Table columns={columns} dataSource={this.state.orders.sort((a,b) => {
+                    if (a.lastModified > b.lastModified) {
+                      return -1;
+                    } else {
+                      return 1;
+                    }
+                  }).slice(0, 5)} pagination={false}/>
                 </div>
               </div>
             </div>

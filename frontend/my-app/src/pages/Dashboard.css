@@ -1,5 +1,5 @@
 .dashboard-left {
-  width: 100%;
+  width: 60%;
   display: block;
   justify-items: flex-start;
   padding-right: 3%;
@@ -23,7 +23,6 @@
   box-sizing: border-box;
   width: 100%;
   padding-left: 3%;
-  min-width: 1000px;
 }
 
 .favourite-contacts {

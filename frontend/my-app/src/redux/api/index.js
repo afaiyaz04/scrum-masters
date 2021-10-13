@@ -12,7 +12,8 @@ API.interceptors.request.use((req) => {
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
 export const setUser = (formData) => API.post('/signIn', formData);
-export const deleteUser = (userId) => API.delete(`user/${userId}`);
+export const updateUser = (userId, formData) => API.patch(`/user/${userId}`, formData);
+export const deleteUser = (userId) => API.delete(`/user/${userId}`);
 
 export const fetchClients = (userId) => API.get(`/user/${userId}/clients`);
 export const createClient = (formData) => API.post('/client', formData);
@@ -35,7 +36,7 @@ export const deleteOrder = (orderId) => API.delete(`/order/${orderId}`);
 export const deleteUserOrder = (userId, orderId) => API.delete(`/user/${userId}/orders`, { data: { orderId } });
 
 export const createProduct = (formData) => API.post('/product', formData);
-export const addLineProduct = (orderId, productData) => API.post(`/order/${orderId}/products`, productData);
+export const addLineProduct = (orderId, productId, quantity) => API.post(`/order/${orderId}/products`, { productId, quantity });
 export const fetchLineProducts = (orderId) => API.get(`/order/${orderId}/products`);
 export const fetchProduct = (productId) => API.get(`/product/${productId}`);
 export const updateProduct = (productId, formData) => API.patch(`/product/${productId}`, formData);
