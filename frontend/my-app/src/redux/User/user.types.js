@@ -5,3 +5,5 @@ export const SET_USER_DATA = "SET_USER_DATA";
 export const SIGN_OUT = "SIGN_OUT";
 
 export const DELETE_USER = "DELETE_USER";
+
+export const UPDATE_USER = "UPDATE_USER";
