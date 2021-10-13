@@ -21,7 +21,7 @@ export const viewReport = async (req, res) => {
             return res.status(404).send(`No user with id: ${id}`);
         }
 
-        if (!isAdminOrSelf(req.userId, user.oauthId)) {
+        if (!isAdminOrSelf(req.userId, user)) {
             return res.json({ message: "No Permission!"});
         }
 
