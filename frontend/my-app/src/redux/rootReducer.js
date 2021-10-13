@@ -7,9 +7,9 @@ import orderReducer from "./Order/order.reducer";
 import productReducer from "./Product/product.reducer";
 
 export const rootReducer = combineReducers({
-  user: userReducer,
-  contacts: contactReducer,
-  users: usersReducer,
-  orders: orderReducer,
-  products: productReducer,
+    user: userReducer,
+    contacts: contactReducer,
+    users: usersReducer,
+    orders: orderReducer,
+    products: productReducer,
 });

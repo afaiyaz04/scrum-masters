@@ -1,15 +1,15 @@
 import express from "express";
 
 import {
-  createOrder,
-  getOrder,
-  updateOrder,
-  deleteOrder,
-  addLineProduct,
-  updateLineProduct,
-  removeLineProduct,
-  getLineProducts,
-  addLog,
+    createOrder,
+    getOrder,
+    updateOrder,
+    deleteOrder,
+    addLineProduct,
+    updateLineProduct,
+    removeLineProduct,
+    getLineProducts,
+    addLog,
 } from "../controllers/order.js";
 import auth from "../middleware/auth.js";
 

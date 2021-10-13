@@ -1,22 +1,22 @@
 import express from "express";
 
 import {
-  createUser,
-  getUser,
-  updateUser,
-  deleteUser,
-  getAllUsers,
-  getUserOrders,
-  addUserOrder,
-  getUserClients,
-  addUserClient,
-  transferOrder,
-  deleteUserOrder,
-  deleteUserClient,
-  promoteUser,
-  getFavourites,
-  acceptOrder,
-  declineOrder,
+    createUser,
+    getUser,
+    updateUser,
+    deleteUser,
+    getAllUsers,
+    getUserOrders,
+    addUserOrder,
+    getUserClients,
+    addUserClient,
+    transferOrder,
+    deleteUserOrder,
+    deleteUserClient,
+    promoteUser,
+    getFavourites,
+    acceptOrder,
+    declineOrder,
 } from "../controllers/user.js";
 import auth from "../middleware/auth.js";
 

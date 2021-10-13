@@ -1,11 +1,11 @@
 import express from "express";
 
 import {
-  createClient,
-  deleteClient,
-  getClient,
-  updateClient,
-  makeFavourite,
+    createClient,
+    deleteClient,
+    getClient,
+    updateClient,
+    makeFavourite,
 } from "../controllers/client.js";
 
 import auth from "../middleware/auth.js";
