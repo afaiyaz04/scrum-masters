@@ -70,11 +70,12 @@ export const updateOrder = async (req, res) => {
     }
 
     const updatedOrder = { 
-        client,
-        timeDue, 
-        totalFee, 
-        status, 
-        description,
+        client: client,
+        timeDue: timeDue, 
+        totalFee: totalFee, 
+        status: status, 
+        description: description,
+        lastModified: Date.now(),
         _id: id 
     };
 
