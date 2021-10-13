@@ -1,5 +1,6 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
+import { AiOutlineSetting, AiOutlineLogout } from 'react-icons/ai';
 import './ProfileButton.css'
 import { withRouter } from "react-router-dom";
 import { Modal, Menu, Dropdown, Button } from "antd";
@@ -24,6 +25,7 @@ class ProfileButton extends React.Component{
 		localStorage.setItem('userData', localStorage.getItem('originalData'));
 		localStorage.removeItem('originalData');
 		this.nextPath('/dashboard');
+		window.location.reload(true);
 	}
 
 	signout = () => {
@@ -33,10 +35,16 @@ class ProfileButton extends React.Component{
 
 	menu = (
 		<Menu>
-			<Menu.Item key='1' onClick={() => {this.setState({ showProfile: true })}}>
+			<Menu.Item
+				key='1'
+				onClick={() => {this.setState({ showProfile: true })}}
+				icon={<AiOutlineSetting />}>
 				Edit Profile
 			</Menu.Item>
-			<Menu.Item key='2' onClick={this.signout}>
+			<Menu.Item
+				key='2'
+				onClick={this.signout}
+				icon={<AiOutlineLogout />}>
 				Sign Out
 			</Menu.Item>
 		</Menu>
@@ -45,15 +53,15 @@ class ProfileButton extends React.Component{
 	render() {
 		if (localStorage.getItem('originalData')) {
 			return (
-				<button className="btn" onClick={this.revertProfileAction}>
+				<Button type='primary' className="btn" onClick={this.revertProfileAction}>
 					Revert Profile
-				</button>
+				</Button>
 			)
 		} else {
 			return (
 				<>
 					<Dropdown overlay={this.menu}>
-						<Button><CgProfile /> Profile</Button>
+						<Button className="btn"><CgProfile />Profile</Button>
 					</Dropdown>
 					<Modal
 						title='Profile'
