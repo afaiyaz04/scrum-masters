@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
 		default: GENERAL_USER,
 		required: true,
 	},
+	fav: { type: Boolean, required: true, default: false },
 	clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],
 	orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
 	contracts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contract" }],
