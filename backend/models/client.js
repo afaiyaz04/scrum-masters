@@ -9,6 +9,7 @@ const clientSchema = new mongoose.Schema({
 	email: { type: String, required: true },
 	phoneNumber: { type: String, required: true },
 	address: { type: String, required: true },
+	fav: { type: Boolean, required: true, default: false },
 });
 
 // compile into Model
