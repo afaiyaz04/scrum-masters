@@ -14,7 +14,8 @@ import {
     deleteUserOrder,
     deleteUserClient,
     promoteUser,
-    getFavourites
+    getFavourites,
+    acceptOrder
 } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 
@@ -39,6 +40,7 @@ router.get('/:id/favourites', auth, getFavourites);
 
 // Management
 router.patch('/:id/transfer', auth, transferOrder);
+router.post('/:id/transfer', auth, acceptOrder);
 router.patch('/:id/promote', auth, promoteUser);
 
 export default router;
