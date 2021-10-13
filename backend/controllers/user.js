@@ -550,7 +550,6 @@ async function respondToTransfer(res, toUser, orderId, accept) {
 
 export const promoteUser = async (req, res) => {
     const { id } = req.params;
-    const { toUserId } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!"});
@@ -562,16 +561,14 @@ export const promoteUser = async (req, res) => {
             return res.status(404).send(`No user with id: ${id}`);
         }
 
-        if (!(await isAdmin(req.userId))) return res.status(403).json('Forbidden action');
-
-        const toUser = await User.findById(toUserId);
-        if (toUser == null) {
-            return res.status(404).send(`No user with id: ${toUserId}`);
+        if (!await isAdmin(req.userId)) {
+            return res.status(403).json('Forbidden action');
         }
-        toUser.type = ADMIN_USER;
 
-        await toUser.save();
-        res.status(201).json(toUser);
+        user.type = ADMIN_USER;
+
+        await user.save();
+        res.status(201).json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
