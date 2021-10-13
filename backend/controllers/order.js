@@ -119,26 +119,19 @@ export const deleteOrder = async (req, res) => {
 
 export const addLineProduct = async (req, res) => {
     const { orderId } = req.params;
-    const { productId, quantity } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
+    const { name, description, price, quantity } = req.body;
     try {
-        const [order, product] = await doesOrderProductExist(orderId, productId, res);
-        if (order == null || product == null) return;
-
-        // Check that product isnt already added
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId;
-        });
-
-        if (productIndex != -1) {
-            return res.status(406).send('Cannot add product (already exists)');
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
         }
 
-        const newLineProduct = {productId: product._id, quantity: quantity};
+        const newLineProduct = {
+            name: name,
+            description: description,
+            price: price,
+            quantity: quantity
+        };
         order.lineProducts.push(newLineProduct);
 
         order.save();
@@ -150,72 +143,8 @@ export const addLineProduct = async (req, res) => {
 }
 
 export const updateLineProduct = async (req, res) => {
-    const { orderId } = req.params;
-    const { productId, quantity } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        const [order, product] = await doesOrderProductExist(
-            orderId, productId, res
-        );
-        if (order == null || product == null) return;
-        
-        // Check if product is in lineProducts
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId
-        });
-
-        if (productIndex == -1) {
-            return res.status(404).send(
-                'Product not found in lineProducts of order'
-            );
-        }
-
-        order.lineProducts[productIndex].quantity = quantity;
-        order.save();
-        return res.json(order);
-
-    } catch (error) {
-        return res.status(404).json({message: error.message});
-    }
-}
-
-export const removeLineProduct = async (req, res) => {
-    const { orderId } = req.params;
-    const { productId } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        const [order, product] = await doesOrderProductExist(orderId, productId, res);
-        if (order == null || product == null) return;
-
-        // Check if product is in lineProducts
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId
-        });
-        if (productIndex == -1) {
-            return res.status(404).send(
-                'Product not found in lineProducts of order'
-            );
-        }
-        order.lineProducts.splice(productIndex, 1);
-        order.save();
-        await Product.findByIdAndRemove(productId);
-        return res.json(order);
-
-    } catch (error) {
-        return res.status(404).json({message: error.message});
-    }
-}
-
-export const getLineProducts = async (req, res) => {
-    const { orderId } = req.params;
+    const { orderId, productId } = req.params;
+    const { name, description, price, quantity } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!"});
@@ -224,27 +153,72 @@ export const getLineProducts = async (req, res) => {
     try {
         const order = await Order.findById(orderId);
         if (order == null) {
-            return;
+            return res.status(404).send(`No order with id: ${orderId}`);
         }
 
-        const getLineProducts = async () => {
-            return Promise.all(
-                order.lineProducts.map(async (lineProduct) => {
-                    const productId = lineProduct.productId;
-                    const quantity = lineProduct.quantity;
-                    const product = await Product.findById(productId);
-                    return { product, quantity: quantity };
-                })
-            )
+        // Check if product is in lineProducts
+        const lineProduct = findLineProduct(order, productId);
+
+        if (lineProduct == null) {
+            return res.status(404).send( `No product with id: ${productId}`);
         }
-        getLineProducts().then((products) => {
-            res.json(products);
-        })
+
+        const product = lineProduct.product;
+
+        product.name = name ? name : product.name;
+        product.description = description ? description : product.description;
+        product.price = price ? price : product.price;
+        product.quantity = quantity ? quantity : product.quantity;
+
+        await order.save();
+        return res.json(order);
 
     } catch (error) {
-        res.status(404).json({ message: error.message});
+        return res.status(404).json({message: error.message});
     }
 }
+
+export const removeLineProduct = async (req, res) => {
+    const { orderId, productId } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
+    try {
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
+        }
+
+         // Check if product is in lineProducts
+        const lineProduct = findLineProduct(order, productId);
+
+        if (lineProduct == null) {
+            return res.status(404).send( `No product with id: ${productId}`);
+        }
+
+        order.lineProducts.splice(lineProduct.index);
+
+        await order.save();
+        return res.json(order);
+
+    } catch (error) {
+        return res.status(404).json({message: error.message});
+    }
+}
+
+function findLineProduct(order, productId) {
+     const productIndex = order.lineProducts.findIndex((lineProduct) => {
+        return lineProduct._id == productId
+    });
+
+    if (productIndex == -1) {
+        return null;
+    }
+    return {product: order.lineProducts[productIndex], index: productIndex};
+}
+
 
 export const addLog = async (req, res) => {
     const { id } = req.params;
