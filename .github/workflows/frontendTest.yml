@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: backend api test
+name: frontend compile
 
 # Controls when the workflow will run
 on:
@@ -33,11 +33,11 @@ jobs:
 
     - name: Install dependencies
       run: npm install redux react-redux axios react-router-dom react-icons --save redux-devtools-extension jwt-decode react-google-login redux-thunk react-google-button styled-components
-      working-directory: ./frontend/myapp
+      working-directory: ./frontend/my-app
       
     - name: Run the frontend
       run: npm start
-      working-directory: ./frontend/myapp
+      working-directory: ./frontend/my-app
       
       
     
