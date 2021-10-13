@@ -20,7 +20,7 @@ class AddOrderForm extends React.Component {
       log: "",
       contacts: [],
 
-      userId: JSON.parse(localStorage.getItem('userData'))._id
+      userId: JSON.parse(localStorage.getItem("userData"))._id,
     };
   }
 

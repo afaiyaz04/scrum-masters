@@ -1,14 +1,14 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
 
-import clientRoutes from './routes/client.js';
-import orderRoutes from './routes/order.js';
-import productRoutes from './routes/product.js';
-import userRoutes from './routes/user.js';
-import reportRoutes from './routes/report.js';
-import signInRoutes from './routes/signIn.js';
+import clientRoutes from "./routes/client.js";
+import orderRoutes from "./routes/order.js";
+import productRoutes from "./routes/product.js";
+import userRoutes from "./routes/user.js";
+import reportRoutes from "./routes/report.js";
+import signInRoutes from "./routes/signIn.js";
 
 const app = express();
 
@@ -16,29 +16,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/client', clientRoutes);
-app.use('/order', orderRoutes);
-app.use('/product', productRoutes);
-app.use('/user', userRoutes);
-app.use('/report', reportRoutes);
-app.use('/signin', signInRoutes);
+app.use("/client", clientRoutes);
+app.use("/order", orderRoutes);
+app.use("/product", productRoutes);
+app.use("/user", userRoutes);
+app.use("/report", reportRoutes);
+app.use("/signin", signInRoutes);
 
-if (process.env.NODE_ENV === 'test') {
-    dotenv.config();
+if (process.env.NODE_ENV === "test") {
+  dotenv.config();
 }
 
 // hardcoded values will be provided to process.env once deployed
-const CONNECTION_URL = process.env.DB_URL || 'mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const PORT = process.env.PORT || 5000
+const CONNECTION_URL =
+  process.env.DB_URL ||
+  "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const PORT = process.env.PORT || 5000;
 
-mongoose.connect(
-    CONNECTION_URL,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => app.listen(PORT, () => console.log('MongoDB connected')))
-    .catch((error) => console.log(error.message));
+mongoose
+  .connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => app.listen(PORT, () => console.log("MongoDB connected")))
+  .catch((error) => console.log(error.message));
 
 // // Set up Mongoose
 // require("dotenv").config();

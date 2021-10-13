@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // define the product schema
 const productSchema = new mongoose.Schema({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	price: { type: Number, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
 });
 
 // compile into Model

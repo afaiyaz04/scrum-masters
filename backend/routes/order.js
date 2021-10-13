@@ -1,18 +1,18 @@
-import express from 'express'
+import express from "express";
 
 import {
-        createOrder, 
-        getOrder, 
-        updateOrder, 
-        deleteOrder,
-        addLineProduct,
-        updateLineProduct,
-        removeLineProduct,
-        getLineProducts,
-        addLog
-} from '../controllers/order.js';
-import auth from '../middleware/auth.js';
- 
+  createOrder,
+  getOrder,
+  updateOrder,
+  deleteOrder,
+  addLineProduct,
+  updateLineProduct,
+  removeLineProduct,
+  getLineProducts,
+  addLog,
+} from "../controllers/order.js";
+import auth from "../middleware/auth.js";
+
 const router = express.Router();
 
 router.post("/", auth, createOrder);

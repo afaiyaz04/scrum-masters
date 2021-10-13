@@ -21,7 +21,12 @@ const OrderForm = (props) => {
   return (
     <Form {...layout}>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-        <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={props.closeAction}>Close</Button>
+        <Button
+          style={{ paddingLeft: 2, textAlign: "center" }}
+          onClick={props.closeAction}
+        >
+          Close
+        </Button>
       </Form.Item>
       <Form.Item>
         <Select
@@ -67,13 +72,28 @@ const OrderForm = (props) => {
       </Form.Item>
       {props.showOrderDetails && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateAction(order)}>Update</Button>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteAction(order.id)}>Delete</Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.updateAction(order)}
+          >
+            Update
+          </Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.deleteAction(order.id)}
+          >
+            Delete
+          </Button>
         </Form.Item>
       )}
       {props.addOrder && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.createOrderAction(order)}>Create</Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.createOrderAction(order)}
+          >
+            Create
+          </Button>
         </Form.Item>
       )}
     </Form>

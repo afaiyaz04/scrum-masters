@@ -4,7 +4,13 @@ import Header from "../components/Header";
 import { CgProfile, CgHeart } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { createContact, deleteContact, favouriteClient, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
+import {
+  createContact,
+  deleteContact,
+  favouriteClient,
+  fetchContacts,
+  updateContact,
+} from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
 
@@ -18,7 +24,7 @@ const initialContact = {
   phoneNumber: "",
   address: "",
   favourite: false,
-}
+};
 
 class Contacts extends React.Component {
   constructor(props) {
@@ -29,8 +35,8 @@ class Contacts extends React.Component {
       showDetails: false,
       addContact: false,
 
-      userId: JSON.parse(localStorage.getItem('userData'))._id
-    }
+      userId: JSON.parse(localStorage.getItem("userData"))._id,
+    };
   }
 
   componentDidMount() {
@@ -54,9 +60,9 @@ class Contacts extends React.Component {
 
   favouriteHandler = (clientId, isFav) => {
     this.props.dispatch(favouriteClient(clientId, isFav));
-  }
+  };
 
-  render () {
+  render() {
     return (
       <div className="Master-div">
         <Sidebar />
@@ -64,7 +70,11 @@ class Contacts extends React.Component {
           <Header
             page="Contacts"
             actions={() => {
-              this.setState({ addContact: true, showDetails: false, contact: initialContact })
+              this.setState({
+                addContact: true,
+                showDetails: false,
+                contact: initialContact,
+              });
             }}
           />
           <div className="contents">
@@ -72,11 +82,11 @@ class Contacts extends React.Component {
               <span>Name</span>
               <List
                 itemLayout="horizontal"
-                dataSource={this.props.contacts.sort((a,b) => {
+                dataSource={this.props.contacts.sort((a, b) => {
                   if (a.fav && !b.fav) {
-                    return -1
+                    return -1;
                   } else if (b.fav && !a.fav) {
-                    return 1
+                    return 1;
                   } else {
                     return a.nameFirst.localeCompare(b.nameFirst);
                   }
@@ -87,30 +97,42 @@ class Contacts extends React.Component {
                     key={item.id}
                     actions={[
                       <>
-                        {
-                          item.fav &&
+                        {item.fav && (
                           <CgHeart
-                            style={{ height: 30, width: 30, paddingTop: 10, color: 'red' }}
-                            onClick={() => {this.favouriteHandler(item._id, false)}}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              paddingTop: 10,
+                              color: "red",
+                            }}
+                            onClick={() => {
+                              this.favouriteHandler(item._id, false);
+                            }}
                           />
-                        }
-                        {
-                          !item.fav &&
+                        )}
+                        {!item.fav && (
                           <CgHeart
-                            style={{ height: 30, width: 30, paddingTop: 10, color: 'grey' }}
-                            onClick={() => {this.favouriteHandler(item._id, true)}}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              paddingTop: 10,
+                              color: "grey",
+                            }}
+                            onClick={() => {
+                              this.favouriteHandler(item._id, true);
+                            }}
                           />
-                        }
+                        )}
                       </>,
                       <Button
                         type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
+                        style={{ paddingLeft: 2, textAlign: "center" }}
                         block
-                        onClick={() => 
+                        onClick={() =>
                           this.setState({
                             showDetails: true,
-                              addContact: false,
-                              contact: {
+                            addContact: false,
+                            contact: {
                               id: item._id,
                               nameFirst: item.nameFirst,
                               nameLast: item.nameLast,
@@ -118,8 +140,8 @@ class Contacts extends React.Component {
                               company: item.company,
                               email: item.email,
                               phoneNumber: item.phoneNumber,
-                              address: item.address
-                            }
+                              address: item.address,
+                            },
                           })
                         }
                       >
@@ -136,20 +158,21 @@ class Contacts extends React.Component {
                 )}
               />
             </div>
-            {
-              (this.state.showDetails || this.state.addContact) &&
+            {(this.state.showDetails || this.state.addContact) && (
               <div className="contents-right">
                 <ClientForm
-                  contact={ this.state.contact }
-                  addContact={ this.state.addContact }
-                  showDetails={ this.state.showDetails }
-                  updateAction={ this.updateHandler }
-                  deleteAction={ this.deleteHandler }
-                  createAction={ this.createHandler }
-                  closeAction={() => this.setState({ addContact: false, showDetails: false })}
+                  contact={this.state.contact}
+                  addContact={this.state.addContact}
+                  showDetails={this.state.showDetails}
+                  updateAction={this.updateHandler}
+                  deleteAction={this.deleteHandler}
+                  createAction={this.createHandler}
+                  closeAction={() =>
+                    this.setState({ addContact: false, showDetails: false })
+                  }
                 />
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
@@ -159,8 +182,8 @@ class Contacts extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    contacts: state.contacts
-  }
-}
+    contacts: state.contacts,
+  };
+};
 
 export default connect(mapStateToProps)(Contacts);

@@ -4,7 +4,12 @@ import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { fetchUsers, promoteUser, deleteUser, registerUser } from "../redux/Users/users.actions";
+import {
+  fetchUsers,
+  promoteUser,
+  deleteUser,
+  registerUser,
+} from "../redux/Users/users.actions";
 import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
@@ -12,13 +17,13 @@ import { SIGN_OUT } from "../redux/User/user.types";
 import { DELETE_USER } from "../redux/Users/users.types";
 
 const initialUser = {
-    id: "",
-    nameFirst: "",
-    nameLast: "",
-    email: "",
-    password: "",
-    type: "",
-}
+  id: "",
+  nameFirst: "",
+  nameLast: "",
+  email: "",
+  password: "",
+  type: "",
+};
 
 class Users extends React.Component {
   constructor(props) {
@@ -27,8 +32,8 @@ class Users extends React.Component {
       user: initialUser,
       showDetails: false,
       addUser: false,
-      userId: JSON.parse(localStorage.getItem('userData'))._id
-    }
+      userId: JSON.parse(localStorage.getItem("userData"))._id,
+    };
   }
 
   componentDidMount() {
@@ -41,44 +46,53 @@ class Users extends React.Component {
   };
 
   controlHandler = (toUserId) => {
-    if (!localStorage.getItem('originalData')) {
-      localStorage.setItem('originalData', localStorage.getItem('userData'));
+    if (!localStorage.getItem("originalData")) {
+      localStorage.setItem("originalData", localStorage.getItem("userData"));
     }
     fetchUser(toUserId).then((res) => {
-      localStorage.setItem('userData', JSON.stringify(res.data));
-      this.props.history.push('/dashboard');
+      localStorage.setItem("userData", JSON.stringify(res.data));
+      this.props.history.push("/dashboard");
     });
-  }
+  };
 
   deleteHandler = (userId) => {
-    if (this.state.userId === userId && !localStorage.getItem('originalData')) {
+    if (this.state.userId === userId && !localStorage.getItem("originalData")) {
       this.props.dispatch(deleteUser(userId));
       this.props.dispatch({ type: SIGN_OUT });
-      this.props.history.push('/');
-    } else if (this.state.userId === userId && localStorage.getItem('originalData')) {
-      localStorage.setItem('userData', localStorage.getItem('originalData'));
-      localStorage.removeItem('originalData');
+      this.props.history.push("/");
+    } else if (
+      this.state.userId === userId &&
+      localStorage.getItem("originalData")
+    ) {
+      localStorage.setItem("userData", localStorage.getItem("originalData"));
+      localStorage.removeItem("originalData");
       this.props.dispatch(deleteUser(userId));
-      this.props.history.push('/dashboard');
+      this.props.history.push("/dashboard");
     } else {
       this.props.dispatch(deleteUser(userId));
     }
     this.setState({ showDetails: false });
-  }
+  };
 
   registerHandler = (newUser) => {
     this.setState({ addUser: false });
     this.props.dispatch(registerUser(newUser));
-  }
+  };
 
-  render () {
+  render() {
     return (
       <div className="Master-div">
         <Sidebar />
         <div className="users">
           <Header
             page="Users"
-            actions={() => {this.setState({ addUser: true, showDetails:false, user: initialUser })}}
+            actions={() => {
+              this.setState({
+                addUser: true,
+                showDetails: false,
+                user: initialUser,
+              });
+            }}
           />
           <div className="contents">
             <div className="contents-left">
@@ -93,63 +107,61 @@ class Users extends React.Component {
                     actions={[
                       <Button
                         type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
+                        style={{ paddingLeft: 2, textAlign: "center" }}
                         block
                         onClick={() => {
-                            this.setState({
-                              showDetails: true,
-                              addUser: false,
-                              user: {
-                                id: item._id,
-                                nameFirst: item.nameFirst,
-                                nameLast: item.nameLast,
-                                email: item.email,
-                                password: item.password,
-                                type: item.type }
-                              }
-                            )
-                          }
-                        }
+                          this.setState({
+                            showDetails: true,
+                            addUser: false,
+                            user: {
+                              id: item._id,
+                              nameFirst: item.nameFirst,
+                              nameLast: item.nameLast,
+                              email: item.email,
+                              password: item.password,
+                              type: item.type,
+                            },
+                          });
+                        }}
                       >
                         Details
                       </Button>,
                     ]}
                   >
-                    {
-                      (!item.nameFirst && !item.nameFirst) &&
+                    {!item.nameFirst && !item.nameFirst && (
                       <List.Item.Meta
-                        title={'UNREGISTERED USER'}
+                        title={"UNREGISTERED USER"}
                         description={item.email}
                         avatar={<CgProfile />}
                       />
-                    }
-                    {
-                      (item.nameFirst || item.nameFirst) &&
+                    )}
+                    {(item.nameFirst || item.nameFirst) && (
                       <List.Item.Meta
                         title={`${item.nameFirst} ${item.nameLast}`}
                         description={item.email}
                         avatar={<CgProfile />}
                       />
-                    }
+                    )}
                   </List.Item>
                 )}
               />
             </div>
-            {
-              (this.state.showDetails || this.state.addUser) &&
+            {(this.state.showDetails || this.state.addUser) && (
               <div className="contents-right">
                 <UsersForm
-                  user={ this.state.user }
-                  showDetails={ this.state.showDetails }
-                  addUser={ this.state.addUser }
-                  closeAction={() => this.setState({ showDetails: false, addUser: false })}
-                  promoteAction={ this.promoteHandler }
-                  controlAction={ this.controlHandler }
-                  deleteAction={ this.deleteHandler }
-                  registerAction={ this.registerHandler }
+                  user={this.state.user}
+                  showDetails={this.state.showDetails}
+                  addUser={this.state.addUser}
+                  closeAction={() =>
+                    this.setState({ showDetails: false, addUser: false })
+                  }
+                  promoteAction={this.promoteHandler}
+                  controlAction={this.controlHandler}
+                  deleteAction={this.deleteHandler}
+                  registerAction={this.registerHandler}
                 />
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
@@ -160,8 +172,8 @@ class Users extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    users: state.users
-  }
-}
+    users: state.users,
+  };
+};
 
 export default connect(mapStateToProps)(Users);

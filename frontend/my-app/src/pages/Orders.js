@@ -117,7 +117,7 @@ class Orders extends React.Component {
                     actions={[
                       <Button
                         type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
+                        style={{ paddingLeft: 2, textAlign: "center" }}
                         block
                         onClick={() =>
                           this.setState({

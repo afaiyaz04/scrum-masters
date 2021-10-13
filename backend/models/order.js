@@ -21,7 +21,8 @@ const lineProductSchema = new mongoose.Schema(
 );
 
 // define the log child scheme
-const logSchema = new mongoose.Schema({
+const logSchema = new mongoose.Schema(
+  {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

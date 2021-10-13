@@ -20,7 +20,12 @@ const ClientForm = (props) => {
   return (
     <Form {...layout}>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-        <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={props.closeAction}>Close</Button>
+        <Button
+          style={{ paddingLeft: 2, textAlign: "center" }}
+          onClick={props.closeAction}
+        >
+          Close
+        </Button>
       </Form.Item>
       <Form.Item label="First Name:">
         <Input
@@ -70,13 +75,28 @@ const ClientForm = (props) => {
       </Form.Item>
       {props.showDetails && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateAction(contact)}>Update</Button>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteAction(contact.id)}>Delete</Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.updateAction(contact)}
+          >
+            Update
+          </Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.deleteAction(contact.id)}
+          >
+            Delete
+          </Button>
         </Form.Item>
       )}
       {props.addContact && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.createAction(contact)}>Create</Button>
+          <Button
+            style={{ paddingLeft: 2, textAlign: "center" }}
+            onClick={() => props.createAction(contact)}
+          >
+            Create
+          </Button>
         </Form.Item>
       )}
     </Form>
