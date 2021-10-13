@@ -20,11 +20,22 @@ export const createOrder = async (req, res) => {
         return res.json({ message: "Unauthenticated!"});
     }
 
+    // find an order number
+    const orders = await Order.find();
+    const orderNumbers = orders.map((order) => order.orderNumber);
+
+    var nextOrderNum = orderNumbers.length + 1;
+
+    while (orderNumbers.findIndex(on => on == nextOrderNum) != -1) {
+        nextOrderNum++;
+    }
+
     const newOrder = new Order({ 
         client: mongoose.Types.ObjectId(client),
-        timeDue, 
-        totalFee, 
-        description
+        timeDue: timeDue, 
+        totalFee: totalFee, 
+        description: description,
+        orderNumber: nextOrderNum
     });
 
     try {
