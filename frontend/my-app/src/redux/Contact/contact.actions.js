@@ -1,4 +1,4 @@
-import { FETCH_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT } from "./contact.types";
+import { FETCH_CONTACTS, CREATE_CONTACT, UPDATE_CONTACT, DELETE_CONTACT, FAVOURITE_CONTACT } from "./contact.types";
 import * as api from '../../redux/api/index';
 
 export const fetchContacts = (userId) => async (dispatch) => {
@@ -37,3 +37,12 @@ export const deleteContact = (userId, clientId) => async (dispatch) => {
 		console.log(error);
 	}
 };
+
+export const favouriteClient = (clientId, isFav) => async (dispatch) => {
+	try {
+		const { data } = await api.favouriteClient(clientId, isFav);
+		dispatch({ type: FAVOURITE_CONTACT, payload: data });
+	} catch (error) {
+		console.log(error);
+	}
+}

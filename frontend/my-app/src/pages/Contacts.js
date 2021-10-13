@@ -1,10 +1,10 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile } from "react-icons/cg";
+import { CgProfile, CgHeart } from "react-icons/cg";
 import { List, Button } from "antd";
 import "antd/dist/antd.css";
-import { createContact, deleteContact, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
+import { createContact, deleteContact, favouriteClient, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
 
@@ -17,6 +17,7 @@ const initialContact = {
   email: "",
   phoneNumber: "",
   address: "",
+  favourite: false,
 }
 
 class Contacts extends React.Component {
@@ -51,6 +52,10 @@ class Contacts extends React.Component {
     this.props.dispatch(deleteContact(this.state.userId, clientId));
   };
 
+  favouriteHandler = (clientId, isFav) => {
+    this.props.dispatch(favouriteClient(clientId, isFav));
+  }
+
   render () {
     return (
       <div className="Master-div">
@@ -67,26 +72,54 @@ class Contacts extends React.Component {
               <span>Name</span>
               <List
                 itemLayout="horizontal"
-                dataSource={this.props.contacts}
+                dataSource={this.props.contacts.sort((a,b) => {
+                  if (a.fav && !b.fav) {
+                    return -1
+                  } else if (b.fav && !a.fav) {
+                    return 1
+                  } else {
+                    return a.nameFirst.localeCompare(b.nameFirst);
+                  }
+                })}
                 renderItem={(item) => (
                   <List.Item
                     className="contact-item"
                     key={item.id}
                     actions={[
+                      <>
+                        {
+                          item.fav &&
+                          <CgHeart
+                            style={{ height: 30, width: 30, paddingTop: 10, color: 'red' }}
+                            onClick={() => {this.favouriteHandler(item._id, false)}}
+                          />
+                        }
+                        {
+                          !item.fav &&
+                          <CgHeart
+                            style={{ height: 30, width: 30, paddingTop: 10, color: 'grey' }}
+                            onClick={() => {this.favouriteHandler(item._id, true)}}
+                          />
+                        }
+                      </>,
                       <Button
                         type="dashed"
                         block
                         onClick={() => 
-                          this.setState({ showDetails: true, addContact: false, contact: {
-                            id: item._id,
-                            nameFirst: item.nameFirst,
-                            nameLast: item.nameLast,
-                            title: item.title,
-                            company: item.company,
-                            email: item.email,
-                            phoneNumber: item.phoneNumber,
-                            address: item.address
-                          }})
+                          this.setState({
+                            showDetails: true,
+                              addContact: false,
+                              contact: {
+                              id: item._id,
+                              nameFirst: item.nameFirst,
+                              nameLast: item.nameLast,
+                              title: item.title,
+                              company: item.company,
+                              email: item.email,
+                              phoneNumber: item.phoneNumber,
+                              address: item.address
+                            }
+                          })
                         }
                       >
                         Details
