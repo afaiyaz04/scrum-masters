@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: postman-test
+name: backend api test
 
 # Controls when the workflow will run
 on:
@@ -33,14 +33,13 @@ jobs:
     - name: Install newman
       run: npm install -g newman
       working-directory: ./backend  
-      
-        
+
     - name: Install dependencies
       run: npm install cors express mongoose nodemon dotenv bcryptjs jsonwebtoken
       working-directory: ./backend   
       
       
-    - name: Run the Backend
+    - name: Run the backend and test api
       run: |
         npm run start &
         sleep 20
