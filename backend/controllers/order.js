@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import Order from '../models/order.js';
 import Product from '../models/product.js';
 import User from '../models/user.js';
+import { isAdminOrSelf } from './user.js';
 
 const router = express.Router();
 
@@ -238,6 +239,10 @@ export const addLog = async (req, res) => {
     const { id } = req.params;
     const { userId, text } = req.body;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!"});
+    }
+
     try {
         const order = await Order.findById(id);
         if (order == null) {
@@ -247,6 +252,10 @@ export const addLog = async (req, res) => {
         const user = await User.findById(id);
         if (user) {
             return;
+        }
+
+        if (!await isAdminOrSelf(req.userId, user)) {
+            return res.json({ message: "No permission!"});
         }
 
         const newLog = { user: userId, text: text };
