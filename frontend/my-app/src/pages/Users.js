@@ -93,6 +93,7 @@ class Users extends React.Component {
                     actions={[
                       <Button
                         type="dashed"
+                        style={{ paddingLeft: 2, textAlign: 'center' }}
                         block
                         onClick={() => {
                             this.setState({
@@ -114,11 +115,22 @@ class Users extends React.Component {
                       </Button>,
                     ]}
                   >
-                    <List.Item.Meta
-                      title={`${item.nameFirst} ${item.nameLast}`}
-                      description={item.email}
-                      avatar={<CgProfile />}
-                    />
+                    {
+                      (!item.nameFirst && !item.nameFirst) &&
+                      <List.Item.Meta
+                        title={'UNREGISTERED USER'}
+                        description={item.email}
+                        avatar={<CgProfile />}
+                      />
+                    }
+                    {
+                      (item.nameFirst || item.nameFirst) &&
+                      <List.Item.Meta
+                        title={`${item.nameFirst} ${item.nameLast}`}
+                        description={item.email}
+                        avatar={<CgProfile />}
+                      />
+                    }
                   </List.Item>
                 )}
               />

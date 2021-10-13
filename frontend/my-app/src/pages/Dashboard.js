@@ -9,12 +9,11 @@ import '../App.css';
 import './Dashboard.css'
 import { CgProfile } from 'react-icons/cg';
 import { fetchContacts } from '../redux/Contact/contact.actions';
-import { getFavourites } from '../redux/api';
 
 const columns = [
   {
-    title: 'id',
-    dataIndex: '_id',
+    title: 'Order No.',
+    dataIndex: 'orderNumber',
     key: '_id',
   },
   {
@@ -120,25 +119,25 @@ class Dashboard extends React.Component {
                       case "CREATED":
                         return (
                           <Timeline.Item key={order._id} color='red'>
-                            Order { order._id }, due: { order.timeDue.slice(0,10) }
+                            Order { order.orderNumber }, due: { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "DISCUSSED":
                         return (
                           <Timeline.Item key={order._id} color='orange'>
-                            Order { order._id } { order.timeDue.slice(0,10) }
+                            Order { order.orderNumber } { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "AGREED":
                         return (
                           <Timeline.Item key={order._id} color='blue'>
-                            Order { order._id }{ order.timeDue.slice(0,10) }
+                            Order { order.orderNumber }{ order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                       case "SIGNED":
                         return (
                           <Timeline.Item key={order._id} color='green'>
-                            Order { order._id } { order.timeDue.slice(0,10) }
+                            Order { order.orderNumber } { order.timeDue.slice(0,10) }
                           </Timeline.Item>
                         )
                     }

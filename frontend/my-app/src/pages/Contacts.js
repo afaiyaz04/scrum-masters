@@ -104,6 +104,7 @@ class Contacts extends React.Component {
                       </>,
                       <Button
                         type="dashed"
+                        style={{ paddingLeft: 2, textAlign: 'center' }}
                         block
                         onClick={() => 
                           this.setState({
