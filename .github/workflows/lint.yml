@@ -1,0 +1,32 @@
+name: Code Linting
+
+on:
+ # Only trigger on deploy branch
+  push:
+    branches: [deploy]
+  pull_request:
+    branches: [deploy]
+
+  workflow_dispatch:
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Prettier
+        run: npm install prettier
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          prettier: true
