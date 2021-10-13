@@ -39,6 +39,7 @@ const orderSchema = new mongoose.Schema({
   },
   description: { type: String, required: false, default: null },
   log: [{ type: mongoose.Schema.Types.ObjectId, ref: "Log" }],
+  lastModified: { type: Date, required: true, default: Date.now },
 });
 
 // compile into Model
