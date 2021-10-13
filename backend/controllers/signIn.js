@@ -37,11 +37,9 @@ export const signIn = async (req, res) => {
     // This is a registered account but not fully created.
     const createdUser = await User.findOne({ email: email });
     if (!createdUser) {
-      return res
-        .status(403)
-        .json({
-          message: "An admin needs to register an account with this email!",
-        });
+      return res.status(403).json({
+        message: "An admin needs to register an account with this email!",
+      });
     }
 
     // 3. Update this existing user with oauthId + additional info
