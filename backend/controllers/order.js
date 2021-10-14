@@ -134,7 +134,7 @@ export const addLineProduct = async (req, res) => {
             quantity: quantity
         };
         order.lineProducts.push(newLineProduct);
-
+        order.lastModified = Date.now();
         order.save();
         return res.json(order);
         
@@ -171,6 +171,7 @@ export const updateLineProduct = async (req, res) => {
         product.price = price ? price : product.price;
         product.quantity = quantity ? quantity : product.quantity;
 
+        order.lastModified = Date.now();
         await order.save();
         return res.json(order);
 
@@ -201,6 +202,7 @@ export const removeLineProduct = async (req, res) => {
 
         order.lineProducts.splice(lineProduct.index);
 
+        order.lastModified = Date.now();
         await order.save();
         return res.json(order);
 
