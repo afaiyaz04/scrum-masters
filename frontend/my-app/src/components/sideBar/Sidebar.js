@@ -5,10 +5,10 @@ import "./Sidebar.css";
 import { IconContext } from "react-icons";
 import * as FaIcons from "react-icons/fa";
 
-
 function Navbar() {
-  const user = JSON.parse(localStorage.getItem('userData'));
+  const user = JSON.parse(localStorage.getItem("userData"));
   const { nameFirst, nameLast, type } = user;
+  console.log(type === "ADMIN");
 
   return (
     <>
@@ -18,24 +18,33 @@ function Navbar() {
             <h1>
               <FaIcons.FaUserCircle />
             </h1>
-            <h2 className='userDetails'>
+            <h2 className="userDetails">
               {nameFirst} {nameLast}
             </h2>
-            <h2 className='userDetails'>
-              {type}
-            </h2>
+            <h2 className="userDetails">{type}</h2>
           </div>
           <ul className="nav-menu-items">
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            {type === "ADMIN"
+              ? SidebarData.ADMIN.map((item, index) => {
+                  return (
+                    <li key={index} className={item.cName}>
+                      <Link to={item.path}>
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </Link>
+                    </li>
+                  );
+                })
+              : SidebarData.GENERAL.map((item, index) => {
+                  return (
+                    <li key={index} className={item.cName}>
+                      <Link to={item.path}>
+                        {item.icon}
+                        <span>{item.title}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
           </ul>
         </nav>
       </IconContext.Provider>
