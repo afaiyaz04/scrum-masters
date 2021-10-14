@@ -32,7 +32,7 @@ const initialOrder = {
 }
 
 const initialProduct = {
-  id: "",
+  _id: "",
   name: "",
   description: "",
   price: 0,
@@ -50,6 +50,7 @@ class Orders extends React.Component {
       showDetails: false,
       addOrder: false,
 
+      showProductDetails: false,
       addProduct: false,
 
       transferOrder: false,
@@ -61,6 +62,7 @@ class Orders extends React.Component {
     this.renderBool = [
       'showDetails',
       'addOrder',
+      'showProductDetails',
       'addProduct',
       'transferOrder',
     ]
@@ -82,6 +84,11 @@ class Orders extends React.Component {
       { title: 'Name', dataIndex: 'name', key: 'name' },
       { title: 'Fee', dataIndex: 'price', key: 'price' },
       { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
+      { title: 'Item Actions', dataIndex: 'productAction', key: 'productAction', render: (_, record) => 
+        <>
+          <Button style={{ paddingLeft: 2, textAlign: "center" }} onClick={() => this.onProductDetails(record.key)}>Item Details</Button>
+        </>
+      },
     ]
   }
 
@@ -117,15 +124,13 @@ class Orders extends React.Component {
   updateProductHandler = (newItem) => {
     this.endRenderExcept();
     this.setState({ product: newItem });
-    this.props.dispatch(updateOrder(this.state.order._id, newItem));
-
+    this.props.dispatch(updateProduct(this.getOrderId(this.state.product._id), this.state.product._id, newItem));
   }
 
-  deleteProductHandler = (orderId) => {
+  deleteProductHandler = () => {
     this.endRenderExcept();
     this.setState({ product: initialProduct });
-    this.props.dispatch(deleteOrder(this.state.userId, orderId));
-
+    this.props.dispatch(deleteProduct(this.getOrderId(this.state.product._id), this.state.product._id));
   }
 
   // Stops rendering for all components unless specified
@@ -161,6 +166,17 @@ class Orders extends React.Component {
     });
   }
 
+  onProductDetails = (key) => {
+    this.props.orders.forEach(order => {
+      order.lineProducts.forEach(product => {
+        if (key === product._id)  {
+          this.setState({ product });
+          this.endRenderExcept('showProductDetails');
+        };
+      });
+    });
+  }
+
   // Get client name from id
   getClientName = (clientId) => {
     if (!clientId) return '';
@@ -173,12 +189,39 @@ class Orders extends React.Component {
     return name;
   }
 
+  // Get order id from product id
+  getOrderId = (productId) => {
+    if (!productId) return null;
+    let id;
+    this.props.orders.forEach(order => {
+      order.lineProducts.forEach(product => {
+        if (product._id === productId) id = order._id;
+      });
+    });
+    return id;
+  }
+
   // Nested table for product
   productRender = (row) => {
     let order = this.props.orders.find((order) => {
       return order._id === row.key;
     });
-    return <Table columns={this.productColumns} dataSource={order.lineProducts} pagination={false} />
+    let productData = order.lineProducts.map(product => {
+      return {
+        key: product._id,
+        name: product.name,
+        quantity: product.quantity,
+        price: product.price,
+      }
+    })
+    return (
+      <Table
+        columns={this.productColumns}
+        dataSource={productData}
+        pagination={false}
+        rowKey={record => record.key}
+      />
+    )
   }
 
   render() {
@@ -248,23 +291,25 @@ class Orders extends React.Component {
                   updateOrderAction={this.updateOrderHandler}
                   deleteOrderAction={this.deleteOrderHandler}
                   closeAction={() =>
-                    this.setState({ addOrder: false, showDetails: false })
+                    this.endRenderExcept()
                   }
                 />
               </div>
             )}
             {
-              (this.state.addProduct) &&
+              (this.state.addProduct || this.state.showProductDetails) &&
               <div className="contents-right">
                 <ProductForm
-                  order={this.state.order}
                   product={this.state.product}
+
+                  addProduct={this.state.addProduct}
+                  showProductDetails={this.state.showProductDetails}
 
                   createProductAction={this.createProductHandler}
                   updateProductAction={this.updateProductHandler}
                   deleteProductAction={this.deleteProductHandler}
                   closeAction={() =>
-                    this.setState({ addProduct: false })
+                    this.endRenderExcept()
                   }
                 />
               </div>
@@ -275,7 +320,7 @@ class Orders extends React.Component {
                 <Form>
                   <Button
                     style={{ paddingLeft: 2, textAlign: "center" }}
-                    onClick={() => { this.setState({ transferOrder: false })}}
+                    onClick={() => { this.setState({ transferOrder: false }) }}
                   >
                     Close
                   </Button>

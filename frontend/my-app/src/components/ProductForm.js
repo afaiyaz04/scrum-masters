@@ -24,8 +24,7 @@ const ProductForm = (props) => {
           Close
         </Button>
       </Form.Item>
-      <>
-		<Form.Item label="Item Name:">
+      <Form.Item label="Item Name:">
 			<Input
 				placeholder={product.name}
 				onChange={(e) => setProduct({ ...product, name: e.target.value })}
@@ -52,10 +51,19 @@ const ProductForm = (props) => {
 				onChange={(e) => setProduct({ ...product, description: e.target.value })}
 			/>
 		</Form.Item>
-		<Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-			<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.createProductAction(product)}}>Create</Button>
-		</Form.Item>
-		</>
+		{
+			(props.addProduct && !props.showProductDetails) &&
+			<Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.createProductAction(product)}}>Create</Button>
+			</Form.Item>
+		}
+		{
+			(!props.addProduct && props.showProductDetails) &&
+			<Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateProductAction(product)}>Update</Button>
+				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteProductAction(product._id)}>Delete</Button>
+			</Form.Item>
+		}
     </Form>
   );
 };
