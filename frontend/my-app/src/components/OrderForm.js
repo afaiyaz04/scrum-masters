@@ -90,13 +90,13 @@ const OrderForm = (props) => {
           onChange={(e) => setOrder({ ...order, description: e.target.value })}
         />
       </Form.Item>
-      {props.showOrderDetails && (
+      {(props.showOrderDetails && !props.addOrder) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateOrderAction(order)}>Update</Button>
           <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteOrderAction(order._id)}>Delete</Button>
         </Form.Item>
       )}
-      {props.addOrder && (
+      {(props.addOrder && !props.showOrderDetails) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.createOrderAction(order)}>Create</Button>
         </Form.Item>
