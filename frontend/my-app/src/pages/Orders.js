@@ -2,7 +2,7 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
-import { List, Button } from "antd";
+import { List, Button, Descriptions, Transfer, Form } from "antd";
 import "antd/dist/antd.css";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
@@ -11,25 +11,16 @@ import {
   fetchOrders,
   updateOrder,
   deleteOrder,
-} from "../redux/Order/order.actions";
-import {
-  createProduct,
-  fetchProducts,
+  addProduct,
   updateProduct,
   deleteProduct,
-} from "../redux/Product/product.actions";
+} from "../redux/Order/order.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
 
-const initialOrder = {
-  id: null,
-  timeDue: Date,
-  totalFee: 0,
-  description: "",
-  client: "",
-  status: "CREATED",
-};
+import { Table, Select } from 'antd';
+import { fetchUsers } from "../redux/Users/users.actions";
 
 //** FUNCTIONS *//
 //
@@ -59,24 +50,63 @@ const initialOrder = {
 //  this.props.orders
 //  this.props.products
 
+const productColumns = [
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  { title: 'Fee', dataIndex: 'price', key: 'price' },
+  { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
+]
+
+const initialOrder = {
+  _id: '',
+  client: '',
+  timeDue: '',
+  totalFee: 0,
+  status: 'CREATED',
+  description: '',
+  lineProducts: [],
+}
+
+const initialProduct = {
+  id: "",
+  name: "",
+  description: "",
+  price: 0,
+  quantity: 0,
+};
+
 class Orders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       order: initialOrder,
+      product: initialProduct,
+      selectedOrders: [],
 
       showDetails: false,
       addOrder: false,
 
-      showProducts: false,
+      addProduct: false,
+      transferOrder: false,
+      destination: null,
 
       userId: JSON.parse(localStorage.getItem("userData"))._id,
     };
+
+    this.orderColumns = [
+      { title: 'Order No.', dataIndex: 'orderNumber', key: 'orderNumber' },
+      { title: 'Status', dataIndex: 'status', key: 'status' },
+      { title: 'Client', dataIndex: 'client', key: 'client' },
+      { title: 'Deadline', dataIndex: 'timeDue', key: 'timeDue' },
+      { title: 'Total Fee', dataIndex: 'totalFee', key: 'totalFee' },
+      { title: '', dataIndex: 'x', key: 'x', render: (_, record) => <Button onClick={() => this.onOrderDetails(record.key)}>Details</Button>},
+      { title: '', dataIndex: 'y', key: 'y', render: (_, record) => <Button onClick={() => this.onAddItem(record.key)}>Add Item</Button>},
+    ]
   }
 
   componentDidMount() {
     this.props.dispatch(fetchOrders(this.state.userId));
     this.props.dispatch(fetchContacts(this.state.userId));
+    this.props.dispatch(fetchUsers());
   }
 
   createOrderHandler = (newItem) => {
@@ -85,8 +115,8 @@ class Orders extends React.Component {
   };
 
   updateOrderHandler = (newItem) => {
-    this.setState({ showDetails: false });
-    this.props.dispatch(updateOrder(this.state.order.id, newItem));
+    this.setState({ showDetails: false, order: newItem });
+    this.props.dispatch(updateOrder(this.state.order._id, newItem));
   }
 
   deleteOrderHandler = (orderId) => {
@@ -94,24 +124,56 @@ class Orders extends React.Component {
     this.props.dispatch(deleteOrder(this.state.userId, orderId));
   }
 
-  createProductHandler = (newItem, quantity) => {
-    this.props.dispatch(createProduct(this.state.order.id, newItem, quantity));
+  createProductHandler = (newItem) => {
+    this.setState({ addProduct: false });
+    this.props.dispatch(addProduct(this.state.order._id, newItem));
+    
   };
 
-  updateProductHandler = (productId, newItem, quantity) => {
-    this.props.dispatch(updateProduct(this.state.order.id, productId, newItem, quantity));
+  updateProductHandler = (newItem) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(updateOrder(this.state.order._id, newItem));
+
   }
 
-  deleteProductHandler = (productId) => {
-    this.props.dispatch(deleteProduct(this.state.order.id, productId));
+  deleteProductHandler = (orderId) => {
+    this.setState({ showDetails: false });
+    this.props.dispatch(deleteOrder(this.state.userId, orderId));
+
   }
 
-  descriptionLimit = (description) => {
-    if (description.length > 50) {
-      return `${description.slice(0,50)}...`;
-    } else {
-      return description;
-    }
+  expandedRow = (row) => {
+    let nestedTable = this.props.orders.map((order) => {
+      let x = order.lineProducts.map((product) => {
+        return {
+          key: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: product.quantity,
+        }
+      });
+      return x;
+    })[row.key];
+    return <Table columns={productColumns} dataSource={nestedTable} pagination={false} />
+  }
+
+  onSelectChange = (selectedRowKeys) => {
+    let x = this.props.orders.filter(order => {
+      if (selectedRowKeys.includes(order._id)) return order;
+    });
+    this.setState({ selectedOrders: x });
+  }
+
+  onOrderDetails = (key) => {
+    this.props.orders.filter(order => {
+      if (key === order._id) return this.setState({ order, showDetails: true });
+    });
+  }
+
+  onAddItem = (key) => {
+    this.props.orders.filter(order => {
+      if (key === order._id) return this.setState({ order, addProduct: true });
+    });
   }
 
   render() {
@@ -121,78 +183,53 @@ class Orders extends React.Component {
         <div className="orders">
           <Header
             page="Orders"
-            actions={() => {
-              this.setState({
-                addOrder: true,
-                showDetails: false,
-                showProducts: false,
-                order: initialOrder,
-              });
-            }}
+            actions={() => {this.setState({ addOrder: true, order: initialOrder })}}
           />
           <div className="contents">
-            <div className="contents-left">
-              <span>Name</span>
-              <List
-                itemLayout="horizontal"
-                dataSource={this.props.orders}
-                renderItem={(item) => (
-                  <List.Item
-                    className="order-item"
-                    key={item.id}
-                    actions={[
-                      <Button
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
-                        block
-                        onClick={() => {
-                          this.props.dispatch(fetchProducts(item._id));
-                          this.setState({
-                            showDetails: false,
-                            addOrder: false,
-                            showProducts: true,
-                            order: {
-                              id: item._id,
-                              client: item.client,
-                              timeDue: item.timeDue,
-                              totalFee: item.totalFee,
-                              description: item.description,
-                              status: item.status,
-                            },
-                          })
-                        }}
-                      >
-                        Items
-                      </Button>,
-                      <Button
-                        type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
-                        block
-                        onClick={() =>
-                          this.setState({
-                            showDetails: true,
-                            addOrder: false,
-                            showProducts: false,
-                            order: {
-                              id: item._id,
-                              client: item.client,
-                              timeDue: item.timeDue,
-                              totalFee: item.totalFee,
-                              description: item.description,
-                              status: item.status,
-                            },
-                          })
-                        }
-                      >
-                        Details
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={`Order No. ${item.orderNumber}`}
-                      description={this.descriptionLimit(item.description)}
-                    />
-                  </List.Item>
-                )}
+            <div className="contents-left" style={{ width: "60%" }}>
+              <Button
+                style={{ paddingLeft: 2, textAlign: "center" }}
+                onClick={() => { this.setState({ transferOrder: true })}}
+              >
+                Transfer
+              </Button>
+              <Table
+                columns={this.orderColumns}
+                expandable={{ 
+                  expandedRowRender: row => {
+                    let result = this.props.orders.map((order) => {
+                      if (order._id === row.key) {
+                        return order.lineProducts.map((product) => {
+                          return {
+                            key: product._id,
+                            name: product.name,
+                            price: product.price,
+                            quantity: product.quantity,
+                          }
+                        });
+                      }
+                    });
+                    let nestedTable = result.filter((arr) => { if (arr) return arr})[0];
+                    return <Table columns={productColumns} dataSource={nestedTable} pagination={false} />
+                  }
+                }}
+                dataSource={
+                  this.props.orders.map((order) => {
+                    return {
+                      key: order._id,
+                      orderNumber: order.orderNumber,
+                      client: order.client,
+                      status: order.status,
+                      timeDue: order.timeDue,
+                      totalFee: order.totalFee,
+                    }
+                  })
+                }
+                pagination={false}
+                rowSelection={{
+                  selectedRowKeys: this.props.selectedRowKeys,
+                  onChange: this.onSelectChange,
+                }}
               />
             </div>
             {(this.state.showDetails || this.state.addOrder) && (
@@ -215,17 +252,62 @@ class Orders extends React.Component {
               </div>
             )}
             {
-              (this.state.showProducts) &&
+              (this.state.addProduct) &&
               <div className="contents-right">
                 <ProductForm
                   order={this.state.order}
+                  product={this.state.product}
                   createProductAction={this.createProductHandler}
                   updateProductAction={this.updateProductHandler}
                   deleteProductAction={this.deleteProductHandler}
                   closeAction={() =>
-                    this.setState({ showProducts: false })
+                    this.setState({ addProduct: false })
                   }
                 />
+              </div>
+            }
+            {
+              (this.state.transferOrder) &&
+              <div className="contents-right">
+                <Form>
+                  <Button
+                    style={{ paddingLeft: 2, textAlign: "center" }}
+                    onClick={() => { this.setState({ transferOrder: false })}}
+                  >
+                    Close
+                  </Button>
+                  <Select
+                    showArrow={false}
+                    style={{ width: "100%" }}
+                    onChange={(value) => {this.setState({ destination: value })}}
+                  >
+                    {
+                      Object.keys(this.props.users).map((i) => {
+                        if (this.props.users[i]._id !== this.state.userId) {
+                          return <Select.Option value={this.props.users[i]._id}>{`${this.props.users[i].nameFirst} ${this.props.users[i].nameLast}`}</Select.Option>
+                        }
+                      })
+                    }
+                  </Select>
+                  {
+                    this.state.destination &&
+                    <Transfer
+                      dataSource={
+                        this.props.orders.map((order) => {
+                          return {
+                            key: order._id,
+                            orderNumber: order.orderNumber,
+                            client: order.client,
+                            status: order.status,
+                            timeDue: order.timeDue,
+                            totalFee: order.totalFee,
+                          }
+                        })
+                      }
+                      titles={['Source', 'Destination']}
+                    />
+                  }
+                </Form>
               </div>
             }
           </div>
@@ -239,6 +321,7 @@ const mapStateToProps = (state) => {
   return {
     orders: state.orders,
     contacts: state.contacts,
+    users: state.users,
   };
 };
 

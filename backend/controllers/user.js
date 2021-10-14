@@ -231,7 +231,7 @@ export const deleteUserOrder = async (req, res) => {
         user.orders.splice(orderIndex, 1);
         user.save();
         // here
-        await removeOrder(orderId);
+        await Order.findByIdAndRemove(orderId);
         return res.json(user);
 
 

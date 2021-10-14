@@ -93,7 +93,7 @@ const OrderForm = (props) => {
       {props.showOrderDetails && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateOrderAction(order)}>Update</Button>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteOrderAction(order.id)}>Delete</Button>
+          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteOrderAction(order._id)}>Delete</Button>
         </Form.Item>
       )}
       {props.addOrder && (
