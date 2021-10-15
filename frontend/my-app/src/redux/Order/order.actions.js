@@ -86,23 +86,3 @@ export const transferOrder =
             console.log(error);
         }
     };
-
-export const acceptOrder = (userId, orderId) => async (dispatch) => {
-    try {
-        await api.acceptOrder(userId, orderId);
-        const { data } = await api.fetchOrders(userId);
-        dispatch({ type: FETCH_ORDERS, payload: data });
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const declineOrder = (userId, orderId) => async (dispatch) => {
-    try {
-        await api.declineOrder(userId, orderId);
-        const { data } = await api.fetchOrders(userId);
-        dispatch({ type: FETCH_ORDERS, payload: data });
-    } catch (error) {
-        console.log(error);
-    }
-};

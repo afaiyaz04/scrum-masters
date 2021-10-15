@@ -414,11 +414,7 @@ export const transferOrder = async (req, res) => {
         if (orderIndex != -1) {
             const receivedOrder = {
                 fromUser: user._id,
-                nameFirst: user.nameFirst,
-                nameLast: user.nameLast,
                 order: order._id,
-                orderNumber: order.orderNumber,
-                description: order.description,
             };
             if (!toUser.receivedOrders.includes(receivedOrder)) {
                 toUser.receivedOrders.push(receivedOrder);
@@ -519,11 +515,7 @@ async function respondToTransfer(res, toUser, orderId, accept) {
         // return to sender
         fromUser.receivedOrders.push({
             fromUser: toUser._id,
-            nameFirst: toUser.nameFirst,
-            nameLast: toUser.nameLast,
             order: order._id,
-            orderNumber: order.orderNumber,
-            description: order.description,
         });
     }
 

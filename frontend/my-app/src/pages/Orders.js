@@ -13,15 +13,14 @@ import {
     updateProduct,
     deleteProduct,
     transferOrder,
-    acceptOrder,
-    declineOrder,
 } from "../redux/Order/order.actions";
+
+import { fetchTransfers, acceptOrder, declineOrder } from "../redux/Transfer/transfer.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
 import { fetchUsers } from "../redux/Users/users.actions";
 import TransferForm from "../components/TransferForm";
-import { fetchUser } from "../redux/User/user.actions";
 
 const initialOrder = {
     _id: "",
@@ -160,7 +159,7 @@ class Orders extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
-        this.props.dispatch(fetchUser(this.state.userId));
+        this.props.dispatch(fetchTransfers(this.state.userId));
         this.props.dispatch(fetchUsers());
     }
 
@@ -263,25 +262,14 @@ class Orders extends React.Component {
     };
 
     onAccept = (key) => {
-        this.props.user.authData.receivedOrders.forEach((order) => {
-            if (key === order.order) {
-                this.props.dispatch(
-                    acceptOrder(this.state.userId, order.order)
-                );
-            }
-        });
-        this.props.dispatch(fetchUser(this.state.userId));
+        this.props.dispatch(acceptOrder(this.state.userId, key));
+        this.props.dispatch(fetchOrders(this.state.userId));
+        window.location.reload(true);
     };
 
     onDecline = (key) => {
-        this.props.user.authData.receivedOrders.forEach((order) => {
-            if (key === order.order) {
-                this.props.dispatch(
-                    declineOrder(this.state.userId, order.order)
-                );
-            }
-        });
-        this.props.dispatch(fetchUser(this.state.userId));
+        this.props.dispatch(declineOrder(this.state.userId, key));
+        this.props.dispatch(fetchOrders(this.state.userId));
     };
 
     // Get client name from id
@@ -332,6 +320,7 @@ class Orders extends React.Component {
     };
 
     render() {
+        console.log(this.props.transfers);
         return (
             <div className="Master-div">
                 <Sidebar />
@@ -345,22 +334,20 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            {this.props.user.authData &&
-                                this.props.user.authData.receivedOrders.length >
+                            {this.props.transfers.length >
                                     0 && (
                                     <>
                                         <h3>Received Orders</h3>
                                         <Table
                                             columns={this.receivedOrderColumns}
-                                            dataSource={this.props.user.authData.receivedOrders.map(
-                                                (order) => {
+                                            dataSource={this.props.transfers.map(
+                                                (transfer) => {
                                                     return {
-                                                        key: order.order,
-                                                        orderNumber:
-                                                            order.orderNumber,
-                                                        user: `${order.nameFirst} ${order.nameLast}`,
+                                                        key: transfer.order._id,
+                                                        orderNumber: transfer.order.orderNumber,
+                                                        user: `${transfer.user.nameFirst} ${transfer.user.nameLast}`,
                                                         description:
-                                                            order.description,
+                                                            transfer.order.description,
                                                     };
                                                 }
                                             )}
@@ -477,7 +464,7 @@ const mapStateToProps = (state) => {
         orders: state.orders,
         contacts: state.contacts,
         users: state.users,
-        user: state.user,
+        transfers: state.transfers,
     };
 };
 

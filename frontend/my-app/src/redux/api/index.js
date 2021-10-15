@@ -59,3 +59,4 @@ export const acceptOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/accept`, { orderId });
 export const declineOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/reject`, { orderId });
+export const fetchOrder = (orderId) => API.get(`/order/${orderId}`);
