@@ -15,7 +15,11 @@ import {
     transferOrder,
 } from "../redux/Order/order.actions";
 
-import { fetchTransfers, acceptOrder, declineOrder } from "../redux/Transfer/transfer.actions";
+import {
+    fetchTransfers,
+    acceptOrder,
+    declineOrder,
+} from "../redux/Transfer/transfer.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
@@ -334,32 +338,34 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            {this.props.transfers.length >
-                                    0 && (
-                                    <>
-                                        <h3>Received Orders</h3>
-                                        <Table
-                                            columns={this.receivedOrderColumns}
-                                            dataSource={this.props.transfers.map(
-                                                (transfer) => {
-                                                    return {
-                                                        key: transfer.order._id,
-                                                        orderNumber: transfer.order.orderNumber,
-                                                        user: `${transfer.user.nameFirst} ${transfer.user.nameLast}`,
-                                                        description:
-                                                            transfer.order.description,
-                                                    };
-                                                }
-                                            )}
-                                            pagination={false}
-                                            rowSelection={{
-                                                selectedRowKeys:
-                                                    this.props.selectedRowKeys,
-                                                onChange: this.onSelectChange,
-                                            }}
-                                        />
-                                    </>
-                                )}
+                            {this.props.transfers.length > 0 && (
+                                <>
+                                    <h3>Received Orders</h3>
+                                    <Table
+                                        columns={this.receivedOrderColumns}
+                                        dataSource={this.props.transfers.map(
+                                            (transfer) => {
+                                                return {
+                                                    key: transfer.order._id,
+                                                    orderNumber:
+                                                        transfer.order
+                                                            .orderNumber,
+                                                    user: `${transfer.user.nameFirst} ${transfer.user.nameLast}`,
+                                                    description:
+                                                        transfer.order
+                                                            .description,
+                                                };
+                                            }
+                                        )}
+                                        pagination={false}
+                                        rowSelection={{
+                                            selectedRowKeys:
+                                                this.props.selectedRowKeys,
+                                            onChange: this.onSelectChange,
+                                        }}
+                                    />
+                                </>
+                            )}
 
                             <div style={{ height: 40 }}>
                                 {this.state.selectedOrders.length > 0 && (

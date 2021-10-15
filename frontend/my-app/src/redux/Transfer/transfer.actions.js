@@ -8,9 +8,11 @@ export const fetchTransfers = (userId) => async (dispatch) => {
         for (let i in data.receivedOrders) {
             const order = await api.fetchOrder(data.receivedOrders[i].order);
             const user = await api.fetchUser(data.receivedOrders[i].fromUser);
-            dispatch({ type: FETCH_TRANSFERS, payload: { order: order.data, user: user.data } });
+            dispatch({
+                type: FETCH_TRANSFERS,
+                payload: { order: order.data, user: user.data },
+            });
         }
-
     } catch (error) {
         console.log(error);
     }

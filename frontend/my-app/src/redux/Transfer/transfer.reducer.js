@@ -7,7 +7,9 @@ const reducer = (state = INITIAL_STATE, action) => {
         case FETCH_TRANSFERS:
             return [...state, action.payload];
         case TRANSFER_RESPONSE:
-            return state.filter((transfer) => transfer.order._id !== action.payload);
+            return state.filter(
+                (transfer) => transfer.order._id !== action.payload
+            );
         default:
             return state;
     }
