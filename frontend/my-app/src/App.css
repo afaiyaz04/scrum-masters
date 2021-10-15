@@ -226,3 +226,8 @@
   display: flex;
   align-items: baseline;
 }
+
+.general-btn {
+  text-align: center;
+  width: 120px
+}
