@@ -14,15 +14,6 @@ const TransferForm = (props) => {
         });
     };
 
-    const layout = {
-        labelCol: {
-            span: 5,
-        },
-        wrapperCol: {
-            span: 16,
-        },
-    };
-
     const getUserName = (userId) => {
         let name;
         props.users.forEach((user) => {

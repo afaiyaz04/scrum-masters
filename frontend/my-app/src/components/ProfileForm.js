@@ -1,12 +1,10 @@
 import React from "react";
-import { FaUserCircle } from "react-icons/fa";
 import { Modal, Button, Form, Input, Upload, message } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { updateUser, deleteSelf } from "../redux/User/user.actions";
 import { compose } from "redux";
 import { withRouter } from "react-router";
-import { SIGN_OUT } from "../redux/User/user.types";
 import "./Profile.css";
 
 const layout = {
@@ -113,6 +111,7 @@ class Profile extends React.Component {
                                 src={this.state.user.profilePic}
                                 className="profile-pic-img"
                                 referrerPolicy="no-referrer"
+                                alt=""
                             />
                             <div className="profile-pic-text">
                                 <p className="text-middle">Change</p>

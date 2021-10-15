@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { API, ORDER, PRODUCT, PRODUCTS } from "../pages/urlConfig";
-import { List, Input, Card, Button, InputNumber } from "antd";
+import { Input, Card, Button, InputNumber } from "antd";
 
 class ProductCard extends React.Component {
     constructor(props) {

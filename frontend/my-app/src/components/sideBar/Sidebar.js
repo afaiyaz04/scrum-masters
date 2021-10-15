@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
 import { IconContext } from "react-icons";
-import * as FaIcons from "react-icons/fa";
-import { Avatar } from "antd";
+// import * as FaIcons from "react-icons/fa";
+// import { Avatar } from "antd";
 
 function Navbar() {
     const user = JSON.parse(localStorage.getItem("userData"));
@@ -19,6 +19,7 @@ function Navbar() {
                             src={profilePic}
                             className="img-sidebar"
                             referrerPolicy="no-referrer"
+                            alt=""
                         />
                         <h2 className="userDetails">
                             {nameFirst} {nameLast}
