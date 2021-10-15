@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { Button, Table } from "antd";
+import { Button, Table, Collapse } from "antd";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
 import {
@@ -43,6 +43,8 @@ const initialProduct = {
     price: 0,
     quantity: 0,
 };
+
+const { Panel } = Collapse;
 
 class Orders extends React.Component {
     constructor(props) {
@@ -338,9 +340,11 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            {this.props.transfers.length > 0 && (
-                                <>
-                                    <h3>Received Orders</h3>
+                            <Collapse bordered={false}>
+                                <Panel
+                                    header={`Received Orders (${this.props.transfers.length})`}
+                                    key="1"
+                                >
                                     <Table
                                         columns={this.receivedOrderColumns}
                                         dataSource={this.props.transfers.map(
@@ -364,10 +368,16 @@ class Orders extends React.Component {
                                             onChange: this.onSelectChange,
                                         }}
                                     />
-                                </>
-                            )}
+                                </Panel>
+                            </Collapse>
 
-                            <div style={{ height: 40 }}>
+                            <div
+                                style={{
+                                    height: 40,
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                }}
+                            >
                                 {this.state.selectedOrders.length > 0 && (
                                     // Buttons for selected orders
                                     <>
@@ -387,6 +397,7 @@ class Orders extends React.Component {
 
                             {/* Order table component */}
                             <Table
+                                style={{ paddingTop: 10 }}
                                 columns={this.orderColumns}
                                 expandable={{
                                     expandedRowRender: this.productRender,
