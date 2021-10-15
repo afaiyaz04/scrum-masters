@@ -41,10 +41,8 @@ class Profile extends React.Component {
     render() {
         return (
             <Form {...layout}>
-                <Form.Item className="user-pic">
-                    <h1>
-                        <FaUserCircle />
-                    </h1>
+                <Form.Item className="user-pic-profile">
+                    <img src={this.state.user.profilePic} className="img-profile"/>
                 </Form.Item>
                 <Form.Item label="Email:">
                     <Input
