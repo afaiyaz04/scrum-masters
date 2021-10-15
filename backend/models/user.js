@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     oauthId: { type: String, required: false },
     nameFirst: { type: String, required: false },
     nameLast: { type: String, required: false },
+    profilePic: { type: String, required: false },
     type: {
         type: String,
         enum: [ADMIN_USER, GENERAL_USER],
