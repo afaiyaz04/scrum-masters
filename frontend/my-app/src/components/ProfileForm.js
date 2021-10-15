@@ -94,7 +94,10 @@ class Profile extends React.Component {
                     >
                         <div className="profile-pic-wrap">
                             <img src={this.state.user.profilePic} className="profile-pic-img"/>
-                            <div className="profile-pic-text"><p className="text-middle">Change</p></div>
+                            <div className="profile-pic-text">
+                                <p className="text-middle">Change</p>
+                            </div>
+                            
                         </div>
                     </Upload>
                 </Form.Item>
