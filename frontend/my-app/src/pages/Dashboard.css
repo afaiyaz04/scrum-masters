@@ -2,7 +2,7 @@
   width: 60%;
   display: block;
   justify-items: flex-start;
-  padding-right: 3%;
+  padding-right: 3% 2%;
 }
 
 .progress {
