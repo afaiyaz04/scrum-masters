@@ -11,139 +11,145 @@ import ClientCard from "../components/ClientCard";
 import AddProductForm from "../components/AddProductForm";
 
 class AddOrders extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      client: "Select Client from list",
-      lineProducts: "",
-      timeDue: "",
-      totalFee: 0,
-      status: "CREATED",
-      description: "",
-      log: "",
+    constructor(props) {
+        super(props);
+        this.state = {
+            client: "Select Client from list",
+            lineProducts: "",
+            timeDue: "",
+            totalFee: 0,
+            status: "CREATED",
+            description: "",
+            log: "",
 
-      contacts: [],
-      initialOrderID: "",
-    };
-  }
+            contacts: [],
+            initialOrderID: "",
+        };
+    }
 
-  removeNull(array) {
-    return array.filter((x) => x !== null);
-  }
+    removeNull(array) {
+        return array.filter((x) => x !== null);
+    }
 
-  initializeOrder = () => {
-    const emptyOrder = {
-      client: "615e66d22220e3f875485748", //dummy false id for initiation
-      timeDue: Date.now(),
-      totalFee: 0,
-      description: "",
-    };
-    const path = API + ORDER;
-    console.log(emptyOrder);
-    axios.post(path, emptyOrder).then((res) => {
-      console.log(res);
-      this.setState({ initialOrderID: res.data._id });
-    });
-  };
-
-  componentDidMount = async () => {
-    this.initializeOrder();
-    const endpoint = API + USER + "616211812b32244bfc3e1a2d" + CLIENTS;
-    const response = await axios.get(endpoint).catch((err) => {
-      console.log("ERR", err);
-    });
-    console.log(response);
-    this.setState({ contacts: this.removeNull(response.data) });
-  };
-
-  setClientID = (data) => {
-    this.setState({ client: data });
-  };
-
-  onOk = (value) => {
-    const date = new Date(Date.parse(value));
-    this.setState({ timeDue: date });
-  };
-
-  updateHandler = (order) => {
-    const path = API + ORDER + this.state.initialOrderID;
-    const path2 = API + USER + this.props.user._id + ORDERS;
-    axios.patch(path, order).then((res) => {
-      console.log(res);
-      axios
-        .post(path2, {
-          orderId: res.data._id,
-        })
-        .then((res) => {
-          console.log(res);
+    initializeOrder = () => {
+        const emptyOrder = {
+            client: "615e66d22220e3f875485748", //dummy false id for initiation
+            timeDue: Date.now(),
+            totalFee: 0,
+            description: "",
+        };
+        const path = API + ORDER;
+        console.log(emptyOrder);
+        axios.post(path, emptyOrder).then((res) => {
+            console.log(res);
+            this.setState({ initialOrderID: res.data._id });
         });
-    });
-  };
+    };
 
-  render() {
-    return (
-      <div className="Master-div">
-        <Sidebar />
-        <div className="contacts">
-          <Header
-            page="Add Orders"
-            addButton={false}
-            actions={this.addOrder}
-          ></Header>
-          <div className="Add-order">
-            <h2>Order Form</h2>
-            <div className="add-top">
-              <h2>List of Clients</h2>
-              <List
-                grid={{ gutter: 16, column: 4 }}
-                dataSource={this.state.contacts}
-                renderItem={(item) => (
-                  <ClientCard
-                    addButton={true}
-                    action={this.setClientID}
-                    client={item._id}
-                  ></ClientCard>
-                )}
-              />
-              ,
+    componentDidMount = async () => {
+        this.initializeOrder();
+        const endpoint = API + USER + "616211812b32244bfc3e1a2d" + CLIENTS;
+        const response = await axios.get(endpoint).catch((err) => {
+            console.log("ERR", err);
+        });
+        console.log(response);
+        this.setState({ contacts: this.removeNull(response.data) });
+    };
+
+    setClientID = (data) => {
+        this.setState({ client: data });
+    };
+
+    onOk = (value) => {
+        const date = new Date(Date.parse(value));
+        this.setState({ timeDue: date });
+    };
+
+    updateHandler = (order) => {
+        const path = API + ORDER + this.state.initialOrderID;
+        const path2 = API + USER + this.props.user._id + ORDERS;
+        axios.patch(path, order).then((res) => {
+            console.log(res);
+            axios
+                .post(path2, {
+                    orderId: res.data._id,
+                })
+                .then((res) => {
+                    console.log(res);
+                });
+        });
+    };
+
+    render() {
+        return (
+            <div className="Master-div">
+                <Sidebar />
+                <div className="contacts">
+                    <Header
+                        page="Add Orders"
+                        addButton={false}
+                        actions={this.addOrder}
+                    ></Header>
+                    <div className="Add-order">
+                        <h2>Order Form</h2>
+                        <div className="add-top">
+                            <h2>List of Clients</h2>
+                            <List
+                                grid={{ gutter: 16, column: 4 }}
+                                dataSource={this.state.contacts}
+                                renderItem={(item) => (
+                                    <ClientCard
+                                        addButton={true}
+                                        action={this.setClientID}
+                                        client={item._id}
+                                    ></ClientCard>
+                                )}
+                            />
+                            ,
+                        </div>
+                        <div className="add-mid">
+                            <h2>Add product</h2>
+                            <AddProductForm
+                                orderID={this.state.initialOrderID}
+                            ></AddProductForm>
+                        </div>
+
+                        <h2>Input other detail</h2>
+                        <Card>
+                            <h3>Client:</h3>
+                            <Input placeholder={this.state.client} />
+
+                            <Input
+                                placeholder="Order Description"
+                                onChange={(e) =>
+                                    this.setState({
+                                        description: e.target.value,
+                                    })
+                                }
+                            />
+                            <DatePicker showTime onOk={this.onOk} />
+                            <div className="horizontal">
+                                <h3>Total Fee: </h3>
+                                <br></br>
+                                <InputNumber
+                                    onChange={(value) => {
+                                        this.setState({ totalFee: value });
+                                    }}
+                                    min={0}
+                                    defaultValue={this.state.totalFee}
+                                />{" "}
+                            </div>
+                            <Button
+                                onClick={() => this.updateHandler(this.state)}
+                            >
+                                Submit
+                            </Button>
+                        </Card>
+                    </div>
+                </div>
             </div>
-            <div className="add-mid">
-              <h2>Add product</h2>
-              <AddProductForm
-                orderID={this.state.initialOrderID}
-              ></AddProductForm>
-            </div>
-
-            <h2>Input other detail</h2>
-            <Card>
-              <h3>Client:</h3>
-              <Input placeholder={this.state.client} />
-
-              <Input
-                placeholder="Order Description"
-                onChange={(e) => this.setState({ description: e.target.value })}
-              />
-              <DatePicker showTime onOk={this.onOk} />
-              <div className="horizontal">
-                <h3>Total Fee: </h3>
-                <br></br>
-                <InputNumber
-                  onChange={(value) => {
-                    this.setState({ totalFee: value });
-                  }}
-                  min={0}
-                  defaultValue={this.state.totalFee}
-                />{" "}
-              </div>
-              <Button onClick={() => this.updateHandler(this.state)}>
-                Submit
-              </Button>
-            </Card>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        );
+    }
 }
 
 export default connect(mapStateToProps)(AddOrders);

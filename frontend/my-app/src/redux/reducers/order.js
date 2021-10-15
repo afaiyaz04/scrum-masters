@@ -7,4 +7,4 @@ export default (order = [], action) => {
         default:
             return order;
     }
-}
+};

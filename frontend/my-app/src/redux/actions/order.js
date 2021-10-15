@@ -1,6 +1,6 @@
-import { CREATE_ORDER } from '../constants/actionTypes';
+import { CREATE_ORDER } from "../constants/actionTypes";
 
-import * as api from '../api/index.js';
+import * as api from "../api/index.js";
 
 export const createOrder = (order) => async (dispatch) => {
     try {
@@ -10,4 +10,4 @@ export const createOrder = (order) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
