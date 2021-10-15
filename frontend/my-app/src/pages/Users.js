@@ -39,7 +39,7 @@ class Users extends React.Component {
     }
 
     promoteHandler = (toUserId) => {
-        this.props.dispatch(promoteUser(this.state.userId, toUserId));
+        this.props.dispatch(promoteUser(toUserId));
         this.setState({ showDetails: false });
     };
 
