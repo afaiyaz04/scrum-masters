@@ -29,6 +29,8 @@ function SignUp() {
         const nameFirst = res.profileObj.givenName;
         const nameLast = res.profileObj.familyName;
         const profilePic = res.profileObj.imageUrl;
+        // const profilePic = res.profileObj.imageUrl.slice(0,-4) + "300-c";
+        
 
         try {
             dispatch({

@@ -50,6 +50,7 @@ class Profile extends React.Component {
         this.state = {
             user: JSON.parse(localStorage.getItem("userData")),
             showDelete: false,
+            input: {nameFirst: "", nameLast: ""},
         };
     }
 
@@ -79,6 +80,24 @@ class Profile extends React.Component {
         }
       };
 
+      resetToGoogle = () => {
+          const googleData = JSON.parse(localStorage.getItem("user"));
+          
+          this.setState({
+              user: {
+                    ...this.state.user,
+                    profilePic: googleData.profilePic,
+                    nameFirst: googleData.nameFirst,
+                    nameLast: googleData.nameLast,
+              },
+              input: {
+                  nameFirst: googleData.nameFirst,
+                  nameLast: googleData.nameLast,
+              }
+          })
+
+      }
+
     render() {
         return (
             <Form {...layout}>
@@ -97,7 +116,6 @@ class Profile extends React.Component {
                             <div className="profile-pic-text">
                                 <p className="text-middle">Change</p>
                             </div>
-                            
                         </div>
                     </Upload>
                 </Form.Item>
@@ -116,8 +134,13 @@ class Profile extends React.Component {
                                     ...this.state.user,
                                     nameFirst: e.target.value,
                                 },
+                                input: {
+                                    ...this.state.input,
+                                    nameFirst: e.target.value,
+                                },
                             })
                         }
+                        value={this.state.input.nameFirst}
                     />
                 </Form.Item>
                 <Form.Item label="Last Name:">
@@ -129,11 +152,25 @@ class Profile extends React.Component {
                                     ...this.state.user,
                                     nameLast: e.target.value,
                                 },
+                                input: {
+                                    ...this.state.input,
+                                    nameLast: e.target.value,
+                                },
                             })
                         }
+                        value={this.state.input.nameLast}
                     />
                 </Form.Item>
-                <Form.Item wrapperCol={{ span: 30 }} style={{ paddingTop: 50 }}>
+                <Form.Item wrapperCol={{ span: 30 }} style={{ paddingTop: 30 }}>
+                    <Button
+                        block
+                        onClick={() => this.resetToGoogle()}
+                        style={{ textAlign: "center" }}
+                    >
+                        Reset to Google Information
+                    </Button>
+                </Form.Item>
+                <Form.Item wrapperCol={{ span: 30 }} >
                     <Button
                         type="primary"
                         block
