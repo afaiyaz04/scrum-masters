@@ -34,19 +34,19 @@ const ProductForm = (props) => {
 			<InputNumber
 				onChange={(e) => setProduct({ ...product, price: e })}
 				min={0}
-				defaultValue={product.price}
+				placeholder={product.price}
 			/>
 		</Form.Item>
 		<Form.Item label="Quantity:">
 			<InputNumber
 				onChange={(e) => setProduct({ ...product, quantity: e })}
 				min={0}
-				defaultValue={product.quantity}
+				placeholder={product.quantity}
 			/>
 		</Form.Item>
 		<Form.Item label="Description:">
 			<Input.TextArea
-				defaultValue={product.description}
+				placeholder={product.description}
 				style={{ height: 150 }}
 				onChange={(e) => setProduct({ ...product, description: e.target.value })}
 			/>

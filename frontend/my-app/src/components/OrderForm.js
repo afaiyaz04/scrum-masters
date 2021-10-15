@@ -68,7 +68,7 @@ const OrderForm = (props) => {
             setOrder({ ...order, totalFee: value });
           }}
           min={0}
-          defaultValue={order.totalFee}
+          placeholder={order.totalFee}
         />
       </Form.Item>
       <Form.Item label="Status:">
@@ -85,20 +85,20 @@ const OrderForm = (props) => {
       </Form.Item>
       <Form.Item label="Description:">
         <Input.TextArea
-          defaultValue={order.description}
+          placeholder={order.description}
           style={{ height: 150 }}
           onChange={(e) => setOrder({ ...order, description: e.target.value })}
         />
       </Form.Item>
       {(props.showOrderDetails && !props.addOrder) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateOrderAction(order)}>Update</Button>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteOrderAction(order._id)}>Delete</Button>
+          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.updateOrderAction(order)}}>Update</Button>
+          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.deleteOrderAction(order._id)}}>Delete</Button>
         </Form.Item>
       )}
       {(props.addOrder && !props.showOrderDetails) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.createOrderAction(order)}>Create</Button>
+          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.createOrderAction(order)}}>Create</Button>
         </Form.Item>
       )}
     </Form>

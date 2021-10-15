@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { Button, Transfer, Form } from "antd";
+import { Button, Table } from "antd";
 import "antd/dist/antd.css";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
@@ -13,13 +13,13 @@ import {
   addProduct,
   updateProduct,
   deleteProduct,
+  transferOrder,
 } from "../redux/Order/order.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
-
-import { Table, Select } from 'antd';
 import { fetchUsers } from "../redux/Users/users.actions";
+import TransferForm from "../components/TransferForm";
 
 const initialOrder = {
   _id: '',
@@ -131,6 +131,11 @@ class Orders extends React.Component {
     this.endRenderExcept();
     this.setState({ product: initialProduct });
     this.props.dispatch(deleteProduct(this.getOrderId(this.state.product._id), this.state.product._id));
+  }
+
+  transferOrderHandler = (toUserId, orderId) => {
+    this.endRenderExcept();
+    this.props.dispatch(transferOrder(this.state.userId, toUserId, orderId));
   }
 
   // Stops rendering for all components unless specified
@@ -290,9 +295,7 @@ class Orders extends React.Component {
                   createOrderAction={this.createOrderHandler}
                   updateOrderAction={this.updateOrderHandler}
                   deleteOrderAction={this.deleteOrderHandler}
-                  closeAction={() =>
-                    this.endRenderExcept()
-                  }
+                  closeAction={() => this.endRenderExcept()}
                 />
               </div>
             )}
@@ -316,47 +319,17 @@ class Orders extends React.Component {
             }
             {
               (this.state.transferOrder) &&
-              <div className="contents-right">
-                <Form>
-                  <Button
-                    style={{ paddingLeft: 2, textAlign: "center" }}
-                    onClick={() => { this.setState({ transferOrder: false }) }}
-                  >
-                    Close
-                  </Button>
-                  <Select
-                    showArrow={false}
-                    style={{ width: "100%" }}
-                    onChange={(value) => {this.setState({ destination: value })}}
-                  >
-                    {
-                      Object.keys(this.props.users).map((i) => {
-                        if (this.props.users[i]._id !== this.state.userId) {
-                          return <Select.Option value={this.props.users[i]._id}>{`${this.props.users[i].nameFirst} ${this.props.users[i].nameLast}`}</Select.Option>
-                        }
-                      })
-                    }
-                  </Select>
-                  {
-                    this.state.destination &&
-                    <Transfer
-                      dataSource={
-                        this.props.orders.map((order) => {
-                          return {
-                            key: order._id,
-                            orderNumber: order.orderNumber,
-                            client: order.client,
-                            status: order.status,
-                            timeDue: order.timeDue,
-                            totalFee: order.totalFee,
-                          }
-                        })
-                      }
-                      titles={['Source', 'Destination']}
-                    />
-                  }
-                </Form>
-              </div>
+              <TransferForm
+                transferOrder={this.state.transferOrder}
+                orders={this.state.selectedOrders}
+                users={this.props.users}
+
+                transferAction={this.transferOrderHandler}
+
+                closeAction={() =>
+                  this.endRenderExcept()
+                }
+              />
             }
           </div>
         </div>
