@@ -6,6 +6,7 @@ import { updateUser, deleteSelf } from "../redux/User/user.actions";
 import { compose } from "redux";
 import { withRouter } from "react-router";
 import "./Profile.css";
+import ChangePicture from "./ChangePicture.js";
 
 const layout = {
     labelCol: {
@@ -97,27 +98,21 @@ class Profile extends React.Component {
         return (
             <Form {...layout}>
                 <Form.Item className="profile-pic-form">
-                    <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="profile-pic-upload"
-                        showUploadList={false}
-                        customRequest={dummyRequest}
-                        beforeUpload={beforeUpload}
-                        onChange={this.handleChange}
-                    >
-                        <div className="profile-pic-wrap">
-                            <img
-                                src={this.state.user.profilePic}
-                                className="profile-pic-img"
-                                referrerPolicy="no-referrer"
-                                alt=""
-                            />
-                            <div className="profile-pic-text">
-                                <p className="text-middle">Change</p>
-                            </div>
-                        </div>
-                    </Upload>
+                    <ChangePicture 
+                        height={300}
+                        width={300}
+                        onChange={
+                            (imgUrl) => 
+                                this.setState({
+                                    user: {
+                                        ...this.state.user,
+                                        profilePic: imgUrl,
+                                    },
+                            })
+                        }
+                        img={this.state.user.profilePic}
+                        text="Change"
+                    />
                 </Form.Item>
                 <Form.Item label="Email:">
                     <Input
