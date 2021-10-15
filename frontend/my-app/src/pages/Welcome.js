@@ -28,8 +28,11 @@ function SignUp() {
         const email = res.profileObj.email;
         const nameFirst = res.profileObj.givenName;
         const nameLast = res.profileObj.familyName;
-        const profilePic = res.profileObj.imageUrl;
-        // const profilePic = res.profileObj.imageUrl.slice(0,-4) + "300-c";
+        const profilePic = res.profileObj.imageUrl.replace(
+            "s96-c",
+            "s500-c",
+            true
+        );
 
         try {
             dispatch({
