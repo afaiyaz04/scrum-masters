@@ -18,7 +18,7 @@ export const fetchUser = (userId) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const updateUser = (userId, formData) => async (dispatch) => {
     try {

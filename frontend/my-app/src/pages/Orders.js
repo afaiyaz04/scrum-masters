@@ -107,7 +107,11 @@ class Orders extends React.Component {
                 key: "orderNumber",
             },
             { title: "From", dataIndex: "user", key: "user" },
-            { title: "Description", dataIndex: "description", key: "description" },
+            {
+                title: "Description",
+                dataIndex: "description",
+                key: "description",
+            },
             {
                 title: "Actions",
                 dataIndex: "action",
@@ -207,7 +211,9 @@ class Orders extends React.Component {
 
     transferOrderHandler = (toUserId, orderIds) => {
         this.endRenderExcept();
-        this.props.dispatch(transferOrder(this.state.userId, toUserId, orderIds));
+        this.props.dispatch(
+            transferOrder(this.state.userId, toUserId, orderIds)
+        );
     };
 
     // Stops rendering for all components unless specified
@@ -259,8 +265,10 @@ class Orders extends React.Component {
     onAccept = (key) => {
         this.props.user.authData.receivedOrders.forEach((order) => {
             if (key === order.order) {
-                this.props.dispatch(acceptOrder(this.state.userId, order.order));
-            };
+                this.props.dispatch(
+                    acceptOrder(this.state.userId, order.order)
+                );
+            }
         });
         this.props.dispatch(fetchUser(this.state.userId));
     };
@@ -268,8 +276,10 @@ class Orders extends React.Component {
     onDecline = (key) => {
         this.props.user.authData.receivedOrders.forEach((order) => {
             if (key === order.order) {
-                this.props.dispatch(declineOrder(this.state.userId, order.order));
-            };
+                this.props.dispatch(
+                    declineOrder(this.state.userId, order.order)
+                );
+            }
         });
         this.props.dispatch(fetchUser(this.state.userId));
     };
@@ -335,28 +345,34 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            {
-                                (this.props.user.authData && this.props.user.authData.receivedOrders.length > 0) &&
-                                <>
-                                    <h3>Received Orders</h3>
-                                    <Table
-                                        columns={this.receivedOrderColumns}
-                                        dataSource={this.props.user.authData.receivedOrders.map((order) => {
-                                            return {
-                                                key: order.order,
-                                                orderNumber: order.orderNumber,
-                                                user: `${order.nameFirst} ${order.nameLast}`,
-                                                description: order.description,
-                                            };
-                                        })}
-                                        pagination={false}
-                                        rowSelection={{
-                                            selectedRowKeys: this.props.selectedRowKeys,
-                                            onChange: this.onSelectChange,
-                                        }}
-                                    />
-                                </>
-                            }
+                            {this.props.user.authData &&
+                                this.props.user.authData.receivedOrders.length >
+                                    0 && (
+                                    <>
+                                        <h3>Received Orders</h3>
+                                        <Table
+                                            columns={this.receivedOrderColumns}
+                                            dataSource={this.props.user.authData.receivedOrders.map(
+                                                (order) => {
+                                                    return {
+                                                        key: order.order,
+                                                        orderNumber:
+                                                            order.orderNumber,
+                                                        user: `${order.nameFirst} ${order.nameLast}`,
+                                                        description:
+                                                            order.description,
+                                                    };
+                                                }
+                                            )}
+                                            pagination={false}
+                                            rowSelection={{
+                                                selectedRowKeys:
+                                                    this.props.selectedRowKeys,
+                                                onChange: this.onSelectChange,
+                                            }}
+                                        />
+                                    </>
+                                )}
 
                             <div style={{ height: 40 }}>
                                 {this.state.selectedOrders.length > 0 && (
