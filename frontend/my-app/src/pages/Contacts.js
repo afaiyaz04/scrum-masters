@@ -1,7 +1,8 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile, CgHeart } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
+import { FaStar, FaRegStar } from "react-icons/fa";
 import { List, Button } from "antd";
 import {
     createContact,
@@ -12,6 +13,7 @@ import {
 } from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
+import "./Contact.css";
 
 const initialContact = {
     id: "",
@@ -99,35 +101,51 @@ class Contacts extends React.Component {
                                         actions={[
                                             <>
                                                 {item.fav && (
-                                                    <CgHeart
-                                                        style={{
-                                                            height: 30,
-                                                            width: 30,
-                                                            paddingTop: 10,
-                                                            color: "red",
-                                                        }}
+                                                    <FaStar
+                                                        className="fav"
+                                                        color="orange"
                                                         onClick={() => {
                                                             this.favouriteHandler(
                                                                 item._id,
                                                                 false
                                                             );
                                                         }}
+                                                        onMouseEnter={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "grey")
+                                                        }
+                                                        onMouseLeave={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "orange")
+                                                        }
                                                     />
                                                 )}
                                                 {!item.fav && (
-                                                    <CgHeart
-                                                        style={{
-                                                            height: 30,
-                                                            width: 30,
-                                                            paddingTop: 10,
-                                                            color: "grey",
-                                                        }}
+                                                    <FaRegStar
+                                                        className="fav"
+                                                        color="grey"
                                                         onClick={() => {
                                                             this.favouriteHandler(
                                                                 item._id,
                                                                 true
                                                             );
                                                         }}
+                                                        onMouseEnter={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "orange")
+                                                        }
+                                                        onMouseLeave={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "grey")
+                                                        }
                                                     />
                                                 )}
                                             </>,
