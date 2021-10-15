@@ -3,7 +3,13 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile, CgHeart } from "react-icons/cg";
 import { List, Button } from "antd";
-import { createContact, deleteContact, favouriteClient, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
+import {
+    createContact,
+    deleteContact,
+    favouriteClient,
+    fetchContacts,
+    updateContact,
+} from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
 
@@ -55,81 +61,20 @@ class Contacts extends React.Component {
         this.props.dispatch(favouriteClient(clientId, isFav));
     };
 
-  render () {
-    return (
-      <div className="Master-div">
-        <Sidebar />
-        <div className="contacts">
-          <Header
-            page="Contacts"
-            actions={() => {
-              this.setState({ addContact: true, showDetails: false, contact: initialContact })
-            }}
-          />
-          <div className="contents">
-            <div className="contents-left">
-              <span>Name</span>
-              <List
-                itemLayout="horizontal"
-                dataSource={this.props.contacts.sort((a,b) => {
-                  if (a.fav && !b.fav) {
-                    return -1
-                  } else if (b.fav && !a.fav) {
-                    return 1
-                  } else {
-                    return a.nameFirst.localeCompare(b.nameFirst);
-                  }
-                })}
-                renderItem={(item) => (
-                  <List.Item
-                    className="contact-item"
-                    key={item.id}
-                    actions={[
-                      <>
-                        {
-                          item.fav &&
-                          <CgHeart
-                            style={{ height: 30, width: 30, paddingTop: 10, color: 'red' }}
-                            onClick={() => {this.favouriteHandler(item._id, false)}}
-                          />
-                        }
-                        {
-                          !item.fav &&
-                          <CgHeart
-                            style={{ height: 30, width: 30, paddingTop: 10, color: 'grey' }}
-                            onClick={() => {this.favouriteHandler(item._id, true)}}
-                          />
-                        }
-                      </>,
-                      <Button
-                        className='general-btn'
-                        type="dashed"
-                        block
-                        onClick={() => 
-                          this.setState({
-                            showDetails: true,
-                              addContact: false,
-                              contact: {
-                              id: item._id,
-                              nameFirst: item.nameFirst,
-                              nameLast: item.nameLast,
-                              title: item.title,
-                              company: item.company,
-                              email: item.email,
-                              phoneNumber: item.phoneNumber,
-                              address: item.address
-                            }
-                          })
-                        }
-                      >
-                        Details
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={`${item.nameFirst} ${item.nameLast}`}
-                      description={item.email}
-                      avatar={<CgProfile />}
+    render() {
+        return (
+            <div className="Master-div">
+                <Sidebar />
+                <div className="contacts">
+                    <Header
+                        page="Contacts"
+                        actions={() => {
+                            this.setState({
+                                addContact: true,
+                                showDetails: false,
+                                contact: initialContact,
+                            });
+                        }}
                     />
                     <div className="contents">
                         <div className="contents-left">
@@ -187,11 +132,8 @@ class Contacts extends React.Component {
                                                 )}
                                             </>,
                                             <Button
+                                                className="general-btn"
                                                 type="dashed"
-                                                style={{
-                                                    paddingLeft: 2,
-                                                    textAlign: "center",
-                                                }}
                                                 block
                                                 onClick={() =>
                                                     this.setState({

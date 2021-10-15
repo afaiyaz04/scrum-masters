@@ -21,7 +21,9 @@ const UsersForm = (props) => {
         return (
             <Form {...layout}>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                    <Button className='general-btn' onClick={props.closeAction}>Close</Button>
+                    <Button className="general-btn" onClick={props.closeAction}>
+                        Close
+                    </Button>
                 </Form.Item>
                 {(user.nameFirst || user.nameLast) && (
                     <>
@@ -46,9 +48,24 @@ const UsersForm = (props) => {
                     <Input placeholder={user.type} disabled={true} />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button className='general-btn' onClick={() => props.promoteAction(user.id)}>Promote</Button>
-                    <Button className='general-btn' onClick={() => props.controlAction(user.id)}>Control</Button>
-                    <Button className='general-btn' onClick={() => props.deleteAction(user.id)}>Delete</Button>
+                    <Button
+                        className="general-btn"
+                        onClick={() => props.promoteAction(user.id)}
+                    >
+                        Promote
+                    </Button>
+                    <Button
+                        className="general-btn"
+                        onClick={() => props.controlAction(user.id)}
+                    >
+                        Control
+                    </Button>
+                    <Button
+                        className="general-btn"
+                        onClick={() => props.deleteAction(user.id)}
+                    >
+                        Delete
+                    </Button>
                 </Form.Item>
             </Form>
         );
@@ -56,7 +73,9 @@ const UsersForm = (props) => {
         return (
             <Form {...layout}>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                    <Button className='general-btn' onClick={props.closeAction}>Close</Button>
+                    <Button className="general-btn" onClick={props.closeAction}>
+                        Close
+                    </Button>
                 </Form.Item>
                 <Form.Item label="email:">
                     <Input
@@ -67,7 +86,12 @@ const UsersForm = (props) => {
                     />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button className='general-btn' onClick={() => props.registerAction(user)}>Register</Button>
+                    <Button
+                        className="general-btn"
+                        onClick={() => props.registerAction(user)}
+                    >
+                        Register
+                    </Button>
                 </Form.Item>
             </Form>
         );

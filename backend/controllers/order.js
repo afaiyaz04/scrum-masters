@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import Order from '../models/order.js';
-import User from '../models/user.js';
-import { isAdminOrSelf } from './user.js';
+import Order from "../models/order.js";
+import User from "../models/user.js";
+import { isAdminOrSelf } from "./user.js";
 
 const router = express.Router();
 
@@ -121,7 +121,7 @@ export const addLineProduct = async (req, res) => {
             name: name,
             description: description,
             price: price,
-            quantity: quantity
+            quantity: quantity,
         };
         order.lineProducts.push(newLineProduct);
         order.lastModified = Date.now();
@@ -150,7 +150,7 @@ export const updateLineProduct = async (req, res) => {
         const lineProduct = findLineProduct(order, productId);
 
         if (lineProduct == null) {
-            return res.status(404).send( `No product with id: ${productId}`);
+            return res.status(404).send(`No product with id: ${productId}`);
         }
 
         const product = lineProduct.product;
@@ -181,11 +181,11 @@ export const removeLineProduct = async (req, res) => {
             return res.status(404).send(`No order with id: ${orderId}`);
         }
 
-         // Check if product is in lineProducts
+        // Check if product is in lineProducts
         const lineProduct = findLineProduct(order, productId);
 
         if (lineProduct == null) {
-            return res.status(404).send( `No product with id: ${productId}`);
+            return res.status(404).send(`No product with id: ${productId}`);
         }
 
         order.lineProducts.splice(lineProduct.index);
@@ -199,16 +199,15 @@ export const removeLineProduct = async (req, res) => {
 };
 
 function findLineProduct(order, productId) {
-     const productIndex = order.lineProducts.findIndex((lineProduct) => {
-        return lineProduct._id == productId
+    const productIndex = order.lineProducts.findIndex((lineProduct) => {
+        return lineProduct._id == productId;
     });
 
     if (productIndex == -1) {
         return null;
     }
-    return {product: order.lineProducts[productIndex], index: productIndex};
+    return { product: order.lineProducts[productIndex], index: productIndex };
 }
-
 
 export const addLog = async (req, res) => {
     const { id } = req.params;

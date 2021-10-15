@@ -3,7 +3,12 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
-import { fetchUsers, promoteUser, deleteUser, registerUser } from "../redux/Users/users.actions";
+import {
+    fetchUsers,
+    promoteUser,
+    deleteUser,
+    registerUser,
+} from "../redux/Users/users.actions";
 import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
@@ -34,7 +39,7 @@ class Users extends React.Component {
     }
 
     promoteHandler = (toUserId) => {
-        this.props.dispatch(promoteUser(toUserId));
+        this.props.dispatch(promoteUser(this.state.userId, toUserId));
         this.setState({ showDetails: false });
     };
 
@@ -81,31 +86,14 @@ class Users extends React.Component {
         this.props.dispatch(registerUser(newUser));
     };
 
-  render () {
-    return (
-      <div className="Master-div">
-        <Sidebar />
-        <div className="users">
-          <Header
-            page="Users"
-            actions={() => {this.setState({ addUser: true, showDetails:false, user: initialUser })}}
-          />
-          <div className="contents">
-            <div className="contents-left">
-              <span>Name</span>
-              <List
-                itemLayout="horizontal"
-                dataSource={this.props.users}
-                renderItem={(item) => (
-                  <List.Item
-                    className="user-item"
-                    key={item.id}
-                    actions={[
-                      <Button
-                        type="dashed"
-                        className='general-btn'
-                        block
-                        onClick={() => {
+    render() {
+        return (
+            <div className="Master-div">
+                <Sidebar />
+                <div className="users">
+                    <Header
+                        page="Users"
+                        actions={() => {
                             this.setState({
                                 addUser: true,
                                 showDetails: false,
@@ -126,10 +114,7 @@ class Users extends React.Component {
                                         actions={[
                                             <Button
                                                 type="dashed"
-                                                style={{
-                                                    paddingLeft: 2,
-                                                    textAlign: "center",
-                                                }}
+                                                className="general-btn"
                                                 block
                                                 onClick={() => {
                                                     this.setState({

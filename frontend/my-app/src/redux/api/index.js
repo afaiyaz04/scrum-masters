@@ -39,11 +39,19 @@ export const createOrder = (formData) => API.post("/order", formData);
 export const addUserOrder = (userId, orderId) =>
     API.post(`/user/${userId}/orders`, { orderId });
 export const fetchOrders = (userId) => API.get(`/user/${userId}/orders`);
-export const updateOrder = (orderId, formData) => API.patch(`/order/${orderId}`, formData);
-export const deleteUserOrder = (userId, orderId) => API.delete(`/user/${userId}/orders`, { data: { orderId } });
+export const updateOrder = (orderId, formData) =>
+    API.patch(`/order/${orderId}`, formData);
+export const deleteUserOrder = (userId, orderId) =>
+    API.delete(`/user/${userId}/orders`, { data: { orderId } });
 
-export const addLineProduct = (orderId, formData) => API.post(`/order/${orderId}/products`, formData);
-export const updateLineProduct = (orderId, productId, formData) => API.patch(`/order/${orderId}/products/${productId}`, formData);
-export const deleteLineProduct = (orderId, productId) => API.delete(`/order/${orderId}/products/${productId}`, { data: { productId } });
+export const addLineProduct = (orderId, formData) =>
+    API.post(`/order/${orderId}/products`, formData);
+export const updateLineProduct = (orderId, productId, formData) =>
+    API.patch(`/order/${orderId}/products/${productId}`, formData);
+export const deleteLineProduct = (orderId, productId) =>
+    API.delete(`/order/${orderId}/products/${productId}`, {
+        data: { productId },
+    });
 
-export const transferOrder = (userId, toUserId, orderId) => API.patch(`/user/${userId}/transfer`, { orderId, toUserId });
+export const transferOrder = (userId, toUserId, orderId) =>
+    API.patch(`/user/${userId}/transfer`, { orderId, toUserId });
