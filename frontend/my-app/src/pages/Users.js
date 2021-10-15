@@ -3,18 +3,11 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
-import "antd/dist/antd.css";
-import {
-    fetchUsers,
-    promoteUser,
-    deleteUser,
-    registerUser,
-} from "../redux/Users/users.actions";
+import { fetchUsers, promoteUser, deleteUser, registerUser } from "../redux/Users/users.actions";
 import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
-import { DELETE_USER } from "../redux/Users/users.types";
 
 const initialUser = {
     id: "",
@@ -88,14 +81,31 @@ class Users extends React.Component {
         this.props.dispatch(registerUser(newUser));
     };
 
-    render() {
-        return (
-            <div className="Master-div">
-                <Sidebar />
-                <div className="users">
-                    <Header
-                        page="Users"
-                        actions={() => {
+  render () {
+    return (
+      <div className="Master-div">
+        <Sidebar />
+        <div className="users">
+          <Header
+            page="Users"
+            actions={() => {this.setState({ addUser: true, showDetails:false, user: initialUser })}}
+          />
+          <div className="contents">
+            <div className="contents-left">
+              <span>Name</span>
+              <List
+                itemLayout="horizontal"
+                dataSource={this.props.users}
+                renderItem={(item) => (
+                  <List.Item
+                    className="user-item"
+                    key={item.id}
+                    actions={[
+                      <Button
+                        type="dashed"
+                        className='general-btn'
+                        block
+                        onClick={() => {
                             this.setState({
                                 addUser: true,
                                 showDetails: false,

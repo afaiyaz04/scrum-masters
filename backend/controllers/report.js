@@ -1,10 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import User from "../models/user.js";
-import Order from "../models/order.js";
-import Product from "../models/product.js";
-import { isAdmin, isAdminOrSelf } from "../controllers/user.js";
+import User from '../models/user.js'
+import Order from '../models/order.js'
+import { isAdmin, isAdminOrSelf } from '../controllers/user.js'
 
 const router = express.Router();
 
@@ -82,14 +81,9 @@ async function generateReport(user) {
         // get revenue
         for (var j = 0; j < order.lineProducts.length; j++) {
             var quantity = order.lineProducts[j].quantity;
-            var product = await Product.findById(
-                order.lineProducts[j].productId
-            );
-            if (product == null) {
-                return {};
-            }
-            var productPrice = product.price;
-            totalRevenue += quantity * productPrice;
+        
+            var productPrice = order.lineProducts[j].price;
+            totalRevenue += (quantity * productPrice)
         }
         var orderFee = order.totalFee;
         totalRevenue += orderFee;

@@ -1,14 +1,12 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
-import ProfileButton from "../components/buttons/ProfileButton";
-import { connect } from "react-redux";
-import { Timeline, Card, Progress, Table, Empty } from "antd";
-import { fetchOrders } from "../redux/Order/order.actions";
-import "antd/dist/antd.css";
-import "../App.css";
-import "./Dashboard.css";
-import { CgProfile } from "react-icons/cg";
-import { fetchContacts } from "../redux/Contact/contact.actions";
+import ProfileButton from '../components/buttons/ProfileButton';
+import { connect } from 'react-redux';
+import { Timeline, Card, Progress, Table, Empty } from 'antd';
+import { fetchOrders } from '../redux/Order/order.actions';
+import './Dashboard.css'
+import { CgProfile } from 'react-icons/cg';
+import { fetchContacts } from '../redux/Contact/contact.actions';
 
 const columns = [
     {

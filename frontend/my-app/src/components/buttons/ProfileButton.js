@@ -54,41 +54,31 @@ class ProfileButton extends React.Component {
         </Menu>
     );
 
-    render() {
-        if (localStorage.getItem("originalData")) {
-            return (
-                <Button
-                    type="primary"
-                    className="btn"
-                    onClick={this.revertProfileAction}
-                >
-                    Revert Profile
-                </Button>
-            );
-        } else {
-            return (
-                <>
-                    <Dropdown overlay={this.menu}>
-                        <Button className="btn">
-                            <CgProfile />
-                            Profile
-                        </Button>
-                    </Dropdown>
-                    <Modal
-                        title="Profile"
-                        visible={this.state.showProfile}
-                        onCancel={() => {
-                            this.setState({ showProfile: false });
-                        }}
-                        footer={null}
-                        destroyOnClose={true}
-                    >
-                        <Profile />
-                    </Modal>
-                </>
-            );
-        }
-    }
+	render() {
+		if (localStorage.getItem('originalData')) {
+			return (
+				<Button type='primary' className="btn" onClick={this.revertProfileAction}>
+					Revert Profile
+				</Button>
+			)
+		} else {
+			return (
+				<>
+					<Dropdown overlay={this.menu}>
+						<Button className="btn" icon={<CgProfile style={{ verticalAlign: -2 }}/>}>Profile</Button>
+					</Dropdown>
+					<Modal
+						title='Profile'
+						visible={this.state.showProfile}
+						onCancel={() => {this.setState({ showProfile: false })}}
+						footer={null}
+						destroyOnClose={true}>
+						<Profile />
+					</Modal>
+				</>
+			)
+		}
+	}
 }
 
 const mapStateToProps = (state) => {
