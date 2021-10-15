@@ -1,6 +1,6 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Modal, Button, Form, Input } from "antd";
+import { Modal, Button, Form, Input, Upload, message } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { updateUser, deleteSelf } from "../redux/User/user.actions";
@@ -18,12 +18,38 @@ const layout = {
     },
 };
 
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+    // console.log(img);
+}
+
+const dummyRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+        onSuccess("ok");
+    }, 0);
+};
+
+function beforeUpload(file) {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+        message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error("Image must smaller than 2MB!");
+    }
+    return isJpgOrPng && isLt2M;
+}
+
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: JSON.parse(localStorage.getItem("userData")),
             showDelete: false,
+            input: { nameFirst: "", nameLast: "" },
         };
     }
 
@@ -38,13 +64,60 @@ class Profile extends React.Component {
         );
     };
 
+    handleChange = (info) => {
+        if (info.file.status === "done") {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, (imageUrl) =>
+                this.setState({
+                    user: {
+                        ...this.state.user,
+                        profilePic: imageUrl,
+                    },
+                })
+            );
+        }
+    };
+
+    resetToGoogle = () => {
+        const googleData = JSON.parse(localStorage.getItem("user"));
+
+        this.setState({
+            user: {
+                ...this.state.user,
+                profilePic: googleData.profilePic,
+                nameFirst: googleData.nameFirst,
+                nameLast: googleData.nameLast,
+            },
+            input: {
+                nameFirst: googleData.nameFirst,
+                nameLast: googleData.nameLast,
+            },
+        });
+    };
+
     render() {
         return (
             <Form {...layout}>
-                <Form.Item className="user-pic">
-                    <h1>
-                        <FaUserCircle />
-                    </h1>
+                <Form.Item className="profile-pic-form">
+                    <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="profile-pic-upload"
+                        showUploadList={false}
+                        customRequest={dummyRequest}
+                        beforeUpload={beforeUpload}
+                        onChange={this.handleChange}
+                    >
+                        <div className="profile-pic-wrap">
+                            <img
+                                src={this.state.user.profilePic}
+                                className="profile-pic-img"
+                            />
+                            <div className="profile-pic-text">
+                                <p className="text-middle">Change</p>
+                            </div>
+                        </div>
+                    </Upload>
                 </Form.Item>
                 <Form.Item label="Email:">
                     <Input
@@ -61,8 +134,13 @@ class Profile extends React.Component {
                                     ...this.state.user,
                                     nameFirst: e.target.value,
                                 },
+                                input: {
+                                    ...this.state.input,
+                                    nameFirst: e.target.value,
+                                },
                             })
                         }
+                        value={this.state.input.nameFirst}
                     />
                 </Form.Item>
                 <Form.Item label="Last Name:">
@@ -74,11 +152,25 @@ class Profile extends React.Component {
                                     ...this.state.user,
                                     nameLast: e.target.value,
                                 },
+                                input: {
+                                    ...this.state.input,
+                                    nameLast: e.target.value,
+                                },
                             })
                         }
+                        value={this.state.input.nameLast}
                     />
                 </Form.Item>
-                <Form.Item wrapperCol={{ span: 30 }} style={{ paddingTop: 50 }}>
+                <Form.Item wrapperCol={{ span: 30 }} style={{ paddingTop: 30 }}>
+                    <Button
+                        block
+                        onClick={() => this.resetToGoogle()}
+                        style={{ textAlign: "center" }}
+                    >
+                        Reset to Google Information
+                    </Button>
+                </Form.Item>
+                <Form.Item wrapperCol={{ span: 30 }}>
                     <Button
                         type="primary"
                         block

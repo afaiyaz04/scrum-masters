@@ -15,6 +15,7 @@ export const updateUser = (userId, formData) => async (dispatch) => {
     try {
         const { data } = await api.updateUser(userId, formData);
         dispatch({ type: UPDATE_USER, data });
+        window.location.reload();
     } catch (error) {
         console.log(error);
     }

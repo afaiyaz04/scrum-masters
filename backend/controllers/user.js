@@ -62,7 +62,7 @@ export const getUser = async (req, res) => {
 // Update user
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { email, nameFirst, nameLast, type } = req.body;
+    const { email, nameFirst, nameLast, type, profilePic } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
@@ -72,10 +72,11 @@ export const updateUser = async (req, res) => {
         return res.status(404).send(`Invalid user id: ${id}`);
 
     const updatedUser = {
-        email,
-        nameFirst,
-        nameLast,
-        type,
+        email: email,
+        nameFirst: nameFirst,
+        nameLast: nameLast,
+        type: type,
+        profilePic: profilePic,
         _id: id,
     };
 

@@ -82,3 +82,10 @@
     justify-content: flex-start;
     align-items: center;
 }
+
+.img-sidebar {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    padding: 15px;
+}

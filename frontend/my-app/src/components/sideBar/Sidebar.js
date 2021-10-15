@@ -4,20 +4,18 @@ import { SidebarData } from "./SidebarData";
 import "./Sidebar.css";
 import { IconContext } from "react-icons";
 import * as FaIcons from "react-icons/fa";
+import { Avatar } from "antd";
 
 function Navbar() {
     const user = JSON.parse(localStorage.getItem("userData"));
-    const { nameFirst, nameLast, type } = user;
-    console.log(type === "ADMIN");
+    const { nameFirst, nameLast, profilePic, type } = user;
 
     return (
         <>
             <IconContext.Provider value={{ color: "#fff" }}>
                 <nav className="sidebar">
                     <div className="userDetails">
-                        <h1>
-                            <FaIcons.FaUserCircle />
-                        </h1>
+                        <img src={profilePic} className="img-sidebar" />
                         <h2 className="userDetails">
                             {nameFirst} {nameLast}
                         </h2>

@@ -5,10 +5,10 @@ import { ADMIN_USER } from "../models/systemEnums.js";
 const router = express.Router();
 
 export const signIn = async (req, res) => {
-    const { email, nameFirst, nameLast } = req.body;
+    const { email, nameFirst, nameLast, profilePic } = req.body;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!" });
+        return res.status(403).json({ message: "Unauthenticated!" });
     }
 
     try {
@@ -18,6 +18,7 @@ export const signIn = async (req, res) => {
                 email: email,
                 nameFirst: nameFirst,
                 nameLast: nameLast,
+                profilePic: profilePic,
                 oauthId: req.userId,
                 type: ADMIN_USER,
             });
@@ -34,7 +35,7 @@ export const signIn = async (req, res) => {
         }
 
         // 2. Check if a "blank" account has been created with email by admin
-        // This is a registered account but not fully created.
+        // This is a unregistered account but not fully created.
         const createdUser = await User.findOne({ email: email });
         if (!createdUser) {
             return res.status(403).json({
@@ -43,9 +44,10 @@ export const signIn = async (req, res) => {
             });
         }
 
-        // 3. Update this existing user with oauthId + additional info
+        // 3. Update this unregistered user with oauthId + additional info
         createdUser.nameFirst = nameFirst;
         createdUser.nameLast = nameLast;
+        createdUser.profilePic = profilePic;
         createdUser.oauthId = req.userId;
         await createdUser.save();
         return res.status(201).json(createdUser);
