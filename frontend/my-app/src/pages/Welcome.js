@@ -30,7 +30,7 @@ function SignUp() {
         const nameLast = res.profileObj.familyName;
         const profilePic = res.profileObj.imageUrl.replace(
             "s96-c",
-            "s500-c",
+            "s300-c",
             true
         );
 
