@@ -13,12 +13,15 @@ import {
     updateProduct,
     deleteProduct,
     transferOrder,
+    acceptOrder,
+    declineOrder,
 } from "../redux/Order/order.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
 import { fetchUsers } from "../redux/Users/users.actions";
 import TransferForm from "../components/TransferForm";
+import { fetchUser } from "../redux/User/user.actions";
 
 const initialOrder = {
     _id: "",
@@ -53,7 +56,6 @@ class Orders extends React.Component {
             addProduct: false,
 
             transferOrder: false,
-            destination: null,
 
             userId: JSON.parse(localStorage.getItem("userData"))._id,
         };
@@ -98,6 +100,41 @@ class Orders extends React.Component {
             },
         ];
 
+        this.receivedOrderColumns = [
+            {
+                title: "Order No.",
+                dataIndex: "orderNumber",
+                key: "orderNumber",
+            },
+            { title: "From", dataIndex: "user", key: "user" },
+            {
+                title: "Description",
+                dataIndex: "description",
+                key: "description",
+            },
+            {
+                title: "Actions",
+                dataIndex: "action",
+                key: "action",
+                render: (_, record) => (
+                    <>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onAccept(record.key)}
+                        >
+                            Accept
+                        </Button>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onDecline(record.key)}
+                        >
+                            Decline
+                        </Button>
+                    </>
+                ),
+            },
+        ];
+
         this.productColumns = [
             { title: "Name", dataIndex: "name", key: "name" },
             { title: "Fee", dataIndex: "price", key: "price" },
@@ -123,6 +160,7 @@ class Orders extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
+        this.props.dispatch(fetchUser(this.state.userId));
         this.props.dispatch(fetchUsers());
     }
 
@@ -171,10 +209,10 @@ class Orders extends React.Component {
         );
     };
 
-    transferOrderHandler = (toUserId, orderId) => {
+    transferOrderHandler = (toUserId, orderIds) => {
         this.endRenderExcept();
         this.props.dispatch(
-            transferOrder(this.state.userId, toUserId, orderId)
+            transferOrder(this.state.userId, toUserId, orderIds)
         );
     };
 
@@ -224,13 +262,35 @@ class Orders extends React.Component {
         });
     };
 
+    onAccept = (key) => {
+        this.props.user.authData.receivedOrders.forEach((order) => {
+            if (key === order.order) {
+                this.props.dispatch(
+                    acceptOrder(this.state.userId, order.order)
+                );
+            }
+        });
+        this.props.dispatch(fetchUser(this.state.userId));
+    };
+
+    onDecline = (key) => {
+        this.props.user.authData.receivedOrders.forEach((order) => {
+            if (key === order.order) {
+                this.props.dispatch(
+                    declineOrder(this.state.userId, order.order)
+                );
+            }
+        });
+        this.props.dispatch(fetchUser(this.state.userId));
+    };
+
     // Get client name from id
     getClientName = (clientId) => {
         if (!clientId) return "";
         let name;
-        Object.keys(this.props.contacts).forEach((contact) => {
-            if (this.props.contacts[contact]._id === clientId) {
-                name = `${this.props.contacts[contact].nameFirst} ${this.props.contacts[contact].nameLast}`;
+        this.props.contacts.forEach((contact) => {
+            if (contact._id === clientId) {
+                name = `${contact.nameFirst} ${contact.nameLast}`;
             }
         });
         return name;
@@ -285,6 +345,35 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
+                            {this.props.user.authData &&
+                                this.props.user.authData.receivedOrders.length >
+                                    0 && (
+                                    <>
+                                        <h3>Received Orders</h3>
+                                        <Table
+                                            columns={this.receivedOrderColumns}
+                                            dataSource={this.props.user.authData.receivedOrders.map(
+                                                (order) => {
+                                                    return {
+                                                        key: order.order,
+                                                        orderNumber:
+                                                            order.orderNumber,
+                                                        user: `${order.nameFirst} ${order.nameLast}`,
+                                                        description:
+                                                            order.description,
+                                                    };
+                                                }
+                                            )}
+                                            pagination={false}
+                                            rowSelection={{
+                                                selectedRowKeys:
+                                                    this.props.selectedRowKeys,
+                                                onChange: this.onSelectChange,
+                                            }}
+                                        />
+                                    </>
+                                )}
+
                             <div style={{ height: 40 }}>
                                 {this.state.selectedOrders.length > 0 && (
                                     // Buttons for selected orders
@@ -371,6 +460,7 @@ class Orders extends React.Component {
                                 transferOrder={this.state.transferOrder}
                                 orders={this.state.selectedOrders}
                                 users={this.props.users}
+                                userId={this.state.userId}
                                 transferAction={this.transferOrderHandler}
                                 closeAction={() => this.endRenderExcept()}
                             />
@@ -387,6 +477,7 @@ const mapStateToProps = (state) => {
         orders: state.orders,
         contacts: state.contacts,
         users: state.users,
+        user: state.user,
     };
 };
 

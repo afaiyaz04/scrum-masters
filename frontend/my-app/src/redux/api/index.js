@@ -55,3 +55,7 @@ export const deleteLineProduct = (orderId, productId) =>
 
 export const transferOrder = (userId, toUserId, orderId) =>
     API.patch(`/user/${userId}/transfer`, { orderId, toUserId });
+export const acceptOrder = (userId, orderId) =>
+    API.patch(`/user/${userId}/transfer/accept`, { orderId });
+export const declineOrder = (userId, orderId) =>
+    API.patch(`/user/${userId}/transfer/reject`, { orderId });

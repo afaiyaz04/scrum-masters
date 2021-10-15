@@ -2,7 +2,7 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
-import { List, Button } from "antd";
+import { List, Button, Avatar } from "antd";
 import {
     fetchUsers,
     promoteUser,
@@ -19,7 +19,7 @@ const initialUser = {
     nameFirst: "",
     nameLast: "",
     email: "",
-    password: "",
+    profilePic: "",
     type: "",
 };
 
@@ -126,8 +126,8 @@ class Users extends React.Component {
                                                             nameLast:
                                                                 item.nameLast,
                                                             email: item.email,
-                                                            password:
-                                                                item.password,
+                                                            profilePic:
+                                                                item.profilePic,
                                                             type: item.type,
                                                         },
                                                     });
@@ -148,7 +148,12 @@ class Users extends React.Component {
                                             <List.Item.Meta
                                                 title={`${item.nameFirst} ${item.nameLast}`}
                                                 description={item.email}
-                                                avatar={<CgProfile />}
+                                                avatar={
+                                                    <Avatar
+                                                        src={item.profilePic}
+                                                        referrerPolicy="no-referrer"
+                                                    />
+                                                }
                                             />
                                         )}
                                     </List.Item>

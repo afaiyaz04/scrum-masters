@@ -22,7 +22,7 @@ const OrderForm = (props) => {
         if (!clientId) return "";
         let name;
         Object.keys(contacts).forEach((contact) => {
-            if (contacts[contact]._id == clientId) {
+            if (contacts[contact]._id === clientId) {
                 name = `${contacts[contact].nameFirst} ${contacts[contact].nameLast}`;
             }
         });
