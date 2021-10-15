@@ -112,6 +112,7 @@ class Profile extends React.Component {
                             <img
                                 src={this.state.user.profilePic}
                                 className="profile-pic-img"
+                                referrerPolicy="no-referrer"
                             />
                             <div className="profile-pic-text">
                                 <p className="text-middle">Change</p>

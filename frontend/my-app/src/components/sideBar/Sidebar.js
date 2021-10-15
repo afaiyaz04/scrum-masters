@@ -15,7 +15,11 @@ function Navbar() {
             <IconContext.Provider value={{ color: "#fff" }}>
                 <nav className="sidebar">
                     <div className="userDetails">
-                        <img src={profilePic} className="img-sidebar" />
+                        <img
+                            src={profilePic}
+                            className="img-sidebar"
+                            referrerPolicy="no-referrer"
+                        />
                         <h2 className="userDetails">
                             {nameFirst} {nameLast}
                         </h2>

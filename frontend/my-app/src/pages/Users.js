@@ -151,6 +151,7 @@ class Users extends React.Component {
                                                 avatar={
                                                     <Avatar
                                                         src={item.profilePic}
+                                                        referrerPolicy="no-referrer"
                                                     />
                                                 }
                                             />
