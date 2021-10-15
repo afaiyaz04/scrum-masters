@@ -340,7 +340,9 @@ class Orders extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            <Collapse>
+                            <Collapse
+                                bordered={false}
+                            >
                                 <Panel header={`Received Orders (${this.props.transfers.length})`} key='1'>
                                     <Table
                                         columns={this.receivedOrderColumns}
