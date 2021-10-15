@@ -1,6 +1,6 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Modal, Button, Form, Input } from "antd";
+import { Modal, Button, Form, Input, Upload, message } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { updateUser, deleteSelf } from "../redux/User/user.actions";
@@ -17,6 +17,32 @@ const layout = {
         span: 16,
     },
 };
+
+
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+    // console.log(img);
+  }
+
+  const dummyRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
+  
+  function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  }
 
 class Profile extends React.Component {
     constructor(props) {
@@ -38,11 +64,39 @@ class Profile extends React.Component {
         );
     };
 
+
+    handleChange = info => {
+        if (info.file.status === 'done') {
+          // Get this url from response in real world.
+          getBase64(info.file.originFileObj, imageUrl =>
+            this.setState({
+                user: {
+                    ...this.state.user,
+                    profilePic: imageUrl,
+                },
+            })
+          );
+        }
+      };
+
     render() {
         return (
             <Form {...layout}>
-                <Form.Item className="user-pic-profile">
-                    <img src={this.state.user.profilePic} className="img-profile"/>
+                <Form.Item className="profile-pic-form">
+                    <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="profile-pic-upload"
+                        showUploadList={false}
+                        customRequest={dummyRequest}
+                        beforeUpload={beforeUpload}
+                        onChange={this.handleChange}
+                    >
+                        <div className="profile-pic-wrap">
+                            <img src={this.state.user.profilePic} className="profile-pic-img"/>
+                            <div className="profile-pic-text"><p className="text-middle">Change</p></div>
+                        </div>
+                    </Upload>
                 </Form.Item>
                 <Form.Item label="Email:">
                     <Input
