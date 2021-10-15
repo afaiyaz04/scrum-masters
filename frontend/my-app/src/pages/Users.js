@@ -115,7 +115,6 @@ class Users extends React.Component {
                                             <Button
                                                 type="dashed"
                                                 className="general-btn"
-                                                block
                                                 onClick={() => {
                                                     this.setState({
                                                         showDetails: true,
