@@ -9,11 +9,16 @@ const receivedOrdersSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        nameFirst: { type: String, required: false },
+        nameLast: { type: String, required: false },
+
         order: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Order",
             required: true,
         },
+        orderNumber: { type: Number, required: true },
+        description: { type: String, required: false, default: null },
     },
     { _id: false }
 );

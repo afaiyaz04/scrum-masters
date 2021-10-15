@@ -76,11 +76,33 @@ export const deleteProduct = (orderId, productId) => async (dispatch) => {
 };
 
 export const transferOrder =
-    (userId, toUserId, orderId) => async (dispatch) => {
+    (userId, toUserId, orderIds) => async (dispatch) => {
         try {
-            await api.transferOrder(userId, toUserId, orderId);
-            dispatch({ type: DELETE_ORDER, payload: orderId });
+            for (let i in orderIds) {
+                await api.transferOrder(userId, toUserId, orderIds[i]);
+                dispatch({ type: DELETE_ORDER, payload: orderIds[i] });
+            }
         } catch (error) {
             console.log(error);
         }
     };
+
+export const acceptOrder = (userId, orderId) => async (dispatch) => {
+    try {
+        await api.acceptOrder(userId, orderId);
+        const { data } = await api.fetchOrders(userId);
+        dispatch({ type: FETCH_ORDERS, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const declineOrder = (userId, orderId) => async (dispatch) => {
+    try {
+        await api.declineOrder(userId, orderId);
+        const { data } = await api.fetchOrders(userId);
+        dispatch({ type: FETCH_ORDERS, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}

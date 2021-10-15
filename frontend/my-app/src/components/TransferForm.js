@@ -54,9 +54,11 @@ const TransferForm = (props) => {
                             setSelectedUser(user);
                         }}
                     >
-                        {props.users.map((user) => {
+                        {props.users.filter((user) => {
+                            return props.userId !== user._id;
+                        }).map((user) => {
                             return (
-                                <Select.Option value={user._id}>
+                                <Select.Option key={user._id} value={user._id}>
                                     {`${user.nameFirst} ${user.nameLast}`}
                                 </Select.Option>
                             );
@@ -88,7 +90,7 @@ const TransferForm = (props) => {
                             onClick={() => {
                                 props.transferAction(
                                     selectedUser,
-                                    targetKeys[0]
+                                    targetKeys
                                 );
                             }}
                         >{`Transfer order to ${getUserName(
