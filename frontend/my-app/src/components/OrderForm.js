@@ -32,7 +32,7 @@ const OrderForm = (props) => {
   return (
     <Form {...layout}>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-        <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={props.closeAction}>Close</Button>
+        <Button className='general-btn' onClick={props.closeAction}>Close</Button>
       </Form.Item>
       <Form.Item label="Client:">
         <Select
@@ -92,13 +92,13 @@ const OrderForm = (props) => {
       </Form.Item>
       {(props.showOrderDetails && !props.addOrder) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.updateOrderAction(order)}}>Update</Button>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.deleteOrderAction(order._id)}}>Delete</Button>
+          <Button className='general-btn' onClick={() => {props.updateOrderAction(order)}}>Update</Button>
+          <Button className='general-btn' onClick={() => {props.deleteOrderAction(order._id)}}>Delete</Button>
         </Form.Item>
       )}
       {(props.addOrder && !props.showOrderDetails) && (
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.createOrderAction(order)}}>Create</Button>
+          <Button className='general-btn' onClick={() => {props.createOrderAction(order)}}>Create</Button>
         </Form.Item>
       )}
     </Form>

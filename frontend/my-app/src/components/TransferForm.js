@@ -44,11 +44,11 @@ const TransferForm = (props) => {
       onCancel={props.closeAction}
       footer={null}
       destroyOnClose={true}
+      style={{ width: '100%' }}
     >
       <Form>
         <Form.Item>
           <Select
-            showArrow={false}
             style={{ width: "100%" }}
             onChange={(user) => {setSelectedUser(user)}}
           >
@@ -82,7 +82,7 @@ const TransferForm = (props) => {
         }
         {
           (selectedUser) &&
-          <Form.Item>
+          <Form.Item >
             <Button style={{ width: '100%' }} onClick={() => {props.transferAction(selectedUser, targetKeys[0])}}>{`Transfer order to ${getUserName(selectedUser)}`}</Button>
           </Form.Item>
         }

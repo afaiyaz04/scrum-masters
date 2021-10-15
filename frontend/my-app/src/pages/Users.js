@@ -3,13 +3,11 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { List, Button } from "antd";
-import "antd/dist/antd.css";
 import { fetchUsers, promoteUser, deleteUser, registerUser } from "../redux/Users/users.actions";
 import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
-import { DELETE_USER } from "../redux/Users/users.types";
 
 const initialUser = {
     id: "",
@@ -93,7 +91,7 @@ class Users extends React.Component {
                     actions={[
                       <Button
                         type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
+                        className='general-btn'
                         block
                         onClick={() => {
                             this.setState({

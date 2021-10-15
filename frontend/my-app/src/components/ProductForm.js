@@ -1,6 +1,5 @@
-import { Form, Input, InputNumber, Button, Select, List } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { Form, Input, InputNumber, Button } from "antd";
+import { useState } from "react";
 
 const ProductForm = (props) => {
 	const [product, setProduct] = useState({ ...props.product });
@@ -18,7 +17,7 @@ const ProductForm = (props) => {
     <Form {...layout}>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
         <Button
-          style={{ paddingLeft: 2, textAlign: "center" }}
+          className='general-btn'
           onClick={props.closeAction}
         >
           Close
@@ -54,14 +53,14 @@ const ProductForm = (props) => {
 		{
 			(props.addProduct && !props.showProductDetails) &&
 			<Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => {props.createProductAction(product)}}>Create</Button>
+				<Button className='general-btn' onClick={() => {props.createProductAction(product)}}>Create</Button>
 			</Form.Item>
 		}
 		{
 			(!props.addProduct && props.showProductDetails) &&
 			<Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.updateProductAction(product)}>Update</Button>
-				<Button style={{ paddingLeft: 2, textAlign: 'center' }} onClick={() => props.deleteProductAction(product._id)}>Delete</Button>
+				<Button className='general-btn' onClick={() => props.updateProductAction(product)}>Update</Button>
+				<Button className='general-btn' onClick={() => props.deleteProductAction(product._id)}>Delete</Button>
 			</Form.Item>
 		}
     </Form>

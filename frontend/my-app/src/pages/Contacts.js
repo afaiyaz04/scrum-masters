@@ -3,7 +3,6 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile, CgHeart } from "react-icons/cg";
 import { List, Button } from "antd";
-import "antd/dist/antd.css";
 import { createContact, deleteContact, favouriteClient, fetchContacts, updateContact } from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
@@ -103,8 +102,8 @@ class Contacts extends React.Component {
                         }
                       </>,
                       <Button
+                        className='general-btn'
                         type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
                         block
                         onClick={() => 
                           this.setState({

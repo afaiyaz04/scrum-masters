@@ -2,7 +2,6 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { Button, Table } from "antd";
-import "antd/dist/antd.css";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
 import {
@@ -74,8 +73,8 @@ class Orders extends React.Component {
       { title: 'Deadline', dataIndex: 'timeDue', key: 'timeDue' },
       { title: 'Actions', dataIndex: 'action', key: 'action', render: (_, record) => 
         <>
-          <Button style={{ paddingLeft: 2, textAlign: "center", width: 100 }} onClick={() => this.onOrderDetails(record.key)}>Details</Button>
-          <Button style={{ paddingLeft: 2, textAlign: "center", width: 100 }} onClick={() => this.onAddItem(record.key)}>Add Item</Button>
+          <Button className='general-btn' onClick={() => this.onOrderDetails(record.key)}>Details</Button>
+          <Button className='general-btn' onClick={() => this.onAddItem(record.key)}>Add Item</Button>
         </>
       },
     ]
@@ -86,7 +85,7 @@ class Orders extends React.Component {
       { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
       { title: 'Item Actions', dataIndex: 'productAction', key: 'productAction', render: (_, record) => 
         <>
-          <Button style={{ paddingLeft: 2, textAlign: "center" }} onClick={() => this.onProductDetails(record.key)}>Item Details</Button>
+          <Button className='general-btn' onClick={() => this.onProductDetails(record.key)}>Item Details</Button>
         </>
       },
     ]
@@ -246,7 +245,7 @@ class Orders extends React.Component {
                   // Buttons for selected orders
                   <>
                     <Button
-                      style={{ paddingLeft: 2, textAlign: "center", width: 100 }}
+                      className='general-btn'
                       onClick={() => this.endRenderExcept('transferOrder')}
                     >
                       Transfer
