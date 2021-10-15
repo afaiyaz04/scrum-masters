@@ -134,7 +134,6 @@ class Contacts extends React.Component {
                                             <Button
                                                 className="general-btn"
                                                 type="dashed"
-                                                block
                                                 onClick={() =>
                                                     this.setState({
                                                         showDetails: true,
