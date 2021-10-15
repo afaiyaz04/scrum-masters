@@ -6,7 +6,7 @@ import Client from "../models/client.js";
 const router = express.Router();
 
 export const createClient = async (req, res) => {
-    const { nameFirst, nameLast, title, company, email, phoneNumber, address } =
+    const { nameFirst, nameLast, title, company, email, phoneNumber, address, profilePic } =
         req.body;
 
     if (!req.userId) {
@@ -21,6 +21,7 @@ export const createClient = async (req, res) => {
         email,
         phoneNumber,
         address,
+        profilePic,
     });
 
     try {
@@ -53,7 +54,7 @@ export const getClient = async (req, res) => {
 
 export const updateClient = async (req, res) => {
     const { id } = req.params;
-    const { nameFirst, nameLast, title, company, email, phoneNumber, address } =
+    const { nameFirst, nameLast, title, company, email, phoneNumber, address, profilePic } =
         req.body;
 
     if (!req.userId) {
@@ -72,6 +73,7 @@ export const updateClient = async (req, res) => {
         email,
         phoneNumber,
         address,
+        profilePic,
         _id: id,
     };
 
