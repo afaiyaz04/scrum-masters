@@ -95,7 +95,7 @@ export const acceptOrder = (userId, orderId) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const declineOrder = (userId, orderId) => async (dispatch) => {
     try {
@@ -105,4 +105,4 @@ export const declineOrder = (userId, orderId) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};

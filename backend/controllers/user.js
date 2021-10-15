@@ -412,7 +412,14 @@ export const transferOrder = async (req, res) => {
             return o._id == orderId;
         });
         if (orderIndex != -1) {
-            const receivedOrder = { fromUser: user._id, nameFirst: user.nameFirst, nameLast: user.nameLast, order: order._id, orderNumber: order.orderNumber, description: order.description };
+            const receivedOrder = {
+                fromUser: user._id,
+                nameFirst: user.nameFirst,
+                nameLast: user.nameLast,
+                order: order._id,
+                orderNumber: order.orderNumber,
+                description: order.description,
+            };
             if (!toUser.receivedOrders.includes(receivedOrder)) {
                 toUser.receivedOrders.push(receivedOrder);
                 user.orders.splice(orderIndex, 1);
