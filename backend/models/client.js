@@ -10,6 +10,7 @@ const clientSchema = new mongoose.Schema({
     phoneNumber: { type: String, required: true },
     address: { type: String, required: true },
     fav: { type: Boolean, required: true, default: false },
+    profilePic: { type: String, required: false },
 });
 
 // compile into Model

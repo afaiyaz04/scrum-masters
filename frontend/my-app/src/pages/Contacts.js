@@ -3,7 +3,7 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { List, Button } from "antd";
+import { List, Button, Avatar } from "antd";
 import {
     createContact,
     deleteContact,
@@ -24,6 +24,8 @@ const initialContact = {
     email: "",
     phoneNumber: "",
     address: "",
+    profilePic:
+        "https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png",
     favourite: false,
 };
 
@@ -170,6 +172,8 @@ class Contacts extends React.Component {
                                                                 item.phoneNumber,
                                                             address:
                                                                 item.address,
+                                                            profilePic:
+                                                                item.profilePic,
                                                         },
                                                     })
                                                 }
@@ -181,7 +185,12 @@ class Contacts extends React.Component {
                                         <List.Item.Meta
                                             title={`${item.nameFirst} ${item.nameLast}`}
                                             description={item.email}
-                                            avatar={<CgProfile />}
+                                            avatar={
+                                                <Avatar
+                                                    src={item.profilePic}
+                                                    referrerPolicy="no-referrer"
+                                                />
+                                            }
                                         />
                                     </List.Item>
                                 )}
