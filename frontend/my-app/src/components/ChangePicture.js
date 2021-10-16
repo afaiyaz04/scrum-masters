@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import {Upload, message } from "antd";
 import "./ChangePicture.css";
+import { CgProfile } from "react-icons/cg";
 
 
 function getBase64(img, callback) {
@@ -74,9 +75,8 @@ class ChangePicture extends React.Component {
                         src={this.props.img}
                         className="pic-img"
                         referrerPolicy="no-referrer"
-                        alt=""
                     />
-                    <div className="pic-text">
+                    <div className="pic-text" style={{fontSize: this.props.fontSize}}>
                         <p className="text-middle">{this.props.text}</p>
                     </div>
                 </div>

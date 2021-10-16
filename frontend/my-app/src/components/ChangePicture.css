@@ -36,7 +36,6 @@
     opacity: 0;
     color: white;
     font-weight: 600;
-    font-size: 120%;
     position: relative;
     transform: translateY(-100%);
     transition: .3s;
