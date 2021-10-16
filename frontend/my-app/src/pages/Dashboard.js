@@ -226,7 +226,7 @@ class Dashboard extends React.Component {
                                                             
                                                                 src={contact.profilePic}
                                                                 referrerPolicy="no-referrer"
-                                                                style = {{height:120, width:120, paddingBottom:10, marginLeft:60, marginTop:10}}
+                                                                style = {{height:120, width:120, marginBottom:10, marginLeft:60, marginTop:10}}
                                                             />
                                                         }
                                                         style={{
