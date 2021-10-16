@@ -24,6 +24,7 @@ const initialContact = {
     email: "",
     phoneNumber: "",
     address: "",
+    profilePic: "https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png",
     favourite: false,
 };
 

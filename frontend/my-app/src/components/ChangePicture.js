@@ -75,6 +75,7 @@ class ChangePicture extends React.Component {
                         src={this.props.img}
                         className="pic-img"
                         referrerPolicy="no-referrer"
+                        alt=""
                     />
                     <div className="pic-text" style={{fontSize: this.props.fontSize}}>
                         <p className="text-middle">{this.props.text}</p>
