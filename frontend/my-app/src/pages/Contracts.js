@@ -3,7 +3,6 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { Component } from "react";
 import { connect } from "react-redux";
-import { fetchOrders } from "../redux/Order/order.actions";
 import { List, Button } from "antd";
 import {
   createProduct,
@@ -12,12 +11,29 @@ import {
   deleteProduct,
 } from "../redux/Product/product.actions";
 import ContractDetails from "../components/ContractDetails";
+import {
+  createOrder,
+  fetchOrders,
+  updateOrder,
+  deleteOrder,
+} from "../redux/Order/order.actions";
+
+const initialOrder = {
+  id: null,
+  timeDue: Date,
+  totalFee: 0,
+  description: "",
+  client: "",
+  status: "CREATED",
+  lineProducts: [],
+};
 
 class Contracts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contract: [],
+      contract: initialOrder,
+      products: [],
 
       showDetails: false,
       addContract: false,
@@ -44,7 +60,16 @@ class Contracts extends Component {
     }
   };
 
+  updateOrderHandler = (newItem) => {
+    this.setState({ showDetails: false });
+    console.log("THE CONTRACR IS HGEREE");
+    newItem.status = "SIGNED";
+    console.log(newItem.status);
+    this.props.dispatch(updateOrder(this.state.contract.id, newItem));
+  };
+
   render() {
+    console.log(this.state.contract);
     return (
       <div className="Master-div">
         <Sidebar />
@@ -78,7 +103,15 @@ class Contracts extends Component {
                           this.setState({
                             showDetails: true,
                             addContract: false,
-                            contract: item,
+                            contract: {
+                              id: item._id,
+                              client: item.client,
+                              timeDue: item.timeDue,
+                              totalFee: item.totalFee,
+                              description: item.description,
+                              status: item.status,
+                              lineProducts: item.lineProducts,
+                            },
                           });
                         }}
                       >
@@ -98,6 +131,8 @@ class Contracts extends Component {
               <div className="contents-right">
                 <ContractDetails
                   contract={this.state.contract}
+                  closeAction={() => this.setState({ showDetails: false })}
+                  updateAction={this.updateOrderHandler}
                 ></ContractDetails>
               </div>
             )}
