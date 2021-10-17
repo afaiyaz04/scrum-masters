@@ -9,7 +9,7 @@ API.interceptors.request.use((req) => {
         }`;
     }
 
-    return req;
+  return req;
 });
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
