@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "heroku-postbuild": "cd frontend/my-app && npm install && npm start && npm run build",
+    "heroku-postbuild": "cd frontend/my-app && npm install",
     "test": "NODE_ENV=test nodemon index.js"
   },
   "keywords": [],
