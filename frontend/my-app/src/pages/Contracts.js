@@ -17,6 +17,7 @@ import {
   updateOrder,
   deleteOrder,
 } from "../redux/Order/order.actions";
+import ContractForm from "../components/ContractForm";
 
 const initialOrder = {
   id: null,
@@ -26,6 +27,9 @@ const initialOrder = {
   client: "",
   status: "CREATED",
   lineProducts: [],
+  orderNumber: "",
+  timePlaced: Date,
+  lastModified: Date,
 };
 
 class Contracts extends Component {
@@ -37,6 +41,7 @@ class Contracts extends Component {
 
       showDetails: false,
       addContract: false,
+      contract_added: "",
 
       userId: JSON.parse(localStorage.getItem("userData"))._id,
     };
@@ -52,6 +57,11 @@ class Contracts extends Component {
     }
   };
 
+  ordersNotContracts = (order) => {
+    if (order.status !== "SIGNED" && order.status !== "AGREED") {
+      return order;
+    }
+  };
   descriptionLimit = (description) => {
     if (description.length > 50) {
       return `${description.slice(0, 50)}...`;
@@ -111,6 +121,9 @@ class Contracts extends Component {
                               description: item.description,
                               status: item.status,
                               lineProducts: item.lineProducts,
+                              orderNumber: item.orderNumber,
+                              timePlaced: item.timePlaced,
+                              lastModified: item.lastModified,
                             },
                           });
                         }}
@@ -138,7 +151,12 @@ class Contracts extends Component {
             )}
             {this.state.addContract && (
               <div className="contents-right">
-                <h1>add the Input from here</h1>
+                <ContractForm
+                  orders={this.props.orders.filter(this.ordersNotContracts)}
+                  addFunction={(contract) =>
+                    this.setState({ contract_added: contract })
+                  }
+                ></ContractForm>
               </div>
             )}
           </div>

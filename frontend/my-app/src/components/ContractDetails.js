@@ -39,7 +39,7 @@ const ContractDetails = (props) => {
       <h3 style={{ color: "red" }}>
         Time Due: {contract.timeDue.slice(0, 10)}
       </h3>
-      {/* <h3>Last Modified: {contract.lastModified.slice(0, 10)}</h3> */}
+      <h3>Last Modified: {contract.lastModified.slice(0, 10)}</h3>
       <h3>Description: {contract.description}</h3>
       <h3>Products:</h3>
       <List
