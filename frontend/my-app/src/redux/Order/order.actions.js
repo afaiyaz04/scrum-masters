@@ -8,9 +8,17 @@ import * as api from "../../redux/api/index";
 
 export const createOrder = (userId, formData) => async (dispatch) => {
     try {
-        const data = await api.createOrder(formData);
-        await api.addUserOrder(userId, data.data._id);
-        dispatch({ type: CREATE_ORDER, payload: data.data });
+        const { data } = await api.createOrder(formData);
+        await api.addUserOrder(userId, data._id);
+        const clientData = await api.fetchClient(data.client);
+        dispatch({
+            type: CREATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -28,7 +36,15 @@ export const fetchOrders = (userId) => async (dispatch) => {
 export const updateOrder = (orderId, formData) => async (dispatch) => {
     try {
         const { data } = await api.updateOrder(orderId, formData);
-        dispatch({ type: UPDATE_ORDER, payload: data });
+        const clientData = await api.fetchClient(data.client);
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -46,7 +62,15 @@ export const deleteOrder = (userId, orderId) => async (dispatch) => {
 export const addProduct = (orderId, formData) => async (dispatch) => {
     try {
         const { data } = await api.addLineProduct(orderId, formData);
-        dispatch({ type: UPDATE_ORDER, payload: data });
+        const clientData = await api.fetchClient(data.client);
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -60,7 +84,15 @@ export const updateProduct =
                 productId,
                 formData
             );
-            dispatch({ type: UPDATE_ORDER, payload: data });
+            const clientData = await api.fetchClient(data.client);
+            dispatch({
+                type: UPDATE_ORDER,
+                payload: {
+                    order: data,
+                    clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                    isTransfer: false,
+                },
+            });
         } catch (error) {
             console.log(error);
         }
@@ -69,7 +101,15 @@ export const updateProduct =
 export const deleteProduct = (orderId, productId) => async (dispatch) => {
     try {
         const { data } = await api.deleteLineProduct(orderId, productId);
-        dispatch({ type: UPDATE_ORDER, payload: data });
+        const clientData = await api.fetchClient(data.client);
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -86,3 +126,27 @@ export const transferOrder =
             console.log(error);
         }
     };
+
+export const acceptOrder = (userId, orders) => async (dispatch) => {
+    try {
+        for (let i in orders) {
+            await api.acceptOrder(userId, orders[i]);
+        }
+        const { data } = await api.fetchOrders(userId);
+        dispatch({ type: FETCH_ORDERS, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const declineOrder = (userId, orders) => async (dispatch) => {
+    try {
+        for (let i in orders) {
+            await api.declineOrder(userId, orders[i]);
+        }
+        const { data } = await api.fetchOrders(userId);
+        dispatch({ type: FETCH_ORDERS, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+};

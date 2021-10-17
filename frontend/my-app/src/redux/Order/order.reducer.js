@@ -15,10 +15,12 @@ const reducer = (state = INITIAL_STATE, action) => {
             return [...state, action.payload];
         case UPDATE_ORDER:
             return state.map((order) =>
-                order._id === action.payload._id ? action.payload : order
+                order.order._id === action.payload.order._id
+                    ? action.payload
+                    : order
             );
         case DELETE_ORDER:
-            return state.filter((order) => order._id !== action.payload);
+            return state.filter((order) => order.order._id !== action.payload);
         default:
             return state;
     }

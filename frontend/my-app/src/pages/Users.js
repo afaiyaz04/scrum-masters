@@ -141,7 +141,6 @@ class Users extends React.Component {
                                             <List.Item.Meta
                                                 title={"UNREGISTERED USER"}
                                                 description={item.email}
-                                                avatar={<CgProfile />}
                                             />
                                         )}
                                         {(item.nameFirst || item.nameFirst) && (
