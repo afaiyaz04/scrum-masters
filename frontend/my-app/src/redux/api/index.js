@@ -41,6 +41,7 @@ export const createOrder = (formData) => API.post("/order", formData);
 export const addUserOrder = (userId, orderId) =>
   API.post(`/user/${userId}/orders`, { orderId });
 export const fetchOrders = (userId) => API.get(`/user/${userId}/orders`);
+export const fetchOrder = (orderId) => API.get(`/order/${orderId}`);
 export const updateOrder = (orderId, formData) =>
   API.patch(`/order/${orderId}`, formData);
 export const deleteOrder = (orderId) => API.delete(`/order/${orderId}`);
