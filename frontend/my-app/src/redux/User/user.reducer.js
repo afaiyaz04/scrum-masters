@@ -1,10 +1,4 @@
-import {
-    DELETE_USER,
-    SET_USER,
-    SET_USER_DATA,
-    SIGN_OUT,
-    UPDATE_USER,
-} from "./user.types";
+import { SET_USER, SET_USER_DATA, SIGN_OUT, UPDATE_USER } from "./user.types";
 
 const INITIAL_STATE = { authData: null };
 

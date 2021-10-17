@@ -1,9 +1,9 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile, CgHeart } from "react-icons/cg";
-import { List, Button } from "antd";
-import "antd/dist/antd.css";
+import { CgProfile } from "react-icons/cg";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import { List, Button, Avatar } from "antd";
 import {
     createContact,
     deleteContact,
@@ -13,6 +13,7 @@ import {
 } from "../redux/Contact/contact.actions";
 import ClientForm from "../components/ClientForm";
 import { connect } from "react-redux";
+import "./Contact.css";
 
 const initialContact = {
     id: "",
@@ -23,6 +24,8 @@ const initialContact = {
     email: "",
     phoneNumber: "",
     address: "",
+    profilePic:
+        "https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png",
     favourite: false,
 };
 
@@ -100,45 +103,57 @@ class Contacts extends React.Component {
                                         actions={[
                                             <>
                                                 {item.fav && (
-                                                    <CgHeart
-                                                        style={{
-                                                            height: 30,
-                                                            width: 30,
-                                                            paddingTop: 10,
-                                                            color: "red",
-                                                        }}
+                                                    <FaStar
+                                                        className="fav"
+                                                        color="orange"
                                                         onClick={() => {
                                                             this.favouriteHandler(
                                                                 item._id,
                                                                 false
                                                             );
                                                         }}
+                                                        onMouseEnter={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "grey")
+                                                        }
+                                                        onMouseLeave={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "orange")
+                                                        }
                                                     />
                                                 )}
                                                 {!item.fav && (
-                                                    <CgHeart
-                                                        style={{
-                                                            height: 30,
-                                                            width: 30,
-                                                            paddingTop: 10,
-                                                            color: "grey",
-                                                        }}
+                                                    <FaRegStar
+                                                        className="fav"
+                                                        color="grey"
                                                         onClick={() => {
                                                             this.favouriteHandler(
                                                                 item._id,
                                                                 true
                                                             );
                                                         }}
+                                                        onMouseEnter={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "orange")
+                                                        }
+                                                        onMouseLeave={({
+                                                            target,
+                                                        }) =>
+                                                            (target.style.color =
+                                                                "grey")
+                                                        }
                                                     />
                                                 )}
                                             </>,
                                             <Button
+                                                className="general-btn"
                                                 type="dashed"
-                                                style={{
-                                                    paddingLeft: 2,
-                                                    textAlign: "center",
-                                                }}
-                                                block
                                                 onClick={() =>
                                                     this.setState({
                                                         showDetails: true,
@@ -157,6 +172,8 @@ class Contacts extends React.Component {
                                                                 item.phoneNumber,
                                                             address:
                                                                 item.address,
+                                                            profilePic:
+                                                                item.profilePic,
                                                         },
                                                     })
                                                 }
@@ -168,7 +185,12 @@ class Contacts extends React.Component {
                                         <List.Item.Meta
                                             title={`${item.nameFirst} ${item.nameLast}`}
                                             description={item.email}
-                                            avatar={<CgProfile />}
+                                            avatar={
+                                                <Avatar
+                                                    src={item.profilePic}
+                                                    referrerPolicy="no-referrer"
+                                                />
+                                            }
                                         />
                                     </List.Item>
                                 )}

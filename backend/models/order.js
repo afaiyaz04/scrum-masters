@@ -8,17 +8,12 @@ import {
 } from "./systemEnums.js";
 
 // define the ProductItem child schema
-const lineProductSchema = new mongoose.Schema(
-    {
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
-            required: true,
-        },
-        quantity: { type: Number, default: 1, required: true },
-    },
-    { _id: false }
-);
+const lineProductSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, default: 1, required: true },
+});
 
 // define the log child scheme
 const logSchema = new mongoose.Schema(

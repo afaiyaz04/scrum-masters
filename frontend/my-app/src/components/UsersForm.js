@@ -21,10 +21,7 @@ const UsersForm = (props) => {
         return (
             <Form {...layout}>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                    <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
-                        onClick={props.closeAction}
-                    >
+                    <Button className="general-btn" onClick={props.closeAction}>
                         Close
                     </Button>
                 </Form.Item>
@@ -52,19 +49,19 @@ const UsersForm = (props) => {
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.promoteAction(user.id)}
                     >
                         Promote
                     </Button>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.controlAction(user.id)}
                     >
                         Control
                     </Button>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.deleteAction(user.id)}
                     >
                         Delete
@@ -76,10 +73,7 @@ const UsersForm = (props) => {
         return (
             <Form {...layout}>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                    <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
-                        onClick={props.closeAction}
-                    >
+                    <Button className="general-btn" onClick={props.closeAction}>
                         Close
                     </Button>
                 </Form.Item>
@@ -93,7 +87,7 @@ const UsersForm = (props) => {
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.registerAction(user)}
                     >
                         Register

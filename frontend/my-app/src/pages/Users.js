@@ -2,8 +2,7 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { CgProfile } from "react-icons/cg";
-import { List, Button } from "antd";
-import "antd/dist/antd.css";
+import { List, Button, Avatar } from "antd";
 import {
     fetchUsers,
     promoteUser,
@@ -14,14 +13,13 @@ import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
-import { DELETE_USER } from "../redux/Users/users.types";
 
 const initialUser = {
     id: "",
     nameFirst: "",
     nameLast: "",
     email: "",
-    password: "",
+    profilePic: "",
     type: "",
 };
 
@@ -116,11 +114,7 @@ class Users extends React.Component {
                                         actions={[
                                             <Button
                                                 type="dashed"
-                                                style={{
-                                                    paddingLeft: 2,
-                                                    textAlign: "center",
-                                                }}
-                                                block
+                                                className="general-btn"
                                                 onClick={() => {
                                                     this.setState({
                                                         showDetails: true,
@@ -132,8 +126,8 @@ class Users extends React.Component {
                                                             nameLast:
                                                                 item.nameLast,
                                                             email: item.email,
-                                                            password:
-                                                                item.password,
+                                                            profilePic:
+                                                                item.profilePic,
                                                             type: item.type,
                                                         },
                                                     });
@@ -147,14 +141,18 @@ class Users extends React.Component {
                                             <List.Item.Meta
                                                 title={"UNREGISTERED USER"}
                                                 description={item.email}
-                                                avatar={<CgProfile />}
                                             />
                                         )}
                                         {(item.nameFirst || item.nameFirst) && (
                                             <List.Item.Meta
                                                 title={`${item.nameFirst} ${item.nameLast}`}
                                                 description={item.email}
-                                                avatar={<CgProfile />}
+                                                avatar={
+                                                    <Avatar
+                                                        src={item.profilePic}
+                                                        referrerPolicy="no-referrer"
+                                                    />
+                                                }
                                             />
                                         )}
                                     </List.Item>

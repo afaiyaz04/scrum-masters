@@ -2,10 +2,8 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from "../components/buttons/ProfileButton";
 import { connect } from "react-redux";
-import { Timeline, Card, Progress, Table, Empty } from "antd";
+import { Timeline, Card, Progress, Table, Empty, Avatar } from "antd";
 import { fetchOrders } from "../redux/Order/order.actions";
-import "antd/dist/antd.css";
-import "../App.css";
 import "./Dashboard.css";
 import { CgProfile } from "react-icons/cg";
 import { fetchContacts } from "../redux/Contact/contact.actions";
@@ -224,13 +222,17 @@ class Dashboard extends React.Component {
                                                         key={contact._id}
                                                         hoverable
                                                         cover={
-                                                            <CgProfile
+                                                            <Avatar
+                                                                src={
+                                                                    contact.profilePic
+                                                                }
+                                                                referrerPolicy="no-referrer"
                                                                 style={{
-                                                                    fontSize:
-                                                                        "40px",
-                                                                    height: 150,
-                                                                    bottom: 150,
-                                                                    padding: 10,
+                                                                    height: 120,
+                                                                    width: 120,
+                                                                    marginBottom: 10,
+                                                                    marginLeft: 60,
+                                                                    marginTop: 10,
                                                                 }}
                                                             />
                                                         }

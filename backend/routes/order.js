@@ -8,7 +8,6 @@ import {
     addLineProduct,
     updateLineProduct,
     removeLineProduct,
-    getLineProducts,
     addLog,
 } from "../controllers/order.js";
 import auth from "../middleware/auth.js";
@@ -22,9 +21,8 @@ router.delete("/:id", auth, deleteOrder);
 
 // Line products
 router.post("/:orderId/products", auth, addLineProduct);
-router.patch("/:orderId/products", auth, updateLineProduct);
-router.delete("/:orderId/products", auth, removeLineProduct);
-router.get("/:orderId/products", auth, getLineProducts);
+router.patch("/:orderId/products/:productId", auth, updateLineProduct);
+router.delete("/:orderId/products/:productId", auth, removeLineProduct);
 
 // Log
 router.post("/:id/log", auth, addLog);

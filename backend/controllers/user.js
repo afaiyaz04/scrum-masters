@@ -7,7 +7,6 @@ import Client from "../models/client.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { ADMIN_USER, GENERAL_USER } from "../models/systemEnums.js";
-import { removeOrder } from "../controllers/order.js";
 
 const router = express.Router();
 
@@ -63,7 +62,7 @@ export const getUser = async (req, res) => {
 // Update user
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { email, nameFirst, nameLast, type } = req.body;
+    const { email, nameFirst, nameLast, type, profilePic } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
@@ -73,10 +72,11 @@ export const updateUser = async (req, res) => {
         return res.status(404).send(`Invalid user id: ${id}`);
 
     const updatedUser = {
-        email,
-        nameFirst,
-        nameLast,
-        type,
+        email: email,
+        nameFirst: nameFirst,
+        nameLast: nameLast,
+        type: type,
+        profilePic: profilePic,
         _id: id,
     };
 
@@ -121,12 +121,12 @@ export const deleteUser = async (req, res) => {
 
     for (var i = 0; i < user.orders.length; i++) {
         var orderId = user.orders[i];
-        await removeOrder(orderId);
+        await Order.findByIdAndRemove(orderId);
     }
 
     for (var i = 0; i < user.receivedOrders.length; i++) {
         var orderId = user.receivedOrders[i].order;
-        await removeOrder(orderId);
+        await Order.findByIdAndRemove(orderId);
     }
 
     const toUser = await User.findByIdAndRemove(id);
@@ -224,7 +224,7 @@ export const deleteUserOrder = async (req, res) => {
         user.orders.splice(orderIndex, 1);
         user.save();
         // here
-        await removeOrder(orderId);
+        await Order.findByIdAndRemove(orderId);
         return res.json(user);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -412,7 +412,10 @@ export const transferOrder = async (req, res) => {
             return o._id == orderId;
         });
         if (orderIndex != -1) {
-            const receivedOrder = { fromUser: user._id, order: order._id };
+            const receivedOrder = {
+                fromUser: user._id,
+                order: order._id,
+            };
             if (!toUser.receivedOrders.includes(receivedOrder)) {
                 toUser.receivedOrders.push(receivedOrder);
                 user.orders.splice(orderIndex, 1);

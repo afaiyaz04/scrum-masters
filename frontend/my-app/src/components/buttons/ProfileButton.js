@@ -69,8 +69,10 @@ class ProfileButton extends React.Component {
             return (
                 <>
                     <Dropdown overlay={this.menu}>
-                        <Button className="btn">
-                            <CgProfile />
+                        <Button
+                            className="btn"
+                            icon={<CgProfile style={{ verticalAlign: -2 }} />}
+                        >
                             Profile
                         </Button>
                     </Dropdown>

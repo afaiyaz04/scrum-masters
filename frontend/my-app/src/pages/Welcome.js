@@ -28,16 +28,20 @@ function SignUp() {
         const email = res.profileObj.email;
         const nameFirst = res.profileObj.givenName;
         const nameLast = res.profileObj.familyName;
-        const password = "pass";
+        const profilePic = res.profileObj.imageUrl.replace(
+            "s96-c",
+            "s500-c",
+            true
+        );
 
         try {
             dispatch({
                 type: SET_USER,
-                data: { email, nameFirst, nameLast, password, token },
+                data: { email, nameFirst, nameLast, profilePic, token },
             });
             dispatch(
                 setUser(
-                    { email, nameFirst, nameLast, password, token },
+                    { email, nameFirst, nameLast, profilePic, token },
                     history
                 )
             );

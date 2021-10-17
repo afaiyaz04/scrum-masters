@@ -11,6 +11,15 @@ export const setUser = (formData, router) => async (dispatch) => {
     }
 };
 
+export const fetchUser = (userId) => async (dispatch) => {
+    try {
+        const { data } = await api.fetchUser(userId);
+        dispatch({ type: SET_USER_DATA, data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const updateUser = (userId, formData) => async (dispatch) => {
     try {
         const { data } = await api.updateUser(userId, formData);

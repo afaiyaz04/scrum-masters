@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form, Input, Button } from "antd";
+import ChangePicture from "./ChangePicture";
 
 const ClientForm = (props) => {
     const [contact, setContact] = useState({ ...props.contact });
@@ -20,12 +21,30 @@ const ClientForm = (props) => {
     return (
         <Form {...layout}>
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                <Button
-                    style={{ paddingLeft: 2, textAlign: "center" }}
-                    onClick={props.closeAction}
-                >
+                <Button className="general-btn" onClick={props.closeAction}>
                     Close
                 </Button>
+            </Form.Item>
+            <Form.Item
+                style={{
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: "auto",
+                    width: "fit-content",
+                    height: "fit-content",
+                }}
+            >
+                <ChangePicture
+                    width={75}
+                    height={75}
+                    img={contact.profilePic}
+                    text={props.addContact ? "Add" : "Change"}
+                    fontSize="smaller"
+                    onChange={(img) =>
+                        setContact({ ...contact, profilePic: img })
+                    }
+                />
             </Form.Item>
             <Form.Item label="First Name:">
                 <Input
@@ -86,13 +105,13 @@ const ClientForm = (props) => {
             {props.showDetails && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.updateAction(contact)}
                     >
                         Update
                     </Button>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.deleteAction(contact.id)}
                     >
                         Delete
@@ -102,7 +121,7 @@ const ClientForm = (props) => {
             {props.addContact && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button
-                        style={{ paddingLeft: 2, textAlign: "center" }}
+                        className="general-btn"
                         onClick={() => props.createAction(contact)}
                     >
                         Create
