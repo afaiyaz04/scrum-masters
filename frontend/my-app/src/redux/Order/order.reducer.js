@@ -14,11 +14,9 @@ const reducer = (state = INITIAL_STATE, action) => {
         case CREATE_ORDER:
             return [...state, action.payload];
         case UPDATE_ORDER:
-            return state.map((order) =>
-                order._id === action.payload._id ? action.payload : order
-            );
+            return state.map((order) => order.order._id === action.payload.order._id ? action.payload : order);
         case DELETE_ORDER:
-            return state.filter((order) => order._id !== action.payload);
+            return state.filter((order) => order.order._id !== action.payload);
         default:
             return state;
     }

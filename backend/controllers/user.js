@@ -261,10 +261,10 @@ export const getUserOrders = async (req, res) => {
             orders.push({
                 order,
                 clientName: clientName,
+                isTransfer: false,
             });
         }
 
-        const receivedOrders = [];
         for (var i = 0; i < user.receivedOrders.length; i++) {
             const order = await Order.findById(user.receivedOrders[i].order);
             const client = await Client.findById(order.client);
@@ -275,14 +275,15 @@ export const getUserOrders = async (req, res) => {
             );
             const fromUserName = `${fromUser.nameFirst} ${fromUser.nameLast}`;
 
-            receivedOrders.push({
+            orders.push({
                 order,
                 clientName: clientName,
+                isTransfer: true,
                 fromUserId: user.receivedOrders[i].fromUser,
                 fromUserName: fromUserName,
             });
         }
-        res.json({ orders, receivedOrders });
+        res.json(orders);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

@@ -9,7 +9,7 @@ const TransferForm = (props) => {
         return props.orders.map((order) => {
             return {
                 ...order,
-                key: order._id,
+                key: order.order._id,
             };
         });
     };
@@ -69,7 +69,7 @@ const TransferForm = (props) => {
                         targetKeys={targetKeys}
                         onChange={onChange}
                         dataSource={formatOrders()}
-                        render={(item) => item.orderNumber}
+                        render={(item) => item.order.orderNumber}
                     />
                 </Form.Item>
                 {!selectedUser && (

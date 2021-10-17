@@ -13,13 +13,9 @@ import {
     updateProduct,
     deleteProduct,
     transferOrder,
-} from "../redux/Order/order.actions";
-
-import {
-    fetchTransfers,
     acceptOrder,
     declineOrder,
-} from "../redux/Transfer/transfer.actions";
+} from "../redux/Order/order.actions";
 
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import ProductForm from "../components/ProductForm";
@@ -125,13 +121,13 @@ class Orders extends React.Component {
                     <>
                         <Button
                             className="general-btn"
-                            onClick={() => this.onAccept(record.key)}
+                            onClick={() => this.onAccept([record.key])}
                         >
                             Accept
                         </Button>
                         <Button
                             className="general-btn"
-                            onClick={() => this.onDecline(record.key)}
+                            onClick={() => this.onDecline([record.key])}
                         >
                             Decline
                         </Button>
@@ -165,7 +161,6 @@ class Orders extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
-        this.props.dispatch(fetchTransfers(this.state.userId));
         this.props.dispatch(fetchUsers());
     }
 
@@ -182,7 +177,7 @@ class Orders extends React.Component {
 
     deleteOrderHandler = (orderId) => {
         this.endRenderExcept();
-        this.setState({ order: initialOrder });
+        this.setState({ order: initialOrder, product: initialProduct });
         this.props.dispatch(deleteOrder(this.state.userId, orderId));
     };
 
@@ -196,7 +191,7 @@ class Orders extends React.Component {
         this.setState({ product: newItem });
         this.props.dispatch(
             updateProduct(
-                this.getOrderId(this.state.product._id),
+                this.state.order._id,
                 this.state.product._id,
                 newItem
             )
@@ -208,7 +203,7 @@ class Orders extends React.Component {
         this.setState({ product: initialProduct });
         this.props.dispatch(
             deleteProduct(
-                this.getOrderId(this.state.product._id),
+                this.state.order._id,
                 this.state.product._id
             )
         );
@@ -232,7 +227,7 @@ class Orders extends React.Component {
     // Selected row action
     onSelectChange = (selectedRowKeys) => {
         let x = this.props.orders.filter((order) => {
-            return selectedRowKeys.includes(order._id);
+            return selectedRowKeys.includes(order.order._id);
         });
         this.setState({ selectedOrders: x });
     };
@@ -240,8 +235,8 @@ class Orders extends React.Component {
     // Row button actions
     onOrderDetails = (key) => {
         this.props.orders.forEach((order) => {
-            if (key === order._id) {
-                this.setState({ order });
+            if (key === order.order._id) {
+                this.setState({ order: order.order });
                 this.endRenderExcept("showDetails");
             }
         });
@@ -249,8 +244,8 @@ class Orders extends React.Component {
 
     onAddItem = (key) => {
         this.props.orders.forEach((order) => {
-            if (key === order._id) {
-                this.setState({ order });
+            if (key === order.order._id) {
+                this.setState({ order: order.order, product: initialProduct });
                 this.endRenderExcept("addProduct");
             }
         });
@@ -258,24 +253,21 @@ class Orders extends React.Component {
 
     onProductDetails = (key) => {
         this.props.orders.forEach((order) => {
-            order.lineProducts.forEach((product) => {
+            order.order.lineProducts.forEach((product) => {
                 if (key === product._id) {
-                    this.setState({ product });
+                    this.setState({ product, order: order.order });
                     this.endRenderExcept("showProductDetails");
                 }
             });
         });
     };
 
-    onAccept = (key) => {
-        this.props.dispatch(acceptOrder(this.state.userId, key));
-        this.props.dispatch(fetchOrders(this.state.userId));
-        window.location.reload(true);
+    onAccept = (keys) => {
+        this.props.dispatch(acceptOrder(this.state.userId, keys));
     };
 
-    onDecline = (key) => {
-        this.props.dispatch(declineOrder(this.state.userId, key));
-        this.props.dispatch(fetchOrders(this.state.userId));
+    onDecline = (keys) => {
+        this.props.dispatch(declineOrder(this.state.userId, keys));
     };
 
     // Get client name from id
@@ -290,24 +282,12 @@ class Orders extends React.Component {
         return name;
     };
 
-    // Get order id from product id
-    getOrderId = (productId) => {
-        if (!productId) return null;
-        let id;
-        this.props.orders.forEach((order) => {
-            order.lineProducts.forEach((product) => {
-                if (product._id === productId) id = order._id;
-            });
-        });
-        return id;
-    };
-
     // Nested table for product
     productRender = (row) => {
         let order = this.props.orders.find((order) => {
-            return order._id === row.key;
+            return order.order._id === row.key;
         });
-        let productData = order.lineProducts.map((product) => {
+        let productData = order.order.lineProducts.map((product) => {
             return {
                 key: product._id,
                 name: product.name,
@@ -341,20 +321,21 @@ class Orders extends React.Component {
                     <div className="contents">
                         <div className="contents-left">
                             <Collapse bordered={false}>
+                                {console.log(this.props.orders)}
                                 <Panel
-                                    header={`Received Orders (${this.props.transfers.length})`}
+                                    header={`Received Orders (${this.props.orders.filter(order => order.isTransfer).length})`}
                                     key="1"
                                 >
                                     <Table
                                         columns={this.receivedOrderColumns}
-                                        dataSource={this.props.transfers.map(
+                                        dataSource={this.props.orders.filter(order => order.isTransfer).map(
                                             (transfer) => {
                                                 return {
                                                     key: transfer.order._id,
                                                     orderNumber:
                                                         transfer.order
                                                             .orderNumber,
-                                                    user: `${transfer.user.nameFirst} ${transfer.user.nameLast}`,
+                                                    user: transfer.clientName,
                                                     description:
                                                         transfer.order
                                                             .description,
@@ -402,16 +383,14 @@ class Orders extends React.Component {
                                 expandable={{
                                     expandedRowRender: this.productRender,
                                 }}
-                                dataSource={this.props.orders.map((order) => {
+                                dataSource={this.props.orders.filter(order => !order.isTransfer).map((order) => {
                                     return {
-                                        key: order._id,
-                                        orderNumber: order.orderNumber,
-                                        client: this.getClientName(
-                                            order.client
-                                        ),
-                                        status: order.status,
-                                        timeDue: order.timeDue.slice(0, 10),
-                                        totalFee: order.totalFee,
+                                        key: order.order._id,
+                                        orderNumber: order.order.orderNumber,
+                                        client: order.clientName,
+                                        status: order.order.status,
+                                        timeDue: order.order.timeDue.slice(0, 10),
+                                        totalFee: order.order.totalFee,
                                     };
                                 })}
                                 pagination={false}
@@ -481,7 +460,6 @@ const mapStateToProps = (state) => {
         orders: state.orders,
         contacts: state.contacts,
         users: state.users,
-        transfers: state.transfers,
     };
 };
 
