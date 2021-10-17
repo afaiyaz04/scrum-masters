@@ -218,9 +218,11 @@ class Orders extends React.Component {
     };
 
     // Selected row action
-    onSelectChange = (selectedRowKeys) => {
+    onOrderSelectChange = (selectedRowKeys) => {
         let x = this.props.orders.filter((order) => {
-            return selectedRowKeys.includes(order.order._id);
+            return (
+                selectedRowKeys.includes(order.order._id) && !order.isTransfer
+            );
         });
         this.setState({ selectedOrders: x });
     };
@@ -299,7 +301,6 @@ class Orders extends React.Component {
     };
 
     render() {
-        console.log(this.props.transfers);
         return (
             <div className="Master-div">
                 <Sidebar />
@@ -314,7 +315,6 @@ class Orders extends React.Component {
                     <div className="contents">
                         <div className="contents-left">
                             <Collapse bordered={false}>
-                                {console.log(this.props.orders)}
                                 <Panel
                                     header={`Received Orders (${
                                         this.props.orders.filter(
@@ -325,6 +325,13 @@ class Orders extends React.Component {
                                 >
                                     <Table
                                         columns={this.receivedOrderColumns}
+                                        expandable={{
+                                            expandedRowRender: (record) => (
+                                                <p style={{ margin: 0 }}>
+                                                    {record.description}
+                                                </p>
+                                            ),
+                                        }}
                                         dataSource={this.props.orders
                                             .filter((order) => order.isTransfer)
                                             .map((transfer) => {
@@ -335,14 +342,12 @@ class Orders extends React.Component {
                                                             .orderNumber,
                                                     user: transfer.fromUserName,
                                                     client: transfer.clientName,
+                                                    description:
+                                                        transfer.order
+                                                            .description,
                                                 };
                                             })}
                                         pagination={false}
-                                        rowSelection={{
-                                            selectedRowKeys:
-                                                this.props.selectedRowKeys,
-                                            onChange: this.onSelectChange,
-                                        }}
                                     />
                                 </Panel>
                             </Collapse>
@@ -397,7 +402,7 @@ class Orders extends React.Component {
                                 pagination={false}
                                 rowSelection={{
                                     selectedRowKeys: this.props.selectedRowKeys,
-                                    onChange: this.onSelectChange,
+                                    onChange: this.onOrderSelectChange,
                                 }}
                             />
                         </div>
