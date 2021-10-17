@@ -54,8 +54,8 @@ class Orders extends React.Component {
             product: initialProduct,
             selectedOrders: [],
 
-      showDetails: false,
-      addOrder: false,
+            showDetails: false,
+            addOrder: false,
 
             showProductDetails: false,
             addProduct: false,
@@ -337,29 +337,6 @@ class Orders extends React.Component {
                             this.setState({ order: initialOrder });
                             this.endRenderExcept("addOrder");
                         }}
-                        block
-                        onClick={() =>
-                          this.setState({
-                            showDetails: true,
-                            addOrder: false,
-                            order: {
-                              id: item._id,
-                              client: item.client,
-                              timeDue: item.timeDue,
-                              totalFee: item.totalFee,
-                              description: item.description,
-                            },
-                          })
-                        }
-                      >
-                        Details
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={`Order No. ${item.orderNumber}`}
-                      description={item.description}
-                      avatar={<CgProfile />}
                     />
                     <div className="contents">
                         <div className="contents-left">
@@ -495,31 +472,8 @@ class Orders extends React.Component {
                     </div>
                 </div>
             </div>
-            {(this.state.showDetails || this.state.addOrder) && (
-              <div className="contents-right">
-                <OrderForm
-                  contacts={this.props.contacts}
-                  order={this.state.order}
-                  // Boolean values to check if component should have features on/off
-                  addOrder={this.state.addOrder}
-                  showOrderDetails={this.state.showDetails}
-                  // Button handlers
-                  createOrderAction={this.createOrderHandler}
-                  // Closes form
-                  closeAction={() =>
-                    this.setState({
-                      addOrder: false,
-                      showDetails: false,
-                    })
-                  }
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
