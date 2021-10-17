@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile } from "react-icons/cg";
 import { List, Button, Avatar } from "antd";
 import {
     fetchUsers,
