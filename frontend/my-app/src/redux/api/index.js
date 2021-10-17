@@ -9,7 +9,7 @@ API.interceptors.request.use((req) => {
         }`;
     }
 
-  return req;
+    return req;
 });
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
@@ -60,4 +60,5 @@ export const acceptOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/accept`, { orderId });
 export const declineOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/reject`, { orderId });
-export const fetchOrder = (orderId) => API.get(`/order/${orderId}`);
+
+export const fetchClient = (clientId) => API.get(`/client/${clientId}`);
