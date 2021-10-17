@@ -11,7 +11,14 @@ export const createOrder = (userId, formData) => async (dispatch) => {
         const { data } = await api.createOrder(formData);
         await api.addUserOrder(userId, data._id);
         const clientData = await api.fetchClient(data.client);
-        dispatch({ type: CREATE_ORDER, payload: { order: data, clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`, isTransfer: false } });
+        dispatch({
+            type: CREATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -30,7 +37,14 @@ export const updateOrder = (orderId, formData) => async (dispatch) => {
     try {
         const { data } = await api.updateOrder(orderId, formData);
         const clientData = await api.fetchClient(data.client);
-        dispatch({ type: UPDATE_ORDER, payload: { order: data, clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`, isTransfer: false } });
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -49,7 +63,14 @@ export const addProduct = (orderId, formData) => async (dispatch) => {
     try {
         const { data } = await api.addLineProduct(orderId, formData);
         const clientData = await api.fetchClient(data.client);
-        dispatch({ type: UPDATE_ORDER, payload: { order: data, clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`, isTransfer: false } });
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -64,7 +85,14 @@ export const updateProduct =
                 formData
             );
             const clientData = await api.fetchClient(data.client);
-            dispatch({ type: UPDATE_ORDER, payload: { order: data, clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`, isTransfer: false } });
+            dispatch({
+                type: UPDATE_ORDER,
+                payload: {
+                    order: data,
+                    clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                    isTransfer: false,
+                },
+            });
         } catch (error) {
             console.log(error);
         }
@@ -74,7 +102,14 @@ export const deleteProduct = (orderId, productId) => async (dispatch) => {
     try {
         const { data } = await api.deleteLineProduct(orderId, productId);
         const clientData = await api.fetchClient(data.client);
-        dispatch({ type: UPDATE_ORDER, payload: { order: data, clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`, isTransfer: false } });
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
@@ -102,7 +137,7 @@ export const acceptOrder = (userId, orders) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const declineOrder = (userId, orders) => async (dispatch) => {
     try {
@@ -114,4 +149,4 @@ export const declineOrder = (userId, orders) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};

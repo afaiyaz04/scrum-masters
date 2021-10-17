@@ -109,9 +109,9 @@ class Orders extends React.Component {
             },
             { title: "From", dataIndex: "user", key: "user" },
             {
-                title: "Description",
-                dataIndex: "description",
-                key: "description",
+                title: "Client",
+                dataIndex: "client",
+                key: "client",
             },
             {
                 title: "Actions",
@@ -190,11 +190,7 @@ class Orders extends React.Component {
         this.endRenderExcept();
         this.setState({ product: newItem });
         this.props.dispatch(
-            updateProduct(
-                this.state.order._id,
-                this.state.product._id,
-                newItem
-            )
+            updateProduct(this.state.order._id, this.state.product._id, newItem)
         );
     };
 
@@ -202,10 +198,7 @@ class Orders extends React.Component {
         this.endRenderExcept();
         this.setState({ product: initialProduct });
         this.props.dispatch(
-            deleteProduct(
-                this.state.order._id,
-                this.state.product._id
-            )
+            deleteProduct(this.state.order._id, this.state.product._id)
         );
     };
 
@@ -323,25 +316,27 @@ class Orders extends React.Component {
                             <Collapse bordered={false}>
                                 {console.log(this.props.orders)}
                                 <Panel
-                                    header={`Received Orders (${this.props.orders.filter(order => order.isTransfer).length})`}
+                                    header={`Received Orders (${
+                                        this.props.orders.filter(
+                                            (order) => order.isTransfer
+                                        ).length
+                                    })`}
                                     key="1"
                                 >
                                     <Table
                                         columns={this.receivedOrderColumns}
-                                        dataSource={this.props.orders.filter(order => order.isTransfer).map(
-                                            (transfer) => {
+                                        dataSource={this.props.orders
+                                            .filter((order) => order.isTransfer)
+                                            .map((transfer) => {
                                                 return {
                                                     key: transfer.order._id,
                                                     orderNumber:
                                                         transfer.order
                                                             .orderNumber,
-                                                    user: transfer.clientName,
-                                                    description:
-                                                        transfer.order
-                                                            .description,
+                                                    user: transfer.fromUserName,
+                                                    client: transfer.clientName,
                                                 };
-                                            }
-                                        )}
+                                            })}
                                         pagination={false}
                                         rowSelection={{
                                             selectedRowKeys:
@@ -383,16 +378,22 @@ class Orders extends React.Component {
                                 expandable={{
                                     expandedRowRender: this.productRender,
                                 }}
-                                dataSource={this.props.orders.filter(order => !order.isTransfer).map((order) => {
-                                    return {
-                                        key: order.order._id,
-                                        orderNumber: order.order.orderNumber,
-                                        client: order.clientName,
-                                        status: order.order.status,
-                                        timeDue: order.order.timeDue.slice(0, 10),
-                                        totalFee: order.order.totalFee,
-                                    };
-                                })}
+                                dataSource={this.props.orders
+                                    .filter((order) => !order.isTransfer)
+                                    .map((order) => {
+                                        return {
+                                            key: order.order._id,
+                                            orderNumber:
+                                                order.order.orderNumber,
+                                            client: order.clientName,
+                                            status: order.order.status,
+                                            timeDue: order.order.timeDue.slice(
+                                                0,
+                                                10
+                                            ),
+                                            totalFee: order.order.totalFee,
+                                        };
+                                    })}
                                 pagination={false}
                                 rowSelection={{
                                     selectedRowKeys: this.props.selectedRowKeys,
