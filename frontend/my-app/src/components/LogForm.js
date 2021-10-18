@@ -5,20 +5,11 @@ import CloseButton from "./buttons/CloseButton";
 const LogForm = (props) => {
     const [log, setLog] = useState("");
 
-    const layout = {
-        labelCol: {
-            span: 6,
-        },
-        wrapperCol: {
-            span: 20,
-        },
-    };
-
     return (
-        <Form {...layout}>
+        <Form>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 3 }}>
+            <Form.Item>
                 <div
                     style={{
                         height: 400,
@@ -43,13 +34,13 @@ const LogForm = (props) => {
                         })}
                 </div>
             </Form.Item>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
+            <Form.Item>
                 <Input.TextArea
                     style={{ height: 150, width: "100%" }}
                     onChange={(e) => setLog(e.target.value)}
                 />
             </Form.Item>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 14 }}>
+            <Form.Item wrapperCol={{ offset: 15 }}>
                 <Button
                     className="general-btn"
                     onClick={() => {

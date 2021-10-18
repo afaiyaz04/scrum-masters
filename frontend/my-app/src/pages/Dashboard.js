@@ -358,7 +358,6 @@ class Dashboard extends React.Component {
                                         />
                                     </div>
                                 )}
-                                {console.log(this.props.contacts)}
                                 {this.props.contacts.filter((c) => {
                                     return c.fav;
                                 }).length > 0 && (

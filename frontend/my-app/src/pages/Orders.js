@@ -194,7 +194,7 @@ class Orders extends React.Component {
 
         this.productColumns = [
             { title: "Name", dataIndex: "name", key: "name" },
-            { title: "Fee", dataIndex: "price", key: "price", width: "20%" },
+            { title: "Price", dataIndex: "price", key: "price", width: "20%" },
             {
                 title: "Quantity",
                 dataIndex: "quantity",
@@ -232,7 +232,6 @@ class Orders extends React.Component {
     };
 
     updateOrderHandler = (newItem) => {
-        this.endRenderExcept();
         this.setState({ order: newItem });
         this.props.dispatch(updateOrder(this.state.order._id, newItem));
     };
@@ -249,7 +248,6 @@ class Orders extends React.Component {
     };
 
     updateProductHandler = (newItem) => {
-        this.endRenderExcept();
         this.setState({ product: newItem });
         this.props.dispatch(
             updateProduct(this.state.order._id, this.state.product._id, newItem)
@@ -420,7 +418,7 @@ class Orders extends React.Component {
                                                                             margin: 0,
                                                                         }}
                                                                     >
-                                                                        {`Item: ${product.name}, Fee: ${product.price}, Quantity: ${product.quantity}`}
+                                                                        {`Item: ${product.name}, Price: ${product.price}, Quantity: ${product.quantity}`}
                                                                     </p>
                                                                     <p
                                                                         style={{

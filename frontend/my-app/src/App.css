@@ -45,9 +45,8 @@
 }
 
 .contents-left {
-  width: 60%;
+  width: 55%;
   justify-items: flex-start;
-  padding-right: 5%;
 }
 
 .contents-right {
@@ -58,6 +57,7 @@
   border-color: #d9d9d9;
   background: #fff;
   /* background-color: #ebf4fa; */
+  margin-left: 5%;
   padding-left: 5%;
   padding-right: 5%;
   display: flex;
@@ -235,4 +235,12 @@
 .general-btn {
   text-align: center;
   width: 120px
+}
+
+.content-header {
+  padding-left: 5%;
+}
+
+.form-text {
+  margin-left: 12px;
 }

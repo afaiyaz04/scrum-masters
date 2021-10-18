@@ -102,7 +102,9 @@ class Users extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            <span>Name</span>
+                            <span>
+                                <h3 className="content-header">Name</h3>
+                            </span>
                             <List
                                 itemLayout="horizontal"
                                 dataSource={this.props.users}
