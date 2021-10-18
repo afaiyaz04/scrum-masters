@@ -2,7 +2,16 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from "../components/buttons/ProfileButton";
 import { connect } from "react-redux";
-import { Timeline, Card, Progress, Table, Empty, Avatar } from "antd";
+import {
+    Timeline,
+    Card,
+    Progress,
+    Table,
+    Empty,
+    Avatar,
+    Alert,
+    Tag,
+} from "antd";
 import { fetchOrders } from "../redux/Order/order.actions";
 import "./Dashboard.css";
 import { fetchContacts } from "../redux/Contact/contact.actions";
@@ -17,6 +26,36 @@ const columns = [
         title: "Status",
         dataIndex: "status",
         key: "status",
+        render: (status) => {
+            switch (status) {
+                case "CREATED":
+                    return (
+                        <Tag color={"red"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "DISCUSSED":
+                    return (
+                        <Tag color={"orange"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "AGREED":
+                    return (
+                        <Tag color={"blue"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "SIGNED":
+                    return (
+                        <Tag color={"green"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                default:
+                    return;
+            }
+        },
     },
     {
         title: "Created",
@@ -39,6 +78,9 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            incomingAlertClosed: false,
+            dueAlertClosed: false,
+
             userId: JSON.parse(localStorage.getItem("userData"))._id,
         };
     }
@@ -53,33 +95,47 @@ class Dashboard extends React.Component {
             case "CREATED":
                 return (
                     <Timeline.Item key={order.order._id} color="red">
-                        Order {order.order.orderNumber}, due:{" "}
-                        {order.order.timeDue.slice(0, 10)}
+                        {this.timelineOrderText(order)}
                     </Timeline.Item>
                 );
             case "DISCUSSED":
                 return (
                     <Timeline.Item key={order.order._id} color="orange">
-                        Order {order.order.orderNumber}, due:{" "}
-                        {order.order.timeDue.slice(0, 10)}
+                        {this.timelineOrderText(order)}
                     </Timeline.Item>
                 );
             case "AGREED":
                 return (
                     <Timeline.Item key={order.order._id} color="blue">
-                        Order {order.order.orderNumber}, due:{" "}
-                        {order.order.timeDue.slice(0, 10)}
+                        {this.timelineOrderText(order)}
                     </Timeline.Item>
                 );
             case "SIGNED":
                 return (
                     <Timeline.Item key={order.order._id} color="green">
-                        Order {order.order.orderNumber}, due:{" "}
-                        {order.order.timeDue.slice(0, 10)}
+                        {this.timelineOrderText(order)}
                     </Timeline.Item>
                 );
             default:
                 return;
+        }
+    };
+
+    timelineOrderText = (order) => {
+        if (new Date(order.order.timeDue) - Date.now() < 604800000) {
+            return (
+                <div style={{ color: "red" }}>
+                    Order {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    Order {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
+                </div>
+            );
         }
     };
 
@@ -96,15 +152,23 @@ class Dashboard extends React.Component {
                         <Progress
                             percent={
                                 (this.props.orders.filter((order) => {
-                                    return order.order.status === "CREATED";
+                                    return (
+                                        order.order.status === "CREATED" &&
+                                        !order.isTransfer
+                                    );
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
                             }
                             format={() =>
                                 `${
                                     this.props.orders.filter((order) => {
-                                        return order.order.status === "CREATED";
+                                        return (
+                                            order.order.status === "CREATED" &&
+                                            !order.isTransfer
+                                        );
                                     }).length
                                 } Orders Created`
                             }
@@ -113,16 +177,22 @@ class Dashboard extends React.Component {
                         <Progress
                             percent={
                                 (this.props.orders.filter((order) => {
-                                    return order.order.status === "DISCUSSED";
+                                    return (
+                                        order.order.status === "DISCUSSED" &&
+                                        !order.isTransfer
+                                    );
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
                             }
                             format={() =>
                                 `${
                                     this.props.orders.filter((order) => {
                                         return (
-                                            order.order.status === "DISCUSSED"
+                                            order.order.status ===
+                                                "DISCUSSED" && !order.isTransfer
                                         );
                                     }).length
                                 } Orders Discussed`
@@ -135,7 +205,9 @@ class Dashboard extends React.Component {
                                     return order.order.status === "AGREED";
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
                             }
                             format={() =>
                                 `${
@@ -152,7 +224,9 @@ class Dashboard extends React.Component {
                                     return order.order.status === "SIGNED";
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
                             }
                             format={() =>
                                 `${
@@ -166,7 +240,7 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="contents">
                         <div className="dashboard-left">
-                            <h3>Timeline</h3>
+                            <h3>Upcoming Deadlines</h3>
                             <Timeline>
                                 <Timeline.Item color="white" />
                                 {this.props.orders
@@ -176,12 +250,102 @@ class Dashboard extends React.Component {
                                             new Date(b.order.timeDue)
                                         );
                                     })
+                                    .filter((order) => {
+                                        return (
+                                            Date.now() <
+                                                new Date(order.order.timeDue) &&
+                                            !order.isTransfer
+                                        );
+                                    })
                                     .map((order) => {
                                         return this.timelineOrders(order);
                                     })}
                             </Timeline>
                         </div>
                         <div className="dashboard-right">
+                            {((this.props.orders.filter((order) => {
+                                return order.isTransfer;
+                            }).length > 0 &&
+                                !this.state.incomingAlertClosed) ||
+                                (this.props.orders.filter((order) => {
+                                    return (
+                                        new Date(order.order.timeDue) -
+                                            Date.now() <
+                                        604800000
+                                    );
+                                }).length > 0 &&
+                                    !this.state.dueAlertClosed)) && (
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        paddingBottom: "5%",
+                                    }}
+                                >
+                                    {this.props.orders.filter((order) => {
+                                        return order.isTransfer;
+                                    }).length > 0 && (
+                                        <Alert
+                                            message="Incoming Orders"
+                                            description={`You have ${
+                                                this.props.orders.filter(
+                                                    (order) => {
+                                                        return order.isTransfer;
+                                                    }
+                                                ).length
+                                            } order(s) ready to be accepted.`}
+                                            type="info"
+                                            showIcon
+                                            banner={true}
+                                            style={{ width: "100%" }}
+                                            closable
+                                            onClose={() => {
+                                                this.setState({
+                                                    incomingAlertClosed: true,
+                                                });
+                                            }}
+                                        />
+                                    )}
+                                    {this.props.orders.filter((order) => {
+                                        return (
+                                            new Date(order.order.timeDue) -
+                                                Date.now() <
+                                            604800000
+                                        );
+                                    }).length > 0 && (
+                                        <Alert
+                                            message="Due Soon"
+                                            description={`You have ${
+                                                this.props.orders.filter(
+                                                    (order) => {
+                                                        return (
+                                                            new Date(
+                                                                order.order.timeDue
+                                                            ) -
+                                                                Date.now() <
+                                                                604800000 &&
+                                                            new Date(
+                                                                order.order.timeDue
+                                                            ) -
+                                                                Date.now() >=
+                                                                0
+                                                        );
+                                                    }
+                                                ).length
+                                            } order(s) due soon.`}
+                                            type="warning"
+                                            showIcon
+                                            banner={true}
+                                            style={{ width: "100%" }}
+                                            closable
+                                            onClose={() => {
+                                                this.setState({
+                                                    dueAlertClosed: true,
+                                                });
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            )}
                             <div className="favourite-contacts">
                                 <h3>Favourite Contacts</h3>
                                 {this.props.contacts.filter((c) => {
@@ -254,6 +418,9 @@ class Dashboard extends React.Component {
                                     <Table
                                         columns={columns}
                                         dataSource={this.props.orders
+                                            .filter((order) => {
+                                                return !order.isTransfer;
+                                            })
                                             .sort((a, b) => {
                                                 return (
                                                     new Date(
