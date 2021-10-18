@@ -112,7 +112,6 @@ class Users extends React.Component {
                                         key={item.id}
                                         actions={[
                                             <Button
-                                                type="dashed"
                                                 className="general-btn"
                                                 onClick={() => {
                                                     this.setState({

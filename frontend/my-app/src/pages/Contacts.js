@@ -153,7 +153,6 @@ class Contacts extends React.Component {
                                             </>,
                                             <Button
                                                 className="general-btn"
-                                                type="dashed"
                                                 onClick={() =>
                                                     this.setState({
                                                         showDetails: true,

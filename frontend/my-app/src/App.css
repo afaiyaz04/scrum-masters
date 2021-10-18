@@ -45,19 +45,24 @@
 }
 
 .contents-left {
-  width: 50%;
+  width: 60%;
   justify-items: flex-start;
+  padding-right: 5%;
 }
 
 .contents-right {
-  width: 50%;
-  border: 3px solid black;
+  width: 40%;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+  color: rgba(0, 0, 0, 0.85);
+  border-color: #d9d9d9;
+  background: #fff;
   /* background-color: #ebf4fa; */
-  border-radius: 2rem;
-  padding: 3% 5%;
+  padding-left: 5%;
+  padding-right: 5%;
   display: flex;
   flex-direction: column;
-  height: 15cm;
+  height: fit-content;
   /* background-color: blue; */
   position: relative;
 }
