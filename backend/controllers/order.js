@@ -239,6 +239,7 @@ export const addLog = async (req, res) => {
         };
         order.log.push(newLog);
 
+        order.lastModified = Date.now();
         await order.save();
         res.json(order);
     } catch (error) {
