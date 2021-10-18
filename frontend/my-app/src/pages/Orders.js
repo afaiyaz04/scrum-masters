@@ -361,9 +361,32 @@ class Orders extends React.Component {
                                         columns={this.receivedOrderColumns}
                                         expandable={{
                                             expandedRowRender: (record) => (
-                                                <p style={{ margin: 0 }}>
-                                                    {record.description}
-                                                </p>
+                                                <>
+                                                    <p style={{ margin: 0 }}>
+                                                        {`Status: ${record.status}, Deadline: ${record.timeDue.slice(0,10)}, Total Fee: ${record.totalFee}`}
+                                                    </p>
+                                                    <p style={{ margin: 0 }}>
+                                                        {record.description}
+                                                    </p>
+                                                    <br/>
+                                                    <p style={{ margin: 0 }}>
+                                                        Products:
+                                                    </p>
+                                                    <br/>
+                                                    {record.lineProducts.map(product => {
+                                                        return (
+                                                            <>
+                                                                <p style={{ margin: 0 }}>
+                                                                    {`Item: ${product.name}, Fee: ${product.price}, Quantity: ${product.quantity}`}
+                                                                </p>
+                                                                <p style={{ margin: 0 }}>
+                                                                    {product.description}
+                                                                </p>
+                                                                <br/>
+                                                            </>
+                                                        );
+                                                    })}
+                                                </>
                                             ),
                                         }}
                                         dataSource={this.props.orders
@@ -379,6 +402,10 @@ class Orders extends React.Component {
                                                     description:
                                                         transfer.order
                                                             .description,
+                                                    totalFee: transfer.order.totalFee,
+                                                    timeDue: transfer.order.timeDue,
+                                                    status: transfer.order.status,
+                                                    lineProducts: transfer.order.lineProducts,
                                                 };
                                             })}
                                         pagination={false}
