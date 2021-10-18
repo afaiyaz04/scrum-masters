@@ -223,8 +223,8 @@ export const addLog = async (req, res) => {
             return;
         }
 
-        const user = await User.findById(id);
-        if (user) {
+        const user = await User.findById(userId);
+        if (user == null) {
             return;
         }
 
@@ -232,7 +232,11 @@ export const addLog = async (req, res) => {
             return res.json({ message: "No permission!" });
         }
 
-        const newLog = { user: userId, text: text };
+        const newLog = {
+            user: userId,
+            text: text,
+            userName: `${user.nameFirst} ${user.nameLast}`,
+        };
         order.log.push(newLog);
 
         await order.save();

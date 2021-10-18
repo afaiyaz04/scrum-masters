@@ -62,3 +62,6 @@ export const declineOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/reject`, { orderId });
 
 export const fetchClient = (clientId) => API.get(`/client/${clientId}`);
+
+export const addLog = (orderId, userId, text) =>
+    API.post(`/order/${orderId}/log`, { userId, text });
