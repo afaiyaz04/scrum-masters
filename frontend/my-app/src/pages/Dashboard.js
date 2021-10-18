@@ -116,7 +116,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "CREATED" && !order.isTransfer;
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => { return !order.isTransfer }).length
                             }
                             format={() =>
                                 `${
@@ -133,7 +133,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "DISCUSSED" && !order.isTransfer;
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => { return !order.isTransfer }).length
                             }
                             format={() =>
                                 `${
@@ -152,7 +152,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "AGREED";
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => { return !order.isTransfer }).length
                             }
                             format={() =>
                                 `${
@@ -169,7 +169,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "SIGNED";
                                 }).length *
                                     100) /
-                                this.props.orders.length
+                                this.props.orders.filter((order) => { return !order.isTransfer }).length
                             }
                             format={() =>
                                 `${
