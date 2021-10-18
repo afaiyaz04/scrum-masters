@@ -9,10 +9,19 @@ import Sidebar from "../components/sideBar/Sidebar";
 import TransferForm from "../components/TransferForm";
 import { fetchContacts } from "../redux/Contact/contact.actions";
 import {
-    acceptOrder, addLog, addProduct, createOrder, declineOrder, deleteOrder, deleteProduct, fetchOrders, transferOrder, updateOrder, updateProduct
+    acceptOrder,
+    addLog,
+    addProduct,
+    createOrder,
+    declineOrder,
+    deleteOrder,
+    deleteProduct,
+    fetchOrders,
+    transferOrder,
+    updateOrder,
+    updateProduct,
 } from "../redux/Order/order.actions";
 import { fetchUsers } from "../redux/Users/users.actions";
-
 
 const initialOrder = {
     _id: "",
@@ -109,7 +118,12 @@ class Orders extends React.Component {
                 },
             },
             { title: "Client", dataIndex: "client", key: "client" },
-            { title: "Deadline", dataIndex: "timeDue", key: "timeDue", width: "15%" },
+            {
+                title: "Deadline",
+                dataIndex: "timeDue",
+                key: "timeDue",
+                width: "15%",
+            },
             {
                 title: "Actions",
                 dataIndex: "action",
@@ -152,7 +166,7 @@ class Orders extends React.Component {
                 title: "Client",
                 dataIndex: "client",
                 key: "client",
-                width: "40%"
+                width: "40%",
             },
             {
                 title: "Actions",
@@ -181,7 +195,12 @@ class Orders extends React.Component {
         this.productColumns = [
             { title: "Name", dataIndex: "name", key: "name" },
             { title: "Fee", dataIndex: "price", key: "price", width: "20%" },
-            { title: "Quantity", dataIndex: "quantity", key: "quantity", width: "20%" },
+            {
+                title: "Quantity",
+                dataIndex: "quantity",
+                key: "quantity",
+                width: "20%",
+            },
             {
                 title: "Item Actions",
                 dataIndex: "productAction",
@@ -253,8 +272,10 @@ class Orders extends React.Component {
     };
 
     addLogHandler = (text) => {
-        this.props.dispatch(addLog(this.state.userId, this.state.order._id, text));
-    }
+        this.props.dispatch(
+            addLog(this.state.userId, this.state.order._id, text)
+        );
+    };
 
     // Stops rendering for all components unless specified
     endRenderExcept = (selectedComponent) => {
@@ -319,7 +340,7 @@ class Orders extends React.Component {
                 this.endRenderExcept("showLog");
             }
         });
-    }
+    };
 
     // Nested table for product
     productRender = (row) => {
@@ -549,7 +570,7 @@ class Orders extends React.Component {
                                 closeAction={() => this.endRenderExcept()}
                             />
                         )}
-                        {(this.state.showLog) &&
+                        {this.state.showLog && (
                             <div className="contents-right">
                                 <LogForm
                                     order={this.state.order}
@@ -558,7 +579,7 @@ class Orders extends React.Component {
                                     closeAction={() => this.endRenderExcept()}
                                 />
                             </div>
-                        }
+                        )}
                     </div>
                 </div>
             </div>

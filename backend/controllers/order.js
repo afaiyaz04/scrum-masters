@@ -232,7 +232,11 @@ export const addLog = async (req, res) => {
             return res.json({ message: "No permission!" });
         }
 
-        const newLog = { user: userId, text: text, userName: `${user.nameFirst} ${user.nameLast}` };
+        const newLog = {
+            user: userId,
+            text: text,
+            userName: `${user.nameFirst} ${user.nameLast}`,
+        };
         order.log.push(newLog);
 
         await order.save();

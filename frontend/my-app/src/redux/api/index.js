@@ -63,4 +63,5 @@ export const declineOrder = (userId, orderId) =>
 
 export const fetchClient = (clientId) => API.get(`/client/${clientId}`);
 
-export const addLog = (orderId, userId, text) => API.post(`/order/${orderId}/log`, { userId, text });
+export const addLog = (orderId, userId, text) =>
+    API.post(`/order/${orderId}/log`, { userId, text });

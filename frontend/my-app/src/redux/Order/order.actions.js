@@ -155,12 +155,15 @@ export const addLog = (userId, orderId, text) => async (dispatch) => {
     try {
         const { data } = await api.addLog(orderId, userId, text);
         const clientData = await api.fetchClient(data.client);
-        dispatch({ type: UPDATE_ORDER, payload: {
-            order: data,
-            clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
-            isTransfer: false,
-        }, });
+        dispatch({
+            type: UPDATE_ORDER,
+            payload: {
+                order: data,
+                clientName: `${clientData.data.nameFirst} ${clientData.data.nameLast}`,
+                isTransfer: false,
+            },
+        });
     } catch (error) {
         console.log(error);
     }
-}
+};
