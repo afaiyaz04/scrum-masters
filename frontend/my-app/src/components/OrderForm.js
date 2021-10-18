@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form, Input, InputNumber, Button, Select, DatePicker } from "antd";
+import CloseButton from "./buttons/CloseButton";
 
 const OrderForm = (props) => {
     const [order, setOrder] = useState({ ...props.order });
@@ -11,10 +12,10 @@ const OrderForm = (props) => {
 
     const layout = {
         labelCol: {
-            span: 5,
+            span: 6,
         },
         wrapperCol: {
-            span: 16,
+            span: 20,
         },
     };
 
@@ -31,11 +32,8 @@ const OrderForm = (props) => {
 
     return (
         <Form {...layout}>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                <Button className="general-btn" onClick={props.closeAction}>
-                    Close
-                </Button>
-            </Form.Item>
+            <Form.Item />
+            <CloseButton closeAction={props.closeAction} />
             <Form.Item label="Client:">
                 <Select
                     showArrow={false}
@@ -100,29 +98,39 @@ const OrderForm = (props) => {
                 />
             </Form.Item>
             {props.showOrderDetails && !props.addOrder && (
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button
-                        className="general-btn"
-                        onClick={() => {
-                            props.updateOrderAction(order);
-                        }}
-                    >
-                        Update
-                    </Button>
-                    <Button
-                        className="general-btn"
-                        onClick={() => {
-                            props.deleteOrderAction(order._id);
-                        }}
-                    >
-                        Delete
-                    </Button>
-                </Form.Item>
+                <>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
+                        <Button
+                            className="general-btn"
+                            type="primary"
+                            block
+                            onClick={() => {
+                                props.updateOrderAction(order);
+                            }}
+                        >
+                            Update
+                        </Button>
+                    </Form.Item>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
+                        <Button
+                            className="general-btn"
+                            block
+                            danger
+                            onClick={() => {
+                                props.deleteOrderAction(order._id);
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </Form.Item>
+                </>
             )}
             {props.addOrder && !props.showOrderDetails && (
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                     <Button
                         className="general-btn"
+                        type="primary"
+                        block
                         onClick={() => {
                             props.createOrderAction(order);
                         }}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form, Input, Button } from "antd";
+import CloseButton from "./buttons/CloseButton";
 
 const UsersForm = (props) => {
     const [user, setUser] = useState({ ...props.user });
@@ -10,7 +11,7 @@ const UsersForm = (props) => {
 
     const layout = {
         labelCol: {
-            span: 8,
+            span: 6,
         },
         wrapperCol: {
             span: 16,
@@ -20,11 +21,8 @@ const UsersForm = (props) => {
     if (props.showDetails) {
         return (
             <Form {...layout}>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                    <Button className="general-btn" onClick={props.closeAction}>
-                        Close
-                    </Button>
-                </Form.Item>
+                <Form.Item />
+                <CloseButton closeAction={props.closeAction} />
                 {(user.nameFirst || user.nameLast) && (
                     <>
                         <Form.Item label="First Name:">
@@ -47,21 +45,30 @@ const UsersForm = (props) => {
                 <Form.Item label="Type:">
                     <Input placeholder={user.type} disabled={true} />
                 </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
                         className="general-btn"
+                        block
                         onClick={() => props.promoteAction(user.id)}
                     >
                         Promote
                     </Button>
+                </Form.Item>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
                         className="general-btn"
+                        block
                         onClick={() => props.controlAction(user.id)}
                     >
                         Control
                     </Button>
+                </Form.Item>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
                         className="general-btn"
+                        type="primary"
+                        danger
+                        block
                         onClick={() => props.deleteAction(user.id)}
                     >
                         Delete

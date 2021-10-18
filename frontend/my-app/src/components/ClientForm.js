@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Form, Input, Button } from "antd";
+import { Button, Form, Input } from "antd";
+import { useEffect, useState } from "react";
+import CloseButton from "./buttons/CloseButton";
 import ChangePicture from "./ChangePicture";
 
 const ClientForm = (props) => {
@@ -20,11 +21,8 @@ const ClientForm = (props) => {
 
     return (
         <Form {...layout}>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
-                <Button className="general-btn" onClick={props.closeAction}>
-                    Close
-                </Button>
-            </Form.Item>
+            <Form.Item />
+            <CloseButton closeAction={props.closeAction} />
             <Form.Item
                 style={{
                     display: "block",
@@ -33,6 +31,7 @@ const ClientForm = (props) => {
                     marginTop: "auto",
                     width: "fit-content",
                     height: "fit-content",
+                    alignContent: "center"
                 }}
             >
                 <ChangePicture
@@ -103,25 +102,35 @@ const ClientForm = (props) => {
                 />
             </Form.Item>
             {props.showDetails && (
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button
-                        className="general-btn"
-                        onClick={() => props.updateAction(contact)}
-                    >
-                        Update
-                    </Button>
-                    <Button
-                        className="general-btn"
-                        onClick={() => props.deleteAction(contact.id)}
-                    >
-                        Delete
-                    </Button>
-                </Form.Item>
+                <>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
+                        <Button
+                            type="primary"
+                            block
+                            className="general-btn"
+                            onClick={() => props.updateAction(contact)}
+                        >
+                            Update
+                        </Button>
+                    </Form.Item>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
+                        <Button
+                            className="general-btn"
+                            block
+                            danger
+                            onClick={() => props.deleteAction(contact.id)}
+                        >
+                            Delete
+                        </Button>
+                    </Form.Item>
+                </>
             )}
             {props.addContact && (
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
                         className="general-btn"
+                        type="primary"
+                        block
                         onClick={() => props.createAction(contact)}
                     >
                         Create
