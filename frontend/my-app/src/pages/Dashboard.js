@@ -2,7 +2,7 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import ProfileButton from "../components/buttons/ProfileButton";
 import { connect } from "react-redux";
-import { Timeline, Card, Progress, Table, Empty, Avatar, Alert } from "antd";
+import { Timeline, Card, Progress, Table, Empty, Avatar, Alert, Tag } from "antd";
 import { fetchOrders } from "../redux/Order/order.actions";
 import "./Dashboard.css";
 import { fetchContacts } from "../redux/Contact/contact.actions";
@@ -17,6 +17,36 @@ const columns = [
         title: "Status",
         dataIndex: "status",
         key: "status",
+        render: status => {
+            switch (status) {
+                case "CREATED":
+                    return (
+                        <Tag color={"red"} key={status}>
+                            {status}
+                        </Tag>
+                    )
+                case "DISCUSSED":
+                    return (
+                        <Tag color={"orange"} key={status}>
+                            {status}
+                        </Tag>
+                    )
+                case "AGREED":
+                    return (
+                        <Tag color={"blue"} key={status}>
+                            {status}
+                        </Tag>
+                    )
+                case "SIGNED":
+                    return (
+                        <Tag color={"green"} key={status}>
+                            {status}
+                        </Tag>
+                    )
+                default:
+                    return;
+            }
+        }
     },
     {
         title: "Created",

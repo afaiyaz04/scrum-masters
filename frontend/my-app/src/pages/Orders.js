@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { Button, Table, Collapse } from "antd";
+import { Button, Table, Collapse, Tag } from "antd";
 import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
 import {
@@ -75,7 +75,38 @@ class Orders extends React.Component {
                 dataIndex: "orderNumber",
                 key: "orderNumber",
             },
-            { title: "Status", dataIndex: "status", key: "status" },
+            { title: "Status", dataIndex: "status", key: "status",
+                render: status => {
+                    switch (status) {
+                        case "CREATED":
+                            return (
+                                <Tag color={"red"} key={status}>
+                                    {status}
+                                </Tag>
+                            )
+                        case "DISCUSSED":
+                            return (
+                                <Tag color={"orange"} key={status}>
+                                    {status}
+                                </Tag>
+                            )
+                        case "AGREED":
+                            return (
+                                <Tag color={"blue"} key={status}>
+                                    {status}
+                                </Tag>
+                            )
+                        case "SIGNED":
+                            return (
+                                <Tag color={"green"} key={status}>
+                                    {status}
+                                </Tag>
+                            )
+                        default:
+                            return;
+                    }
+                }
+            },
             { title: "Client", dataIndex: "client", key: "client" },
             { title: "Deadline", dataIndex: "timeDue", key: "timeDue" },
             {
