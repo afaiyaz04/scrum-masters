@@ -1,26 +1,18 @@
+import { Button, Collapse, Table, Tag } from "antd";
 import React from "react";
-import Sidebar from "../components/sideBar/Sidebar";
-import Header from "../components/Header";
-import { Button, Table, Collapse, Tag } from "antd";
-import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
-import {
-    createOrder,
-    fetchOrders,
-    updateOrder,
-    deleteOrder,
-    addProduct,
-    updateProduct,
-    deleteProduct,
-    transferOrder,
-    acceptOrder,
-    declineOrder,
-} from "../redux/Order/order.actions";
-
-import { fetchContacts } from "../redux/Contact/contact.actions";
+import Header from "../components/Header";
+import LogForm from "../components/LogForm";
+import OrderForm from "../components/OrderForm";
 import ProductForm from "../components/ProductForm";
-import { fetchUsers } from "../redux/Users/users.actions";
+import Sidebar from "../components/sideBar/Sidebar";
 import TransferForm from "../components/TransferForm";
+import { fetchContacts } from "../redux/Contact/contact.actions";
+import {
+    acceptOrder, addLog, addProduct, createOrder, declineOrder, deleteOrder, deleteProduct, fetchOrders, transferOrder, updateOrder, updateProduct
+} from "../redux/Order/order.actions";
+import { fetchUsers } from "../redux/Users/users.actions";
+
 
 const initialOrder = {
     _id: "",
@@ -30,6 +22,7 @@ const initialOrder = {
     status: "CREATED",
     description: "",
     lineProducts: [],
+    log: [],
 };
 
 const initialProduct = {
@@ -56,6 +49,8 @@ class Orders extends React.Component {
             showProductDetails: false,
             addProduct: false,
 
+            showLog: false,
+
             transferOrder: false,
 
             userId: JSON.parse(localStorage.getItem("userData"))._id,
@@ -66,6 +61,7 @@ class Orders extends React.Component {
             "addOrder",
             "showProductDetails",
             "addProduct",
+            "showLog",
             "transferOrder",
         ];
 
@@ -74,11 +70,13 @@ class Orders extends React.Component {
                 title: "Order No.",
                 dataIndex: "orderNumber",
                 key: "orderNumber",
+                width: "10%",
             },
             {
                 title: "Status",
                 dataIndex: "status",
                 key: "status",
+                width: "10%",
                 render: (status) => {
                     switch (status) {
                         case "CREATED":
@@ -111,11 +109,12 @@ class Orders extends React.Component {
                 },
             },
             { title: "Client", dataIndex: "client", key: "client" },
-            { title: "Deadline", dataIndex: "timeDue", key: "timeDue" },
+            { title: "Deadline", dataIndex: "timeDue", key: "timeDue", width: "15%" },
             {
                 title: "Actions",
                 dataIndex: "action",
                 key: "action",
+                width: "20%",
                 render: (_, record) => (
                     <>
                         <Button
@@ -123,6 +122,12 @@ class Orders extends React.Component {
                             onClick={() => this.onOrderDetails(record.key)}
                         >
                             Details
+                        </Button>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onLog(record.key)}
+                        >
+                            Log
                         </Button>
                         <Button
                             className="general-btn"
@@ -140,17 +145,20 @@ class Orders extends React.Component {
                 title: "Order No.",
                 dataIndex: "orderNumber",
                 key: "orderNumber",
+                width: "10%",
             },
-            { title: "From", dataIndex: "user", key: "user" },
+            { title: "From", dataIndex: "user", key: "user", width: "40%" },
             {
                 title: "Client",
                 dataIndex: "client",
                 key: "client",
+                width: "40%"
             },
             {
                 title: "Actions",
                 dataIndex: "action",
                 key: "action",
+                width: "20%",
                 render: (_, record) => (
                     <>
                         <Button
@@ -172,12 +180,13 @@ class Orders extends React.Component {
 
         this.productColumns = [
             { title: "Name", dataIndex: "name", key: "name" },
-            { title: "Fee", dataIndex: "price", key: "price" },
-            { title: "Quantity", dataIndex: "quantity", key: "quantity" },
+            { title: "Fee", dataIndex: "price", key: "price", width: "20%" },
+            { title: "Quantity", dataIndex: "quantity", key: "quantity", width: "20%" },
             {
                 title: "Item Actions",
                 dataIndex: "productAction",
                 key: "productAction",
+                width: "20%",
                 render: (_, record) => (
                     <>
                         <Button
@@ -243,6 +252,10 @@ class Orders extends React.Component {
         );
     };
 
+    addLogHandler = (text) => {
+        this.props.dispatch(addLog(this.state.userId, this.state.order._id, text));
+    }
+
     // Stops rendering for all components unless specified
     endRenderExcept = (selectedComponent) => {
         this.renderBool.forEach((key) => {
@@ -299,17 +312,14 @@ class Orders extends React.Component {
         this.props.dispatch(declineOrder(this.state.userId, keys));
     };
 
-    // Get client name from id
-    getClientName = (clientId) => {
-        if (!clientId) return "";
-        let name;
-        this.props.contacts.forEach((contact) => {
-            if (contact._id === clientId) {
-                name = `${contact.nameFirst} ${contact.nameLast}`;
+    onLog = (key) => {
+        this.props.orders.forEach((order) => {
+            if (key === order.order._id) {
+                this.setState({ order: order.order });
+                this.endRenderExcept("showLog");
             }
         });
-        return name;
-    };
+    }
 
     // Nested table for product
     productRender = (row) => {
@@ -539,6 +549,16 @@ class Orders extends React.Component {
                                 closeAction={() => this.endRenderExcept()}
                             />
                         )}
+                        {(this.state.showLog) &&
+                            <div className="contents-right">
+                                <LogForm
+                                    order={this.state.order}
+                                    orders={this.props.orders}
+                                    addLogAction={this.addLogHandler}
+                                    closeAction={() => this.endRenderExcept()}
+                                />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

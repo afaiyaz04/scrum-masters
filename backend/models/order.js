@@ -23,6 +23,7 @@ const logSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        userName: { type: String, required: true },
         timeCreated: { type: Date, required: true, default: Date.now },
         text: { type: String, required: true },
     },

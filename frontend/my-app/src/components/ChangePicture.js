@@ -1,10 +1,8 @@
 import React from "react";
 import { compose } from "redux";
 import { withRouter } from "react-router";
-import { connect } from "react-redux";
 import { Upload, message } from "antd";
 import "./ChangePicture.css";
-import { CgProfile } from "react-icons/cg";
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -32,9 +30,6 @@ function beforeUpload(file) {
 }
 
 class ChangePicture extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     handleChange = (info) => {
         if (info.file.status === "done") {
