@@ -52,52 +52,36 @@ class Dashboard extends React.Component {
         switch (order.order.status) {
             case "CREATED":
                 return (
-                    <Timeline.Item
-                        key={order.order._id}
-                        color="red"
-                    >
-                        Order {order.order.orderNumber},
-                        due:{" "}
+                    <Timeline.Item key={order.order._id} color="red">
+                        Order {order.order.orderNumber}, due:{" "}
                         {order.order.timeDue.slice(0, 10)}
                     </Timeline.Item>
                 );
             case "DISCUSSED":
                 return (
-                    <Timeline.Item
-                        key={order.order._id}
-                        color="orange"
-                    >
-                        Order {order.order.orderNumber},
-                        due:{" "}
+                    <Timeline.Item key={order.order._id} color="orange">
+                        Order {order.order.orderNumber}, due:{" "}
                         {order.order.timeDue.slice(0, 10)}
                     </Timeline.Item>
                 );
             case "AGREED":
                 return (
-                    <Timeline.Item
-                        key={order.order._id}
-                        color="blue"
-                    >
-                        Order {order.order.orderNumber},
-                        due:{" "}
+                    <Timeline.Item key={order.order._id} color="blue">
+                        Order {order.order.orderNumber}, due:{" "}
                         {order.order.timeDue.slice(0, 10)}
                     </Timeline.Item>
                 );
             case "SIGNED":
                 return (
-                    <Timeline.Item
-                        key={order.order._id}
-                        color="green"
-                    >
-                        Order {order.order.orderNumber},
-                        due:{" "}
+                    <Timeline.Item key={order.order._id} color="green">
+                        Order {order.order.orderNumber}, due:{" "}
                         {order.order.timeDue.slice(0, 10)}
                     </Timeline.Item>
                 );
             default:
-                return
+                return;
         }
-    }
+    };
 
     render() {
         return (
@@ -111,37 +95,71 @@ class Dashboard extends React.Component {
                     <div className="progress">
                         <Progress
                             percent={
-                                (this.props.orders.filter((order) => { return order.order.status === "CREATED" }).length * 100) / this.props.orders.length
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "CREATED";
+                                }).length *
+                                    100) /
+                                this.props.orders.length
                             }
                             format={() =>
-                                `${this.props.orders.filter((order) => { return order.order.status === "CREATED" }).length} Orders Created`
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return order.order.status === "CREATED";
+                                    }).length
+                                } Orders Created`
                             }
                             strokeColor="#ff4d4f"
                         />
                         <Progress
                             percent={
-                                (this.props.orders.filter((order) => { return order.order.status === "DISCUSSED" }).length * 100) / this.props.orders.length
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "DISCUSSED";
+                                }).length *
+                                    100) /
+                                this.props.orders.length
                             }
                             format={() =>
-                                `${this.props.orders.filter((order) => { return order.order.status === "DISCUSSED" }).length} Orders Discussed`
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return (
+                                            order.order.status === "DISCUSSED"
+                                        );
+                                    }).length
+                                } Orders Discussed`
                             }
                             strokeColor="orange"
                         />
                         <Progress
                             percent={
-                                (this.props.orders.filter((order) => { return order.order.status === "AGREED" }).length * 100) / this.props.orders.length
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "AGREED";
+                                }).length *
+                                    100) /
+                                this.props.orders.length
                             }
                             format={() =>
-                                `${this.props.orders.filter((order) => { return order.order.status === "AGREED" }).length} Orders Agreed`
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return order.order.status === "AGREED";
+                                    }).length
+                                } Orders Agreed`
                             }
                             strokeColor="#1890ff"
                         />
                         <Progress
                             percent={
-                                (this.props.orders.filter((order) => { return order.order.status === "SIGNED" }).length * 100) / this.props.orders.length
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "SIGNED";
+                                }).length *
+                                    100) /
+                                this.props.orders.length
                             }
                             format={() =>
-                                `${this.props.orders.filter((order) => { return order.order.status === "SIGNED" }).length} Orders Signed`
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return order.order.status === "SIGNED";
+                                    }).length
+                                } Orders Signed`
                             }
                             strokeColor="#52c418"
                         />
@@ -151,7 +169,16 @@ class Dashboard extends React.Component {
                             <h3>Timeline</h3>
                             <Timeline>
                                 <Timeline.Item color="white" />
-                                {this.props.orders.sort((a,b) => {return new Date(a.order.timeDue) - new Date(b.order.timeDue)}).map((order) => { return this.timelineOrders(order) })}
+                                {this.props.orders
+                                    .sort((a, b) => {
+                                        return (
+                                            new Date(a.order.timeDue) -
+                                            new Date(b.order.timeDue)
+                                        );
+                                    })
+                                    .map((order) => {
+                                        return this.timelineOrders(order);
+                                    })}
                             </Timeline>
                         </div>
                         <div className="dashboard-right">
@@ -226,7 +253,38 @@ class Dashboard extends React.Component {
                                     <h3>Recent Orders</h3>
                                     <Table
                                         columns={columns}
-                                        dataSource={this.props.orders.sort((a,b) => {return new Date(a.order.lastModified) - new Date(b.order.lastModified)}).map(order => {return { key: order.order._id, orderNumber: order.order.orderNumber, status: order.order.status, timePlaced: order.order.timePlaced.slice(0,10), timeDue: order.order.timeDue.slice(0,10), totalFee: order.order.totalFee }}).slice(0, 5)}
+                                        dataSource={this.props.orders
+                                            .sort((a, b) => {
+                                                return (
+                                                    new Date(
+                                                        a.order.lastModified
+                                                    ) -
+                                                    new Date(
+                                                        b.order.lastModified
+                                                    )
+                                                );
+                                            })
+                                            .map((order) => {
+                                                return {
+                                                    key: order.order._id,
+                                                    orderNumber:
+                                                        order.order.orderNumber,
+                                                    status: order.order.status,
+                                                    timePlaced:
+                                                        order.order.timePlaced.slice(
+                                                            0,
+                                                            10
+                                                        ),
+                                                    timeDue:
+                                                        order.order.timeDue.slice(
+                                                            0,
+                                                            10
+                                                        ),
+                                                    totalFee:
+                                                        order.order.totalFee,
+                                                };
+                                            })
+                                            .slice(0, 5)}
                                         pagination={false}
                                     />
                                 </div>
