@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile } from "react-icons/cg";
 import { List, Button, Avatar } from "antd";
 import {
     fetchUsers,
@@ -113,7 +112,6 @@ class Users extends React.Component {
                                         key={item.id}
                                         actions={[
                                             <Button
-                                                type="dashed"
                                                 className="general-btn"
                                                 onClick={() => {
                                                     this.setState({
@@ -141,7 +139,6 @@ class Users extends React.Component {
                                             <List.Item.Meta
                                                 title={"UNREGISTERED USER"}
                                                 description={item.email}
-                                                avatar={<CgProfile />}
                                             />
                                         )}
                                         {(item.nameFirst || item.nameFirst) && (

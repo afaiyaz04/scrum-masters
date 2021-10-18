@@ -39,6 +39,7 @@ export const createOrder = (formData) => API.post("/order", formData);
 export const addUserOrder = (userId, orderId) =>
     API.post(`/user/${userId}/orders`, { orderId });
 export const fetchOrders = (userId) => API.get(`/user/${userId}/orders`);
+export const fetchOrder = (orderId) => API.get(`/order/${orderId}`);
 export const updateOrder = (orderId, formData) =>
     API.patch(`/order/${orderId}`, formData);
 export const deleteUserOrder = (userId, orderId) =>
@@ -59,4 +60,5 @@ export const acceptOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/accept`, { orderId });
 export const declineOrder = (userId, orderId) =>
     API.patch(`/user/${userId}/transfer/reject`, { orderId });
-export const fetchOrder = (orderId) => API.get(`/order/${orderId}`);
+
+export const fetchClient = (clientId) => API.get(`/client/${clientId}`);

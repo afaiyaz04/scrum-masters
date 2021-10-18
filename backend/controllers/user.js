@@ -252,17 +252,38 @@ export const getUserOrders = async (req, res) => {
             return res.json({ message: "No permission!" });
         }
 
-        const getOrders = async () => {
-            return Promise.all(
-                user.orders.map(async (orderId) => {
-                    return await Order.findById(orderId);
-                })
-            );
-        };
+        const orders = [];
+        for (var i = 0; i < user.orders.length; i++) {
+            const order = await Order.findById(user.orders[i]);
+            const client = await Client.findById(order.client);
+            const clientName = `${client.nameFirst} ${client.nameLast}`;
 
-        getOrders().then((orders) => {
-            res.json(orders);
-        });
+            orders.push({
+                order,
+                clientName: clientName,
+                isTransfer: false,
+            });
+        }
+
+        for (var i = 0; i < user.receivedOrders.length; i++) {
+            const order = await Order.findById(user.receivedOrders[i].order);
+            const client = await Client.findById(order.client);
+            const clientName = `${client.nameFirst} ${client.nameLast}`;
+
+            const fromUser = await User.findById(
+                user.receivedOrders[i].fromUser
+            );
+            const fromUserName = `${fromUser.nameFirst} ${fromUser.nameLast}`;
+
+            orders.push({
+                order,
+                clientName: clientName,
+                isTransfer: true,
+                fromUserId: user.receivedOrders[i].fromUser,
+                fromUserName: fromUserName,
+            });
+        }
+        res.json(orders);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
