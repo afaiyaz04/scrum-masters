@@ -31,7 +31,7 @@ const ClientForm = (props) => {
                     marginTop: "auto",
                     width: "fit-content",
                     height: "fit-content",
-                    alignContent: "center"
+                    alignContent: "center",
                 }}
             >
                 <ChangePicture
@@ -77,7 +77,7 @@ const ClientForm = (props) => {
                     }
                 />
             </Form.Item>
-            <Form.Item label="E-mail:">
+            <Form.Item label="Email:">
                 <Input
                     placeholder={contact.email}
                     onChange={(e) =>

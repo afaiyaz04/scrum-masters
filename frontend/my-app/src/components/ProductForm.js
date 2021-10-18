@@ -80,7 +80,9 @@ const ProductForm = (props) => {
                             className="general-btn"
                             danger
                             block
-                            onClick={() => props.deleteProductAction(product._id)}
+                            onClick={() =>
+                                props.deleteProductAction(product._id)
+                            }
                         >
                             Delete
                         </Button>
