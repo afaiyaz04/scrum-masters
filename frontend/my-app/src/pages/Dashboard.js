@@ -358,7 +358,6 @@ class Dashboard extends React.Component {
                                         />
                                     </div>
                                 )}
-                                {console.log(this.props.contacts)}
                                 {this.props.contacts.filter((c) => {
                                     return c.fav;
                                 }).length > 0 && (
@@ -424,10 +423,10 @@ class Dashboard extends React.Component {
                                             .sort((a, b) => {
                                                 return (
                                                     new Date(
-                                                        a.order.lastModified
+                                                        b.order.lastModified
                                                     ) -
                                                     new Date(
-                                                        b.order.lastModified
+                                                        a.order.lastModified
                                                     )
                                                 );
                                             })

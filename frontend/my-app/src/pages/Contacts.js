@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
-import { CgProfile } from "react-icons/cg";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { List, Button, Avatar } from "antd";
 import {
@@ -52,7 +51,6 @@ class Contacts extends React.Component {
     };
 
     updateHandler = (newItem) => {
-        this.setState({ showDetails: false });
         this.props.dispatch(updateContact(this.state.contact.id, newItem));
     };
 
@@ -82,7 +80,9 @@ class Contacts extends React.Component {
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            <span>Name</span>
+                            <span>
+                                <h3 className="content-header">Name</h3>
+                            </span>
                             <List
                                 itemLayout="horizontal"
                                 dataSource={this.props.contacts.sort((a, b) => {

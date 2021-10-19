@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button, Form, Input, Upload, message } from "antd";
+import { Modal, Button, Form, Input } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { updateUser, deleteSelf } from "../redux/User/user.actions";
@@ -24,23 +24,23 @@ function getBase64(img, callback) {
     // console.log(img);
 }
 
-const dummyRequest = ({ file, onSuccess }) => {
-    setTimeout(() => {
-        onSuccess("ok");
-    }, 0);
-};
+// const dummyRequest = ({ file, onSuccess }) => {
+//     setTimeout(() => {
+//         onSuccess("ok");
+//     }, 0);
+// };
 
-function beforeUpload(file) {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-        message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-}
+// function beforeUpload(file) {
+//     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+//     if (!isJpgOrPng) {
+//         message.error("You can only upload JPG/PNG file!");
+//     }
+//     const isLt2M = file.size / 1024 / 1024 < 2;
+//     if (!isLt2M) {
+//         message.error("Image must smaller than 2MB!");
+//     }
+//     return isJpgOrPng && isLt2M;
+// }
 
 class Profile extends React.Component {
     constructor(props) {

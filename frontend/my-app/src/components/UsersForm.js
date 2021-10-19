@@ -76,26 +76,26 @@ const UsersForm = (props) => {
                     </Button>
                 </Form.Item>
                 <Modal
-                        title={`Delete User ${user.nameFirst} ${user.nameLast}`}
-                        visible={showDelete}
-                        onCancel={() => setShowDelete(false)}
-                        footer={null}
-                        width={300}
-                        centered={true}
+                    title={`Delete User ${user.nameFirst} ${user.nameLast}`}
+                    visible={showDelete}
+                    onCancel={() => setShowDelete(false)}
+                    footer={null}
+                    width={300}
+                    centered={true}
+                >
+                    <h3 style={{ textAlign: "center" }}>
+                        {`Are you sure you want to delete ${user.nameFirst} ${user.nameLast}? This action is irreversible.`}
+                    </h3>
+                    <Button
+                        type="primary"
+                        danger
+                        block
+                        onClick={() => props.deleteAction(user.id)}
+                        style={{ textAlign: "center" }}
                     >
-                        <h3 style={{ textAlign: "center" }}>
-                           {`Are you sure you want to delete ${user.nameFirst} ${user.nameLast}? This action is irreversible.`}
-                        </h3>
-                        <Button
-                            type="primary"
-                            danger
-                            block
-                            onClick={() => props.deleteAction(user.id)}
-                            style={{ textAlign: "center" }}
-                        >
-                            Confirm
-                        </Button>
-                    </Modal>
+                        Confirm
+                    </Button>
+                </Modal>
             </Form>
         );
     } else {
