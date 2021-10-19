@@ -139,6 +139,12 @@ class Dashboard extends React.Component {
         }
     };
 
+    filterOrders = () => {
+        return this.props.orders.filter((order) => {
+            return !order.isTransfer && order.order.status !== "ARCHIVED";
+        })
+    }
+
     render() {
         return (
             <div className="Master-div">
@@ -158,9 +164,7 @@ class Dashboard extends React.Component {
                                     );
                                 }).length *
                                     100) /
-                                this.props.orders.filter((order) => {
-                                    return !order.isTransfer;
-                                }).length
+                                this.filterOrders().length
                             }
                             format={() =>
                                 `${
@@ -183,9 +187,7 @@ class Dashboard extends React.Component {
                                     );
                                 }).length *
                                     100) /
-                                this.props.orders.filter((order) => {
-                                    return !order.isTransfer;
-                                }).length
+                                this.filterOrders().length
                             }
                             format={() =>
                                 `${
@@ -205,9 +207,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "AGREED";
                                 }).length *
                                     100) /
-                                this.props.orders.filter((order) => {
-                                    return !order.isTransfer;
-                                }).length
+                                this.filterOrders().length
                             }
                             format={() =>
                                 `${
@@ -224,9 +224,7 @@ class Dashboard extends React.Component {
                                     return order.order.status === "SIGNED";
                                 }).length *
                                     100) /
-                                this.props.orders.filter((order) => {
-                                    return !order.isTransfer;
-                                }).length
+                                this.filterOrders().length
                             }
                             format={() =>
                                 `${
@@ -416,10 +414,7 @@ class Dashboard extends React.Component {
                                     <h3>Recent Orders</h3>
                                     <Table
                                         columns={columns}
-                                        dataSource={this.props.orders
-                                            .filter((order) => {
-                                                return !order.isTransfer;
-                                            })
+                                        dataSource={this.filterOrders()
                                             .sort((a, b) => {
                                                 return (
                                                     new Date(
