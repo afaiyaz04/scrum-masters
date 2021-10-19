@@ -6,6 +6,7 @@ import {
     getClient,
     updateClient,
     makeFavourite,
+    cloneClient,
 } from "../controllers/client.js";
 
 import auth from "../middleware/auth.js";
@@ -17,5 +18,6 @@ router.get("/:id", auth, getClient);
 router.patch("/:id", auth, updateClient);
 router.delete("/:id", auth, deleteClient);
 router.patch("/:id/fav", auth, makeFavourite);
+router.post("/:id", auth, cloneClient);
 
 export default router;

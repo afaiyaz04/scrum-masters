@@ -127,11 +127,9 @@ export const transferOrder =
         }
     };
 
-export const acceptOrder = (userId, orders) => async (dispatch) => {
+export const acceptOrder = (userId, orderId) => async (dispatch) => {
     try {
-        for (let i in orders) {
-            await api.acceptOrder(userId, orders[i]);
-        }
+        await api.acceptOrder(userId, orderId);
         const { data } = await api.fetchOrders(userId);
         dispatch({ type: FETCH_ORDERS, payload: data });
     } catch (error) {
@@ -139,17 +137,32 @@ export const acceptOrder = (userId, orders) => async (dispatch) => {
     }
 };
 
-export const declineOrder = (userId, orders) => async (dispatch) => {
+export const declineOrder = (userId, orderId) => async (dispatch) => {
     try {
-        for (let i in orders) {
-            await api.declineOrder(userId, orders[i]);
-        }
+        await api.declineOrder(userId, orderId);
         const { data } = await api.fetchOrders(userId);
         dispatch({ type: FETCH_ORDERS, payload: data });
     } catch (error) {
         console.log(error);
     }
 };
+
+export const addTransferClient =
+    (userId, clientId, orderId) => async (dispatch) => {
+        try {
+            const newClient = await api.cloneClient(clientId);
+            await api.addUserClient(userId, newClient.data._id);
+            const order = await api.fetchOrder(orderId);
+            await api.updateOrder(orderId, {
+                ...order.data,
+                client: newClient.data._id,
+            });
+            const { data } = await api.fetchOrders(userId);
+            dispatch({ type: FETCH_ORDERS, payload: data });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 export const addLog = (userId, orderId, text) => async (dispatch) => {
     try {

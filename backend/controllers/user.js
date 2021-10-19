@@ -277,6 +277,7 @@ export const getUserOrders = async (req, res) => {
 
             orders.push({
                 order,
+                clientId: client._id,
                 clientName: clientName,
                 isTransfer: true,
                 fromUserId: user.receivedOrders[i].fromUser,
