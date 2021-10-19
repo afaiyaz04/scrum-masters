@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 const clientSchema = new mongoose.Schema({
     nameFirst: { type: String, required: true },
     nameLast: { type: String, required: true },
-    title: { type: String, required: true },
-    company: { type: String, required: true },
-    email: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
-    address: { type: String, required: true },
+    title: { type: String, required: false },
+    company: { type: String, required: false },
+    email: { type: String, required: false },
+    phoneNumber: { type: String, required: false },
+    address: { type: String, required: false },
     fav: { type: Boolean, required: true, default: false },
     profilePic: { type: String, required: false },
 });

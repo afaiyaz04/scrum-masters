@@ -15,14 +15,14 @@ import { connect } from "react-redux";
 import "./Contact.css";
 
 const initialContact = {
-    id: "",
-    nameFirst: "",
-    nameLast: "",
-    title: "",
-    company: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
+    id: null,
+    nameFirst: null,
+    nameLast: null,
+    title: null,
+    company: null,
+    email: null,
+    phoneNumber: null,
+    address: null,
     profilePic:
         "https://www.seekpng.com/png/detail/41-410093_circled-user-icon-user-profile-icon-png.png",
     favourite: false,

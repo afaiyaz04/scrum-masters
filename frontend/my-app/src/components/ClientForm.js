@@ -21,8 +21,17 @@ const ClientForm = (props) => {
         },
     };
 
+    const onSubmit = () => {
+        if (edit) {
+            props.updateAction(contact);
+            setEdit(false);
+        } else if (props.addContact) {
+            props.createAction(contact);
+        }
+    };
+
     return (
-        <Form {...layout}>
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             {!edit && !props.addContact && (
@@ -106,7 +115,16 @@ const ClientForm = (props) => {
                             }
                         />
                     </Form.Item>
-                    <Form.Item label="First Name:">
+                    <Form.Item
+                        label="First Name:"
+                        name="nameFirst"
+                        rules={[
+                            {
+                                required: props.addContact,
+                                message: "First name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={contact.nameFirst}
                             onChange={(e) =>
@@ -117,7 +135,16 @@ const ClientForm = (props) => {
                             }
                         />
                     </Form.Item>
-                    <Form.Item label="Last Name:">
+                    <Form.Item
+                        label="Last Name:"
+                        name="nameLast"
+                        rules={[
+                            {
+                                required: props.addContact,
+                                message: "Last name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={contact.nameLast}
                             onChange={(e) =>
@@ -192,10 +219,7 @@ const ClientForm = (props) => {
                                     type="primary"
                                     block
                                     className="general-btn"
-                                    onClick={() => {
-                                        props.updateAction(contact);
-                                        setEdit(false);
-                                    }}
+                                    htmlType="submit"
                                 >
                                     Update
                                 </Button>
@@ -225,7 +249,7 @@ const ClientForm = (props) => {
                                     className="general-btn"
                                     type="primary"
                                     block
-                                    onClick={() => props.createAction(contact)}
+                                    htmlType="submit"
                                 >
                                     Create
                                 </Button>

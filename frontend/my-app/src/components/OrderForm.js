@@ -32,8 +32,16 @@ const OrderForm = (props) => {
         return name;
     };
 
+    const onSubmit = () => {
+        if (edit) {
+            props.updateOrderAction(order);
+        } else if (props.addOrder) {
+            props.createOrderAction(order);
+        }
+    };
+
     return (
-        <Form {...layout}>
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             <Form.Item label="Order No">
@@ -69,7 +77,7 @@ const OrderForm = (props) => {
                                 height: 150,
                                 paddingTop: 5,
                                 overflowY: "scroll",
-                                maxWidth: 250,
+                                maxWidth: "100%",
                                 wordWrap: "break-word",
                             }}
                         >
@@ -90,7 +98,16 @@ const OrderForm = (props) => {
             )}
             {(edit || props.addOrder) && (
                 <>
-                    <Form.Item label="Client:">
+                    <Form.Item
+                        label="Client:"
+                        name="client"
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Client required",
+                            },
+                        ]}
+                    >
                         <Select
                             placeholder={getClientName(order.client)}
                             style={{ width: "100%" }}
@@ -112,7 +129,16 @@ const OrderForm = (props) => {
                             })}
                         </Select>
                     </Form.Item>
-                    <Form.Item label="Time Due:">
+                    <Form.Item
+                        label="Time Due:"
+                        name="timeDue"
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Deadline required",
+                            },
+                        ]}
+                    >
                         <DatePicker
                             showTime
                             placeholder={order.timeDue}
@@ -124,7 +150,16 @@ const OrderForm = (props) => {
                             }
                         />
                     </Form.Item>
-                    <Form.Item label="Total Fee:">
+                    <Form.Item
+                        label="Total Fee:"
+                        name="totalFee"
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Total Fee required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(value) => {
                                 setOrder({ ...order, totalFee: value });
@@ -175,9 +210,7 @@ const OrderForm = (props) => {
                                     className="general-btn"
                                     type="primary"
                                     block
-                                    onClick={() => {
-                                        props.updateOrderAction(order);
-                                    }}
+                                    htmlType="sumbit"
                                 >
                                     Update
                                 </Button>
@@ -206,9 +239,7 @@ const OrderForm = (props) => {
                                 className="general-btn"
                                 type="primary"
                                 block
-                                onClick={() => {
-                                    props.createOrderAction(order);
-                                }}
+                                htmlType="submit"
                             >
                                 Create
                             </Button>

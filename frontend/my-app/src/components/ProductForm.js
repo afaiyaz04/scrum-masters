@@ -20,8 +20,16 @@ const ProductForm = (props) => {
         },
     };
 
+    const onSubmit = () => {
+        if (edit) {
+            props.updateProductAction(product);
+        } else if (props.addProduct) {
+            props.createProductAction(product);
+        }
+    };
+
     return (
-        <Form {...layout}>
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             {!edit && !props.addProduct && (
@@ -45,7 +53,7 @@ const ProductForm = (props) => {
                                 height: 150,
                                 paddingTop: 5,
                                 overflowY: "scroll",
-                                maxWidth: 250,
+                                maxWidth: "100%",
                                 wordWrap: "break-word",
                             }}
                         >
@@ -66,7 +74,16 @@ const ProductForm = (props) => {
             )}
             {(edit || props.addProduct) && (
                 <>
-                    <Form.Item label="Item Name:">
+                    <Form.Item
+                        label="Item Name:"
+                        name="name"
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={product.name}
                             onChange={(e) =>
@@ -74,7 +91,16 @@ const ProductForm = (props) => {
                             }
                         />
                     </Form.Item>
-                    <Form.Item label="Fee:">
+                    <Form.Item
+                        label="Price:"
+                        name="price"
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item price required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(e) =>
                                 setProduct({ ...product, price: e })
@@ -83,7 +109,16 @@ const ProductForm = (props) => {
                             placeholder={product.price}
                         />
                     </Form.Item>
-                    <Form.Item label="Quantity:">
+                    <Form.Item
+                        label="Quantity:"
+                        name="quantity"
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item quantity required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(e) =>
                                 setProduct({ ...product, quantity: e })
@@ -112,9 +147,7 @@ const ProductForm = (props) => {
                                 className="general-btn"
                                 type="primary"
                                 block
-                                onClick={() => {
-                                    props.createProductAction(product);
-                                }}
+                                htmlType="submit"
                             >
                                 Create
                             </Button>
@@ -129,9 +162,7 @@ const ProductForm = (props) => {
                                     className="general-btn"
                                     type="primary"
                                     block
-                                    onClick={() =>
-                                        props.updateProductAction(product)
-                                    }
+                                    htmlType="submit"
                                 >
                                     Update
                                 </Button>
