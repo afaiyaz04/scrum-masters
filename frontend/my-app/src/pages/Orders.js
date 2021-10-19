@@ -1,4 +1,4 @@
-import { Button, Collapse, Table, Tag } from "antd";
+import { Button, Collapse, Modal, Table, Tag } from "antd";
 import React from "react";
 import { connect } from "react-redux";
 import Header from "../components/Header";
@@ -12,6 +12,7 @@ import {
     acceptOrder,
     addLog,
     addProduct,
+    addTransferClient,
     createOrder,
     declineOrder,
     deleteOrder,
@@ -61,6 +62,10 @@ class Orders extends React.Component {
             showLog: false,
 
             transferOrder: false,
+            addTransferClient: false,
+            transferOrderId: null,
+            transferClientName: null,
+            transferClientId: null,
 
             userId: JSON.parse(localStorage.getItem("userData"))._id,
         };
@@ -72,6 +77,7 @@ class Orders extends React.Component {
             "addProduct",
             "showLog",
             "transferOrder",
+            "addTransferClient",
         ];
 
         this.orderColumns = [
@@ -177,13 +183,13 @@ class Orders extends React.Component {
                     <>
                         <Button
                             className="general-btn"
-                            onClick={() => this.onAccept([record.key])}
+                            onClick={() => this.onAccept(record.key, record.client, record.clientId)}
                         >
                             Accept
                         </Button>
                         <Button
                             className="general-btn"
-                            onClick={() => this.onDecline([record.key])}
+                            onClick={() => this.onDecline(record.key)}
                         >
                             Decline
                         </Button>
@@ -275,6 +281,11 @@ class Orders extends React.Component {
         );
     };
 
+    addTransferClientHandler = () => {
+        this.endRenderExcept();
+        this.props.dispatch(addTransferClient(this.state.userId, this.state.transferClientId, this.state.transferOrderId));
+    }
+
     // Stops rendering for all components unless specified
     endRenderExcept = (selectedComponent) => {
         this.renderBool.forEach((key) => {
@@ -323,12 +334,13 @@ class Orders extends React.Component {
         });
     };
 
-    onAccept = (keys) => {
-        this.props.dispatch(acceptOrder(this.state.userId, keys));
+    onAccept = (key, clientName, clientId) => {
+        this.props.dispatch(acceptOrder(this.state.userId, key));
+        this.setState({ addTransferClient: true, transferOrderId: key, transferClientName: clientName, transferClientId: clientId });
     };
 
-    onDecline = (keys) => {
-        this.props.dispatch(declineOrder(this.state.userId, keys));
+    onDecline = (key) => {
+        this.props.dispatch(declineOrder(this.state.userId, key));
     };
 
     onLog = (key) => {
@@ -447,6 +459,7 @@ class Orders extends React.Component {
                                                             .orderNumber,
                                                     user: transfer.fromUserName,
                                                     client: transfer.clientName,
+                                                    clientId: transfer.clientId,
                                                     description:
                                                         transfer.order
                                                             .description,
@@ -565,6 +578,7 @@ class Orders extends React.Component {
                                 users={this.props.users}
                                 userId={this.state.userId}
                                 transferAction={this.transferOrderHandler}
+                                transferClientAction={this.addTransferClientHandler}
                                 closeAction={() => this.endRenderExcept()}
                             />
                         )}
@@ -579,6 +593,26 @@ class Orders extends React.Component {
                             </div>
                         )}
                     </div>
+                    <Modal
+                        title={`Add ${this.state.transferClientName} to your contacts?`}
+                        visible={this.state.addTransferClient}
+                        onCancel={() => this.endRenderExcept()}
+                        footer={null}
+                        destroyOnClose={true}
+                        style={{ width: "100%" }}
+                    >
+                        <h3 style={{ textAlign: "center" }}>
+                            {`Do you want to add ${this.state.transferClientName} to your contacts?`}
+                        </h3>
+                        <Button
+                            type="primary"
+                            block
+                            onClick={() => this.addTransferClientHandler()}
+                            style={{ textAlign: "center" }}
+                        >
+                            Confirm
+                        </Button>
+                    </Modal>
                 </div>
             </div>
         );

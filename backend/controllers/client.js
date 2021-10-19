@@ -144,4 +144,51 @@ export const makeFavourite = async (req, res) => {
     return res.json(client);
 };
 
+export const cloneClient = async (req, res) => {
+    const { id } = req.params;
+    
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
+
+    const client = await Client.findById(id);
+    if (client == null) {
+        return res.status(404).send(`No client with id: ${id}`);
+    }
+
+    const {
+        nameFirst,
+        nameLast,
+        title,
+        company,
+        email,
+        phoneNumber,
+        address,
+        profilePic,
+    } = client;
+
+    const newClient = new Client({
+        nameFirst,
+        nameLast,
+        title,
+        company,
+        email,
+        phoneNumber,
+        address,
+        profilePic,
+    });
+
+    try {
+        await newClient.save();
+
+        res.status(201).json(newClient);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
+
 export default router;
