@@ -1,5 +1,5 @@
 .dashboard-left {
-  width: 60%;
+  width: 35%;
   display: block;
   justify-items: flex-start;
   padding-right: 3% 2%;
@@ -22,6 +22,7 @@
   align-items: center;
   box-sizing: border-box;
   width: 100%;
+  max-width: 70%;
   padding-left: 3%;
 }
 

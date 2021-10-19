@@ -1,410 +1,656 @@
+import { Button, Collapse, Modal, Table, Tag } from "antd";
 import React from "react";
-import Sidebar from "../components/sideBar/Sidebar";
-import Header from "../components/Header";
-import { CgProfile } from "react-icons/cg";
-import { List, Button } from "antd";
-import "antd/dist/antd.css";
-import OrderForm from "../components/OrderForm";
 import { connect } from "react-redux";
-import {
-  createOrder,
-  fetchOrders,
-  updateOrder,
-  deleteOrder,
-} from "../redux/Order/order.actions";
-import {
-  createProduct,
-  fetchProducts,
-  updateProduct,
-  deleteProduct,
-} from "../redux/Product/product.actions";
-
-import { fetchContacts } from "../redux/Contact/contact.actions";
+import Header from "../components/Header";
+import LogForm from "../components/LogForm";
+import OrderForm from "../components/OrderForm";
 import ProductForm from "../components/ProductForm";
+import Sidebar from "../components/sideBar/Sidebar";
+import TransferForm from "../components/TransferForm";
+import { fetchContacts } from "../redux/Contact/contact.actions";
+import {
+    acceptOrder,
+    addLog,
+    addProduct,
+    addTransferClient,
+    createOrder,
+    declineOrder,
+    deleteOrder,
+    deleteProduct,
+    fetchOrders,
+    transferOrder,
+    updateOrder,
+    updateProduct,
+} from "../redux/Order/order.actions";
+import { fetchUsers } from "../redux/Users/users.actions";
 
 const initialOrder = {
-  id: null,
-  timeDue: Date,
-  totalFee: 0,
-  description: "",
-  client: "",
-  status: "CREATED",
+    _id: null,
+    client: null,
+    timeDue: null,
+    totalFee: 0,
+    status: "CREATED",
+    description: null,
+    lineProducts: [],
+    log: [],
 };
 
-//** FUNCTIONS *//
-//
-// ORDER:
-// this.props.dispatch(createOrder(userId, formData))
-// this.props.dispatch(fetchOrders(userId))
-// this.props.dispatch(updateOrder(orderId, formData))
-// this.props.dispatch(deleteOrder(userId, orderId))
-//
-// PRODUCT:
-// this.props.dispatch(createProduct(orderId, formData, quantity))
-// this.props.dispatch(fetchProducts(orderId))
-// this.props.dispatch(updateProduct(orderId, productId, formData, quantity))
-// this.props.dispatch(deleteProduct(orderId, productId))
-//
-// CONTACT:
-// this.props.dispatch(fetchContacts(userId))
-//
-// call
-//  this.props.dispatch(fetchOrders(userId))
-//  this.props.dispatch(fetchProducts(orderId))
-//  this.props.dispatch(fetchContacts(userId))
-// when an update is needed.
-//
-// to access data, call:
-//  this.props.contacts
-//  this.props.orders
-//  this.props.products
+const initialProduct = {
+    _id: null,
+    name: null,
+    description: null,
+    price: 0,
+    quantity: 0,
+};
+
+const { Panel } = Collapse;
 
 class Orders extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      order: initialOrder,
+    constructor(props) {
+        super(props);
+        this.state = {
+            order: initialOrder,
+            product: initialProduct,
+            selectedOrders: [],
 
-      showDetails: false,
-      addOrder: false,
+            showDetails: false,
+            addOrder: false,
 
-      showProducts: false,
+            showProductDetails: false,
+            addProduct: false,
 
-      userId: JSON.parse(localStorage.getItem("userData"))._id,
-    };
-  }
+            showLog: false,
 
-  componentDidMount() {
-    this.props.dispatch(fetchOrders(this.state.userId));
-    this.props.dispatch(fetchContacts(this.state.userId));
-  }
+            transferOrder: false,
+            addTransferClient: false,
+            transferOrderId: null,
+            transferClientName: null,
+            transferClientId: null,
 
-  createOrderHandler = (newItem) => {
-    this.setState({ addOrder: false });
-    this.props.dispatch(createOrder(this.state.userId, newItem));
-  };
+            userId: JSON.parse(localStorage.getItem("userData"))._id,
+        };
 
-  updateOrderHandler = (newItem) => {
-    this.setState({ showDetails: false });
-    this.props.dispatch(updateOrder(this.state.order.id, newItem));
-  }
+        this.renderBool = [
+            "showDetails",
+            "addOrder",
+            "showProductDetails",
+            "addProduct",
+            "showLog",
+            "transferOrder",
+            "addTransferClient",
+        ];
 
-  deleteOrderHandler = (orderId) => {
-    this.setState({ showDetails: false });
-    this.props.dispatch(deleteOrder(this.state.userId, orderId));
-  }
-
-  createProductHandler = (newItem, quantity) => {
-    this.props.dispatch(createProduct(this.state.order.id, newItem, quantity));
-  };
-
-  updateProductHandler = (productId, newItem, quantity) => {
-    this.props.dispatch(updateProduct(this.state.order.id, productId, newItem, quantity));
-  }
-
-  deleteProductHandler = (productId) => {
-    this.props.dispatch(deleteProduct(this.state.order.id, productId));
-  }
-
-  descriptionLimit = (description) => {
-    if (description.length > 50) {
-      return `${description.slice(0,50)}...`;
-    } else {
-      return description;
-    }
-  }
-
-  render() {
-    return (
-      <div className="Master-div">
-        <Sidebar />
-        <div className="orders">
-          <Header
-            page="Orders"
-            actions={() => {
-              this.setState({
-                addOrder: true,
-                showDetails: false,
-                showProducts: false,
-                order: initialOrder,
-              });
-            }}
-          />
-          <div className="contents">
-            <div className="contents-left">
-              <span>Name</span>
-              <List
-                itemLayout="horizontal"
-                dataSource={this.props.orders}
-                renderItem={(item) => (
-                  <List.Item
-                    className="order-item"
-                    key={item.id}
-                    actions={[
-                      <Button
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
-                        block
-                        onClick={() => {
-                          this.props.dispatch(fetchProducts(item._id));
-                          this.setState({
-                            showDetails: false,
-                            addOrder: false,
-                            showProducts: true,
-                            order: {
-                              id: item._id,
-                              client: item.client,
-                              timeDue: item.timeDue,
-                              totalFee: item.totalFee,
-                              description: item.description,
-                              status: item.status,
-                            },
-                          })
-                        }}
-                      >
-                        Items
-                      </Button>,
-                      <Button
-                        type="dashed"
-                        style={{ paddingLeft: 2, textAlign: 'center' }}
-                        block
-                        onClick={() =>
-                          this.setState({
-                            showDetails: true,
-                            addOrder: false,
-                            showProducts: false,
-                            order: {
-                              id: item._id,
-                              client: item.client,
-                              timeDue: item.timeDue,
-                              totalFee: item.totalFee,
-                              description: item.description,
-                              status: item.status,
-                            },
-                          })
-                        }
-                      >
-                        Details
-                      </Button>,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={`Order No. ${item.orderNumber}`}
-                      description={this.descriptionLimit(item.description)}
-                    />
-                  </List.Item>
-                )}
-              />
-            </div>
-            {(this.state.showDetails || this.state.addOrder) && (
-              <div className="contents-right">
-                <OrderForm
-                  contacts={this.props.contacts}
-                  order={this.state.order}
-                  // Boolean values to check if component should have features on/off
-                  addOrder={this.state.addOrder}
-                  showOrderDetails={this.state.showDetails}
-                  // Button handlers
-                  createOrderAction={this.createOrderHandler}
-                  updateOrderAction={this.updateOrderHandler}
-                  deleteOrderAction={this.deleteOrderHandler}
-                  // Closes form
-                  closeAction={() =>
-                    this.setState({ addOrder: false, showDetails: false })
-                  }
-                />
-              </div>
-            )}
+        this.orderColumns = [
             {
-              (this.state.showProducts) &&
-              <div className="contents-right">
-                <ProductForm
-                  order={this.state.order}
-                  createProductAction={this.createProductHandler}
-                  updateProductAction={this.updateProductHandler}
-                  deleteProductAction={this.deleteProductHandler}
-                  closeAction={() =>
-                    this.setState({ showProducts: false })
-                  }
-                />
-              </div>
+                title: "Order No.",
+                dataIndex: "orderNumber",
+                key: "orderNumber",
+                width: "10%",
+            },
+            {
+                title: "Status",
+                dataIndex: "status",
+                key: "status",
+                width: "10%",
+                render: (status) => {
+                    switch (status) {
+                        case "CREATED":
+                            return (
+                                <Tag color={"red"} key={status}>
+                                    {status}
+                                </Tag>
+                            );
+                        case "DISCUSSED":
+                            return (
+                                <Tag color={"orange"} key={status}>
+                                    {status}
+                                </Tag>
+                            );
+                        case "AGREED":
+                            return (
+                                <Tag color={"blue"} key={status}>
+                                    {status}
+                                </Tag>
+                            );
+                        case "SIGNED":
+                            return (
+                                <Tag color={"green"} key={status}>
+                                    {status}
+                                </Tag>
+                            );
+                        default:
+                            return;
+                    }
+                },
+            },
+            { title: "Client", dataIndex: "client", key: "client" },
+            {
+                title: "Deadline",
+                dataIndex: "timeDue",
+                key: "timeDue",
+                width: "15%",
+            },
+            {
+                title: "Actions",
+                dataIndex: "action",
+                key: "action",
+                width: "20%",
+                render: (_, record) => (
+                    <>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onOrderDetails(record.key)}
+                        >
+                            Details
+                        </Button>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onLog(record.key)}
+                        >
+                            Log
+                        </Button>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onAddItem(record.key)}
+                        >
+                            Add Item
+                        </Button>
+                    </>
+                ),
+            },
+        ];
+
+        this.receivedOrderColumns = [
+            {
+                title: "Order No.",
+                dataIndex: "orderNumber",
+                key: "orderNumber",
+                width: "10%",
+            },
+            { title: "From", dataIndex: "user", key: "user", width: "40%" },
+            {
+                title: "Client",
+                dataIndex: "client",
+                key: "client",
+                width: "40%",
+            },
+            {
+                title: "Actions",
+                dataIndex: "action",
+                key: "action",
+                width: "20%",
+                render: (_, record) => (
+                    <>
+                        <Button
+                            className="general-btn"
+                            onClick={() =>
+                                this.onAccept(
+                                    record.key,
+                                    record.client,
+                                    record.clientId
+                                )
+                            }
+                        >
+                            Accept
+                        </Button>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onDecline(record.key)}
+                        >
+                            Decline
+                        </Button>
+                    </>
+                ),
+            },
+        ];
+
+        this.productColumns = [
+            { title: "Name", dataIndex: "name", key: "name" },
+            { title: "Price", dataIndex: "price", key: "price", width: "20%" },
+            {
+                title: "Quantity",
+                dataIndex: "quantity",
+                key: "quantity",
+                width: "20%",
+            },
+            {
+                title: "Item Actions",
+                dataIndex: "productAction",
+                key: "productAction",
+                width: "20%",
+                render: (_, record) => (
+                    <>
+                        <Button
+                            className="general-btn"
+                            onClick={() => this.onProductDetails(record.key)}
+                        >
+                            Item Details
+                        </Button>
+                    </>
+                ),
+            },
+        ];
+    }
+
+    componentDidMount() {
+        this.props.dispatch(fetchOrders(this.state.userId));
+        this.props.dispatch(fetchContacts(this.state.userId));
+        this.props.dispatch(fetchUsers());
+    }
+
+    createOrderHandler = (newItem) => {
+        this.endRenderExcept();
+        this.props.dispatch(createOrder(this.state.userId, newItem));
+    };
+
+    updateOrderHandler = (newItem) => {
+        this.setState({ order: newItem });
+        this.props.dispatch(updateOrder(this.state.order._id, newItem));
+    };
+
+    deleteOrderHandler = (orderId) => {
+        this.endRenderExcept();
+        this.setState({ order: initialOrder, product: initialProduct });
+        this.props.dispatch(deleteOrder(this.state.userId, orderId));
+    };
+
+    createProductHandler = (newItem) => {
+        this.endRenderExcept();
+        this.props.dispatch(addProduct(this.state.order._id, newItem));
+    };
+
+    updateProductHandler = (newItem) => {
+        this.setState({ product: newItem });
+        this.props.dispatch(
+            updateProduct(this.state.order._id, this.state.product._id, newItem)
+        );
+    };
+
+    deleteProductHandler = () => {
+        this.endRenderExcept();
+        this.setState({ product: initialProduct });
+        this.props.dispatch(
+            deleteProduct(this.state.order._id, this.state.product._id)
+        );
+    };
+
+    transferOrderHandler = (toUserId, orderIds) => {
+        this.endRenderExcept();
+        this.props.dispatch(
+            transferOrder(this.state.userId, toUserId, orderIds)
+        );
+    };
+
+    addLogHandler = (text) => {
+        this.props.dispatch(
+            addLog(this.state.userId, this.state.order._id, text)
+        );
+    };
+
+    addTransferClientHandler = () => {
+        this.endRenderExcept();
+        this.props.dispatch(
+            addTransferClient(
+                this.state.userId,
+                this.state.transferClientId,
+                this.state.transferOrderId
+            )
+        );
+    };
+
+    // Stops rendering for all components unless specified
+    endRenderExcept = (selectedComponent) => {
+        this.renderBool.forEach((key) => {
+            !(selectedComponent === key) && this.setState({ [key]: false });
+        });
+        this.setState({ [selectedComponent]: true });
+    };
+
+    // Selected row action
+    onOrderSelectChange = (selectedRowKeys) => {
+        let x = this.props.orders.filter((order) => {
+            return (
+                selectedRowKeys.includes(order.order._id) && !order.isTransfer
+            );
+        });
+        this.setState({ selectedOrders: x });
+    };
+
+    // Row button actions
+    onOrderDetails = (key) => {
+        this.props.orders.forEach((order) => {
+            if (key === order.order._id) {
+                this.setState({ order: order.order });
+                this.endRenderExcept("showDetails");
             }
-          </div>
-        </div>
-      </div>
-    );
-  }
+        });
+    };
+
+    onAddItem = (key) => {
+        this.props.orders.forEach((order) => {
+            if (key === order.order._id) {
+                this.setState({ order: order.order, product: initialProduct });
+                this.endRenderExcept("addProduct");
+            }
+        });
+    };
+
+    onProductDetails = (key) => {
+        this.props.orders.forEach((order) => {
+            order.order.lineProducts.forEach((product) => {
+                if (key === product._id) {
+                    this.setState({ product, order: order.order });
+                    this.endRenderExcept("showProductDetails");
+                }
+            });
+        });
+    };
+
+    onAccept = (key, clientName, clientId) => {
+        this.props.dispatch(acceptOrder(this.state.userId, key));
+        this.setState({
+            addTransferClient: true,
+            transferOrderId: key,
+            transferClientName: clientName,
+            transferClientId: clientId,
+        });
+    };
+
+    onDecline = (key) => {
+        this.props.dispatch(declineOrder(this.state.userId, key));
+    };
+
+    onLog = (key) => {
+        this.props.orders.forEach((order) => {
+            if (key === order.order._id) {
+                this.setState({ order: order.order });
+                this.endRenderExcept("showLog");
+            }
+        });
+    };
+
+    // Nested table for product
+    productRender = (row) => {
+        let order = this.props.orders.find((order) => {
+            return order.order._id === row.key;
+        });
+        let productData = order.order.lineProducts.map((product) => {
+            return {
+                key: product._id,
+                name: product.name,
+                quantity: product.quantity,
+                price: product.price,
+            };
+        });
+        return (
+            <Table
+                columns={this.productColumns}
+                dataSource={productData}
+                pagination={false}
+                rowKey={(record) => record.key}
+            />
+        );
+    };
+
+    render() {
+        return (
+            <div className="Master-div">
+                <Sidebar />
+                <div className="orders">
+                    <Header
+                        page="Orders"
+                        actions={() => {
+                            this.setState({ order: initialOrder });
+                            this.endRenderExcept("addOrder");
+                        }}
+                    />
+                    <div className="contents">
+                        <div className="contents-left">
+                            <Collapse bordered={false}>
+                                <Panel
+                                    header={`Received Orders (${
+                                        this.props.orders.filter(
+                                            (order) => order.isTransfer
+                                        ).length
+                                    })`}
+                                    key="1"
+                                >
+                                    <Table
+                                        columns={this.receivedOrderColumns}
+                                        expandable={{
+                                            expandedRowRender: (record) => (
+                                                <>
+                                                    <p style={{ margin: 0 }}>
+                                                        {`Status: ${
+                                                            record.status
+                                                        }, Deadline: ${record.timeDue.slice(
+                                                            0,
+                                                            10
+                                                        )}, Total Fee: ${
+                                                            record.totalFee
+                                                        }`}
+                                                    </p>
+                                                    <p style={{ margin: 0 }}>
+                                                        {record.description}
+                                                    </p>
+                                                    <br />
+                                                    <p style={{ margin: 0 }}>
+                                                        Products:
+                                                    </p>
+                                                    <br />
+                                                    {record.lineProducts.map(
+                                                        (product) => {
+                                                            return (
+                                                                <>
+                                                                    <p
+                                                                        style={{
+                                                                            margin: 0,
+                                                                        }}
+                                                                    >
+                                                                        {`Item: ${product.name}, Price: ${product.price}, Quantity: ${product.quantity}`}
+                                                                    </p>
+                                                                    <p
+                                                                        style={{
+                                                                            margin: 0,
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            product.description
+                                                                        }
+                                                                    </p>
+                                                                    <br />
+                                                                </>
+                                                            );
+                                                        }
+                                                    )}
+                                                </>
+                                            ),
+                                        }}
+                                        dataSource={this.props.orders
+                                            .filter((order) => order.isTransfer)
+                                            .map((transfer) => {
+                                                return {
+                                                    key: transfer.order._id,
+                                                    orderNumber:
+                                                        transfer.order
+                                                            .orderNumber,
+                                                    user: transfer.fromUserName,
+                                                    client: transfer.clientName,
+                                                    clientId: transfer.clientId,
+                                                    description:
+                                                        transfer.order
+                                                            .description,
+                                                    totalFee:
+                                                        transfer.order.totalFee,
+                                                    timeDue:
+                                                        transfer.order.timeDue,
+                                                    status: transfer.order
+                                                        .status,
+                                                    lineProducts:
+                                                        transfer.order
+                                                            .lineProducts,
+                                                };
+                                            })}
+                                        pagination={false}
+                                    />
+                                </Panel>
+                            </Collapse>
+
+                            <div
+                                style={{
+                                    height: 40,
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                }}
+                            >
+                                {this.state.selectedOrders.length > 0 && (
+                                    // Buttons for selected orders
+                                    <>
+                                        <Button
+                                            className="general-btn"
+                                            onClick={() =>
+                                                this.endRenderExcept(
+                                                    "transferOrder"
+                                                )
+                                            }
+                                        >
+                                            Transfer
+                                        </Button>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Order table component */}
+                            <Table
+                                style={{ paddingTop: 10 }}
+                                columns={this.orderColumns}
+                                expandable={{
+                                    expandedRowRender: this.productRender,
+                                }}
+                                dataSource={this.props.orders
+                                    .filter((order) => !order.isTransfer)
+                                    .map((order) => {
+                                        return {
+                                            key: order.order._id,
+                                            orderNumber:
+                                                order.order.orderNumber,
+                                            client: order.clientName,
+                                            status: order.order.status,
+                                            timeDue: order.order.timeDue.slice(
+                                                0,
+                                                10
+                                            ),
+                                            totalFee: order.order.totalFee,
+                                        };
+                                    })}
+                                pagination={false}
+                                rowSelection={{
+                                    selectedRowKeys: this.props.selectedRowKeys,
+                                    onChange: this.onOrderSelectChange,
+                                }}
+                            />
+                        </div>
+
+                        {/* Right-side conditional rendering */}
+                        {(this.state.showDetails || this.state.addOrder) && (
+                            <div className="contents-right">
+                                <OrderForm
+                                    contacts={this.props.contacts}
+                                    order={this.state.order}
+                                    addOrder={this.state.addOrder}
+                                    showOrderDetails={this.state.showDetails}
+                                    createOrderAction={this.createOrderHandler}
+                                    updateOrderAction={this.updateOrderHandler}
+                                    deleteOrderAction={this.deleteOrderHandler}
+                                    closeAction={() => this.endRenderExcept()}
+                                />
+                            </div>
+                        )}
+                        {(this.state.addProduct ||
+                            this.state.showProductDetails) && (
+                            <div className="contents-right">
+                                <ProductForm
+                                    product={this.state.product}
+                                    addProduct={this.state.addProduct}
+                                    showProductDetails={
+                                        this.state.showProductDetails
+                                    }
+                                    createProductAction={
+                                        this.createProductHandler
+                                    }
+                                    updateProductAction={
+                                        this.updateProductHandler
+                                    }
+                                    deleteProductAction={
+                                        this.deleteProductHandler
+                                    }
+                                    closeAction={() => this.endRenderExcept()}
+                                />
+                            </div>
+                        )}
+                        {this.state.transferOrder && (
+                            <TransferForm
+                                transferOrder={this.state.transferOrder}
+                                orders={this.state.selectedOrders}
+                                users={this.props.users}
+                                userId={this.state.userId}
+                                transferAction={this.transferOrderHandler}
+                                transferClientAction={
+                                    this.addTransferClientHandler
+                                }
+                                closeAction={() => this.endRenderExcept()}
+                            />
+                        )}
+                        {this.state.showLog && (
+                            <div className="contents-right">
+                                <LogForm
+                                    order={this.state.order}
+                                    orders={this.props.orders}
+                                    addLogAction={this.addLogHandler}
+                                    closeAction={() => this.endRenderExcept()}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <Modal
+                        visible={this.state.addTransferClient}
+                        onCancel={() => this.endRenderExcept()}
+                        footer={null}
+                        destroyOnClose={true}
+                        style={{ width: "100%" }}
+                    >
+                        <h3 style={{ textAlign: "center" }}>
+                            {`Do you want to add ${this.state.transferClientName} to your contacts?`}
+                        </h3>
+                        <br />
+                        <Button
+                            type="primary"
+                            block
+                            onClick={() => this.addTransferClientHandler()}
+                            style={{ textAlign: "center" }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            block
+                            onClick={() => this.endRenderExcept()}
+                            style={{ textAlign: "center" }}
+                        >
+                            Cancel
+                        </Button>
+                    </Modal>
+                </div>
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    orders: state.orders,
-    contacts: state.contacts,
-  };
+    return {
+        orders: state.orders,
+        contacts: state.contacts,
+        users: state.users,
+    };
 };
 
 export default connect(mapStateToProps)(Orders);
-
-// import React from "react";
-// import Sidebar from "../components/sideBar/Sidebar";
-// import Header from "../components/Header";
-// import axios from "axios";
-// import { API, USER, ORDERS } from "./urlConfig";
-// import { List, Card, Button } from "antd";
-// import "antd/dist/antd.css";
-// import { connect } from "react-redux";
-// import { mapStateToProps } from "../redux/reduxConfig";
-// import ClientCard from "../components/ClientCard";
-// import AddOrderForm from "../components/AddOrderForm";
-
-// class Orders extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       orders: [],
-//       client: "",
-
-//       showDetails: false,
-//       editDetails: false,
-//       addOrder: false,
-
-//       id: "",
-//       client: "",
-//       lineProducts: "",
-//       timePlaced: "",
-//       timeDue: "",
-//       totalFee: "",
-//       status: "",
-//       description: "",
-//       log: "",
-
-//       userId: JSON.parse(localStorage.getItem('userData'))._id
-//     };
-//   }
-
-//   componentDidMount() {
-//     const endpoint = API + USER + this.state.userId + ORDERS;
-//     axios.get(endpoint).then((res) => {
-//       console.log(res);
-//       this.setState({ orders: res.data });
-//     });
-//   }
-
-//   activateAdd = () => {
-//     this.setState({ addOrder: true });
-//   };
-
-//   deactivateAdd = () => {
-//     this.setState({ addOrder: false });
-//   };
-
-//   createHandler = (newItem) => {
-//     const path = API + '/order';
-//     const path2 = API + USER + this.state.userId + ORDERS;
-//     axios.post(path, newItem).then((res) => {
-//       console.log(res);
-//       this.setState({
-//         id: res.data._id,
-//         editDetails: false,
-//         addOrder: false,
-//       });
-//       axios
-//         .post(path2, {
-//           orderId: this.state.id,
-//         })
-//         .then((res) => {
-//           axios.get(path2).then((res) => {
-//             console.log(res);
-//             this.setState({ orders: res.data });
-//           });
-//         });
-//     });
-//   };
-
-//   render() {
-//     let details;
-//     if (this.state.showDetails) {
-//       details = (
-//         <div className="contents-right">
-//           <Card
-//             className="contact-details"
-//             style={{ width: 300, height: 320 }}
-//             actions={[
-//               <Button onClick={() => this.setState({ editDetails: true })}>
-//                 Edit
-//               </Button>,
-//               <Button onClick={this.deleteHandler}>Delete</Button>,
-//             ]}
-//           >
-//             <h2>Order Details</h2>
-//             <h3>Client</h3>
-//             <div className="list-item-details">
-//               <h3>Status: {this.state.status}</h3>
-//               <h3>Time Placed: {this.state.timePlaced}</h3>
-//               <h3>Time Due: {this.state.timeDue}</h3>
-//               <h3>Total Fee: {this.state.totalFee}</h3>
-//               <h3>Description: {this.state.description}</h3>
-//               <h3>Log: {this.state.log}</h3>
-//             </div>
-//           </Card>
-//         </div>
-//       );
-//     }
-//     return (
-//       <div className="Master-div">
-//         <Sidebar />
-//         <div className="contacts">
-//           <Header page="Orders" actions={this.activateAdd}></Header>
-//           <div className="contents">
-//             <div className="contents-left">
-//               <span>Name</span>
-//               <List
-//                 itemLayout="horizontal"
-//                 dataSource={this.state.orders}
-//                 renderItem={(order) => (
-//                   <List.Item
-//                     className="contact-item"
-//                     key={order.id}
-//                     actions={[
-//                       <Button
-//                         type="dashed"
-//                         block
-//                         onClick={() =>
-//                           this.setState({
-//                             client: order.client,
-//                             lineProducts: order.lineProducts,
-//                             timePlaced: order.timePlaced,
-//                             timeDue: order.timeDue,
-//                             totalFee: order.totalFee,
-//                             status: order.status,
-//                             description: order.description,
-//                             log: order.log,
-//                             showDetails: true,
-//                           })
-//                         }
-//                       >
-//                         Details
-//                       </Button>,
-//                     ]}
-//                   >
-//                     <List.Item.Meta
-//                       title={`${order.client} ${order.timePlaced}`}
-//                       description={order.description}
-//                     />
-//                   </List.Item>
-//                 )}
-//               />
-//             </div>
-//             {details}
-//           </div>
-//           <AddOrderForm
-//             trigger={this.state.addOrder}
-//             actions={this.deactivateAdd}
-//             createAction={this.createHandler}
-//           ></AddOrderForm>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-// export default connect(mapStateToProps)(Orders);

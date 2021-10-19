@@ -1,23 +1,17 @@
-import express from 'express';
-import mongoose from 'mongoose';
+import express from "express";
+import mongoose from "mongoose";
 
-import Order from '../models/order.js';
-import Product from '../models/product.js';
-import User from '../models/user.js';
-import { isAdminOrSelf } from './user.js';
+import Order from "../models/order.js";
+import User from "../models/user.js";
+import { isAdminOrSelf } from "./user.js";
 
 const router = express.Router();
 
 export const createOrder = async (req, res) => {
-    const { 
-        client, 
-        timeDue, 
-        totalFee, 
-        description
-    } = req.body;
+    const { client, timeDue, totalFee, description } = req.body;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
     // find an order number
@@ -26,224 +20,193 @@ export const createOrder = async (req, res) => {
 
     var nextOrderNum = orderNumbers.length + 1;
 
-    while (orderNumbers.findIndex(on => on == nextOrderNum) != -1) {
+    while (orderNumbers.findIndex((on) => on == nextOrderNum) != -1) {
         nextOrderNum++;
     }
 
-    const newOrder = new Order({ 
+    const newOrder = new Order({
         client: mongoose.Types.ObjectId(client),
-        timeDue: timeDue, 
-        totalFee: totalFee, 
+        timeDue: timeDue,
+        totalFee: totalFee,
         description: description,
-        orderNumber: nextOrderNum
+        orderNumber: nextOrderNum,
     });
 
     try {
         await newOrder.save();
         res.status(201).json(newOrder);
     } catch (error) {
-        res.status(409).json({message: error.message});
+        res.status(409).json({ message: error.message });
     }
-}
+};
 
 export const getOrder = async (req, res) => {
     const { id } = req.params;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
-     try {
+    try {
         const order = await Order.findById(id);
         if (order == null) {
             return res.status(404).send(`No order with id: ${id}`);
         }
         res.status(200).json(order);
-     } catch (error) {
-        res.status(404).json({message: error.message});
-     }
-}
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
 
 export const updateOrder = async (req, res) => {
     const { id } = req.params;
-    const { 
-        client,
-        timeDue, 
-        totalFee, 
-        status, 
-        description
-    } = req.body;
+    const { client, timeDue, totalFee, status, description } = req.body;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No order with id: ${id}`);
     }
 
-    const updatedOrder = { 
+    const updatedOrder = {
         client: client,
-        timeDue: timeDue, 
-        totalFee: totalFee, 
-        status: status, 
+        timeDue: timeDue,
+        totalFee: totalFee,
+        status: status,
         description: description,
         lastModified: Date.now(),
-        _id: id 
+        _id: id,
     };
 
-    const order = await Order.findByIdAndUpdate(id, updatedOrder, {new: true});
+    const order = await Order.findByIdAndUpdate(id, updatedOrder, {
+        new: true,
+    });
     if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
     res.json(order);
-}
+};
 
 export const deleteOrder = async (req, res) => {
     const { id } = req.params;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No order with id: ${id}`);
     }
 
-    if (!await removeOrder(id)) {
+    const order = await Order.findByIdAndRemove(id);
+
+    if (order == null) {
         return res.status(404).send(`No order with id: ${id}`);
     }
     res.json({ message: "Order deleted successfully." });
-}
-
+};
 
 export const addLineProduct = async (req, res) => {
     const { orderId } = req.params;
-    const { productId, quantity } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
+    const { name, description, price, quantity } = req.body;
     try {
-        const [order, product] = await doesOrderProductExist(orderId, productId, res);
-        if (order == null || product == null) return;
-
-        // Check that product isnt already added
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId;
-        });
-
-        if (productIndex != -1) {
-            return res.status(406).send('Cannot add product (already exists)');
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
         }
 
-        const newLineProduct = {productId: product._id, quantity: quantity};
+        const newLineProduct = {
+            name: name,
+            description: description,
+            price: price,
+            quantity: quantity,
+        };
         order.lineProducts.push(newLineProduct);
-
+        order.lastModified = Date.now();
         order.save();
         return res.json(order);
-        
     } catch (error) {
-        return res.status(404).json({message: error.message});
+        return res.status(404).json({ message: error.message });
     }
-}
+};
 
 export const updateLineProduct = async (req, res) => {
-    const { orderId } = req.params;
-    const { productId, quantity } = req.body;
+    const { orderId, productId } = req.params;
+    const { name, description, price, quantity } = req.body;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        const [order, product] = await doesOrderProductExist(
-            orderId, productId, res
-        );
-        if (order == null || product == null) return;
-        
-        // Check if product is in lineProducts
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId
-        });
-
-        if (productIndex == -1) {
-            return res.status(404).send(
-                'Product not found in lineProducts of order'
-            );
-        }
-
-        order.lineProducts[productIndex].quantity = quantity;
-        order.save();
-        return res.json(order);
-
-    } catch (error) {
-        return res.status(404).json({message: error.message});
-    }
-}
-
-export const removeLineProduct = async (req, res) => {
-    const { orderId } = req.params;
-    const { productId } = req.body;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
-    }
-
-    try {
-        const [order, product] = await doesOrderProductExist(orderId, productId, res);
-        if (order == null || product == null) return;
-
-        // Check if product is in lineProducts
-        const productIndex = order.lineProducts.findIndex((lineProduct) => {
-            return lineProduct.productId == productId
-        });
-        if (productIndex == -1) {
-            return res.status(404).send(
-                'Product not found in lineProducts of order'
-            );
-        }
-        order.lineProducts.splice(productIndex, 1);
-        order.save();
-        await Product.findByIdAndRemove(productId);
-        return res.json(order);
-
-    } catch (error) {
-        return res.status(404).json({message: error.message});
-    }
-}
-
-export const getLineProducts = async (req, res) => {
-    const { orderId } = req.params;
-
-    if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
     try {
         const order = await Order.findById(orderId);
         if (order == null) {
-            return;
+            return res.status(404).send(`No order with id: ${orderId}`);
         }
 
-        const getLineProducts = async () => {
-            return Promise.all(
-                order.lineProducts.map(async (lineProduct) => {
-                    const productId = lineProduct.productId;
-                    const quantity = lineProduct.quantity;
-                    const product = await Product.findById(productId);
-                    return { product, quantity: quantity };
-                })
-            )
-        }
-        getLineProducts().then((products) => {
-            res.json(products);
-        })
+        // Check if product is in lineProducts
+        const lineProduct = findLineProduct(order, productId);
 
+        if (lineProduct == null) {
+            return res.status(404).send(`No product with id: ${productId}`);
+        }
+
+        const product = lineProduct.product;
+
+        product.name = name ? name : product.name;
+        product.description = description ? description : product.description;
+        product.price = price ? price : product.price;
+        product.quantity = quantity ? quantity : product.quantity;
+
+        order.lastModified = Date.now();
+        await order.save();
+        return res.json(order);
     } catch (error) {
-        res.status(404).json({ message: error.message});
+        return res.status(404).json({ message: error.message });
     }
+};
+
+export const removeLineProduct = async (req, res) => {
+    const { orderId, productId } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated!" });
+    }
+
+    try {
+        const order = await Order.findById(orderId);
+        if (order == null) {
+            return res.status(404).send(`No order with id: ${orderId}`);
+        }
+
+        // Check if product is in lineProducts
+        const lineProduct = findLineProduct(order, productId);
+
+        if (lineProduct == null) {
+            return res.status(404).send(`No product with id: ${productId}`);
+        }
+
+        order.lineProducts.splice(lineProduct.index);
+
+        order.lastModified = Date.now();
+        await order.save();
+        return res.json(order);
+    } catch (error) {
+        return res.status(404).json({ message: error.message });
+    }
+};
+
+function findLineProduct(order, productId) {
+    const productIndex = order.lineProducts.findIndex((lineProduct) => {
+        return lineProduct._id == productId;
+    });
+
+    if (productIndex == -1) {
+        return null;
+    }
+    return { product: order.lineProducts[productIndex], index: productIndex };
 }
 
 export const addLog = async (req, res) => {
@@ -251,7 +214,7 @@ export const addLog = async (req, res) => {
     const { userId, text } = req.body;
 
     if (!req.userId) {
-        return res.json({ message: "Unauthenticated!"});
+        return res.json({ message: "Unauthenticated!" });
     }
 
     try {
@@ -259,55 +222,29 @@ export const addLog = async (req, res) => {
         if (order == null) {
             return;
         }
-        
-        const user = await User.findById(id);
-        if (user) {
+
+        const user = await User.findById(userId);
+        if (user == null) {
             return;
         }
 
-        if (!await isAdminOrSelf(req.userId, user)) {
-            return res.json({ message: "No permission!"});
+        if (!(await isAdminOrSelf(req.userId, user))) {
+            return res.json({ message: "No permission!" });
         }
 
-        const newLog = { user: userId, text: text };
+        const newLog = {
+            user: userId,
+            text: text,
+            userName: `${user.nameFirst} ${user.nameLast}`,
+        };
         order.log.push(newLog);
 
+        order.lastModified = Date.now();
         await order.save();
         res.json(order);
     } catch (error) {
-        res.status(404).json({ message: error.message});
+        res.status(404).json({ message: error.message });
     }
-}
-
-async function doesOrderProductExist(orderId, productId, res) {
-    // Find the order
-    const order = await Order.findById(orderId);
-    if (order == null) {
-        res.status(404).send(`No order with id: ${orderId}`);
-        return [null, null];
-    }
-    
-    // Find the product
-    const product = await Product.findById(productId);
-    if (product == null) {
-        res.status(404).send(`No product with id: ${productId}`);
-        return [null, null];
-    }
-
-    return [order, product];
-}
-
-export async function removeOrder(orderId) {
-    const order = await Order.findById(orderId);
-    if (!order) return false;
-
-    const orderProducts = order.lineProducts;
-    for (var i = 0; i < orderProducts.length; i++) {
-        var productId = orderProducts[i].productId;
-        await Product.findByIdAndRemove(productId);
-    }
-    await Order.findByIdAndRemove(orderId);
-    return true;
-}
+};
 
 export default router;

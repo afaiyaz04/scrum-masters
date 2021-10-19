@@ -1,204 +1,473 @@
-import React from 'react'
+import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
-import ProfileButton from '../components/buttons/ProfileButton';
-import { connect } from 'react-redux';
-import { Timeline, Card, Progress, Table, Empty } from 'antd';
-import { fetchOrders } from '../redux/Order/order.actions';
-import 'antd/dist/antd.css';
-import '../App.css';
-import './Dashboard.css'
-import { CgProfile } from 'react-icons/cg';
-import { fetchContacts } from '../redux/Contact/contact.actions';
+import ProfileButton from "../components/buttons/ProfileButton";
+import { connect } from "react-redux";
+import {
+    Timeline,
+    Card,
+    Progress,
+    Table,
+    Empty,
+    Avatar,
+    Alert,
+    Tag,
+} from "antd";
+import { fetchOrders } from "../redux/Order/order.actions";
+import "./Dashboard.css";
+import { fetchContacts } from "../redux/Contact/contact.actions";
 
 const columns = [
-  {
-    title: 'Order No.',
-    dataIndex: 'orderNumber',
-    key: '_id',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-  },
-  {
-    title: 'Created',
-    dataIndex: 'timePlaced',
-    key: 'timePlaced',
-  },
-  {
-    title: 'Deadline',
-    dataIndex: 'timeDue',
-    key: 'timeDue',
-  },
-  {
-    title: 'Fee',
-    dataIndex: 'totalFee',
-    key: 'totalFee',
-  },
-]
+    {
+        title: "Order No.",
+        dataIndex: "orderNumber",
+        key: "_id",
+    },
+    {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        render: (status) => {
+            switch (status) {
+                case "CREATED":
+                    return (
+                        <Tag color={"red"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "DISCUSSED":
+                    return (
+                        <Tag color={"orange"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "AGREED":
+                    return (
+                        <Tag color={"blue"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                case "SIGNED":
+                    return (
+                        <Tag color={"green"} key={status}>
+                            {status}
+                        </Tag>
+                    );
+                default:
+                    return;
+            }
+        },
+    },
+    {
+        title: "Created",
+        dataIndex: "timePlaced",
+        key: "timePlaced",
+    },
+    {
+        title: "Deadline",
+        dataIndex: "timeDue",
+        key: "timeDue",
+    },
+    {
+        title: "Fee",
+        dataIndex: "totalFee",
+        key: "totalFee",
+    },
+];
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orders: this.props.orders.sort((a,b) => {
-        return a.timeDue - b.timeDue;
-      }),
-      ordersCreated: this.props.orders.filter((order) => {
-        return order.status === "CREATED";
-      }),
-      ordersDiscussed: this.props.orders.filter((order) => {
-        return order.status === "DISCUSSED";
-      }),
-      ordersAgreed: this.props.orders.filter((order) => {
-        return order.status === "AGREED";
-      }),
-      ordersSigned: this.props.orders.filter((order) => {
-        return order.status === "SIGNED";
-      }),
+    constructor(props) {
+        super(props);
+        this.state = {
+            incomingAlertClosed: false,
+            dueAlertClosed: false,
 
-      contacts: this.props.contacts,
-      
-      userId: JSON.parse(localStorage.getItem('userData'))._id,
-    };
-  }
-
-  componentDidMount() {
-    this.props.dispatch(fetchOrders(this.state.userId));
-    this.props.dispatch(fetchContacts(this.state.userId));
-  }
-
-  componentDidUpdate() {
-    if (this.state.orders.length != this.props.orders.length || this.state.contacts.length != this.props.contacts.length ) {
-      this.setState({
-        orders: this.props.orders.sort((a,b) => {
-          return a.timeDue - b.timeDue;
-        }),
-        ordersCreated: this.props.orders.filter((order) => {
-          return order.status === "CREATED";
-        }),
-        ordersDiscussed: this.props.orders.filter((order) => {
-          return order.status === "DISCUSSED";
-        }),
-        ordersAgreed: this.props.orders.filter((order) => {
-          return order.status === "AGREED";
-        }),
-        ordersSigned: this.props.orders.filter((order) => {
-          return order.status === "SIGNED";
-        }),
-
-        contacts: this.props.contacts,
-      });
+            userId: JSON.parse(localStorage.getItem("userData"))._id,
+        };
     }
-  }
 
-  render() {
-    return (
-      <div className='Master-div'>
-        <Sidebar />
-        <div className='dashboard'>
-          <div className='header-dashboard'>
-            <h1>Dashboard</h1>
-            <ProfileButton></ProfileButton>
-          </div>
-          <div className='progress'>
-            <Progress percent={ (this.state.ordersCreated.length * 100) / this.state.orders.length } format={() => `${this.state.ordersCreated.length} Orders Created`} strokeColor='#ff4d4f'/>
-            <Progress percent={ (this.state.ordersDiscussed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersDiscussed.length} Orders Discussed`} strokeColor='orange'/>
-            <Progress percent={ (this.state.ordersAgreed.length * 100) / this.state.orders.length } format={() => `${this.state.ordersAgreed.length} Orders Agreed`} strokeColor='#1890ff'/>
-            <Progress percent={ (this.state.ordersSigned.length * 100) / this.state.orders.length } format={() => `${this.state.ordersSigned.length} Orders Signed`} strokeColor='#52c418'/>
-          </div>
-          <div className='contents'>
-            <div className='dashboard-left'>
-              <h3>Timeline</h3>
-              <Timeline>
-                <Timeline.Item color='white'/>
-                {
-                  this.state.orders.map((order) => {
-                    switch (order.status) {
-                      case "CREATED":
-                        return (
-                          <Timeline.Item key={order._id} color='red'>
-                            Order { order.orderNumber }, due: { order.timeDue.slice(0,10) }
-                          </Timeline.Item>
-                        )
-                      case "DISCUSSED":
-                        return (
-                          <Timeline.Item key={order._id} color='orange'>
-                            Order { order.orderNumber } { order.timeDue.slice(0,10) }
-                          </Timeline.Item>
-                        )
-                      case "AGREED":
-                        return (
-                          <Timeline.Item key={order._id} color='blue'>
-                            Order { order.orderNumber }{ order.timeDue.slice(0,10) }
-                          </Timeline.Item>
-                        )
-                      case "SIGNED":
-                        return (
-                          <Timeline.Item key={order._id} color='green'>
-                            Order { order.orderNumber } { order.timeDue.slice(0,10) }
-                          </Timeline.Item>
-                        )
-                    }
-                  })
-                }
-              </Timeline>
-            </div>
-            <div className='dashboard-right'>
-              <div className='favourite-contacts'>
-                <h3>Favourite Contacts</h3>
-                  {
-                    (this.props.contacts.filter((c) => {if (c.fav) return c}).length === 0) &&
-                    <Empty className='empty-contact-list' image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                  }
-                  {
-                    (this.props.contacts.filter((c) => {if (c.fav) return c}).length > 0) &&
-                    <div className='favourite-contact-list'>
-                      {
-                        this.state.contacts.filter((c) => {if (c.fav) return c}).map((contact) => {
-                          return (
-                            <Card
-                              key={contact._id}
-                              hoverable
-                              cover={
-                                <CgProfile style={{ fontSize: '40px', height: 150, bottom: 150, padding: 10 }}/>
-                              }
-                              style={{ width: 240, height: 300 }}
-                              bodyStyle={{ height: 200, width: 230 }}>
-                              <h3 style={{ textAlign: 'center' }}>{`${contact.nameFirst} ${contact.nameLast}`}</h3>
-                              <h4>{ contact.email }</h4>
-                              <h4>{ contact.phoneNumber }</h4>
-                            </Card>
-                          )
-                        })
-                      }
-                    </div>
-                  }
-                <div className='recent-orders'>
-                  <h3>Recent Orders</h3>
-                  <Table columns={columns} dataSource={this.state.orders.sort((a,b) => {
-                    if (a.lastModified > b.lastModified) {
-                      return -1;
-                    } else {
-                      return 1;
-                    }
-                  }).slice(0, 5)} pagination={false}/>
+    componentDidMount() {
+        this.props.dispatch(fetchOrders(this.state.userId));
+        this.props.dispatch(fetchContacts(this.state.userId));
+    }
+
+    timelineOrders = (order) => {
+        switch (order.order.status) {
+            case "CREATED":
+                return (
+                    <Timeline.Item key={order.order._id} color="red">
+                        {this.timelineOrderText(order)}
+                    </Timeline.Item>
+                );
+            case "DISCUSSED":
+                return (
+                    <Timeline.Item key={order.order._id} color="orange">
+                        {this.timelineOrderText(order)}
+                    </Timeline.Item>
+                );
+            case "AGREED":
+                return (
+                    <Timeline.Item key={order.order._id} color="blue">
+                        {this.timelineOrderText(order)}
+                    </Timeline.Item>
+                );
+            case "SIGNED":
+                return (
+                    <Timeline.Item key={order.order._id} color="green">
+                        {this.timelineOrderText(order)}
+                    </Timeline.Item>
+                );
+            default:
+                return;
+        }
+    };
+
+    timelineOrderText = (order) => {
+        if (new Date(order.order.timeDue) - Date.now() < 604800000) {
+            return (
+                <div style={{ color: "red" }}>
+                    Order {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
                 </div>
-              </div>
+            );
+        } else {
+            return (
+                <div>
+                    Order {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
+                </div>
+            );
+        }
+    };
+
+    render() {
+        return (
+            <div className="Master-div">
+                <Sidebar />
+                <div className="dashboard">
+                    <div className="header-dashboard">
+                        <h1>Dashboard</h1>
+                        <ProfileButton></ProfileButton>
+                    </div>
+                    <div className="progress">
+                        <Progress
+                            percent={
+                                (this.props.orders.filter((order) => {
+                                    return (
+                                        order.order.status === "CREATED" &&
+                                        !order.isTransfer
+                                    );
+                                }).length *
+                                    100) /
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
+                            }
+                            format={() =>
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return (
+                                            order.order.status === "CREATED" &&
+                                            !order.isTransfer
+                                        );
+                                    }).length
+                                } Orders Created`
+                            }
+                            strokeColor="#ff4d4f"
+                        />
+                        <Progress
+                            percent={
+                                (this.props.orders.filter((order) => {
+                                    return (
+                                        order.order.status === "DISCUSSED" &&
+                                        !order.isTransfer
+                                    );
+                                }).length *
+                                    100) /
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
+                            }
+                            format={() =>
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return (
+                                            order.order.status ===
+                                                "DISCUSSED" && !order.isTransfer
+                                        );
+                                    }).length
+                                } Orders Discussed`
+                            }
+                            strokeColor="orange"
+                        />
+                        <Progress
+                            percent={
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "AGREED";
+                                }).length *
+                                    100) /
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
+                            }
+                            format={() =>
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return order.order.status === "AGREED";
+                                    }).length
+                                } Orders Agreed`
+                            }
+                            strokeColor="#1890ff"
+                        />
+                        <Progress
+                            percent={
+                                (this.props.orders.filter((order) => {
+                                    return order.order.status === "SIGNED";
+                                }).length *
+                                    100) /
+                                this.props.orders.filter((order) => {
+                                    return !order.isTransfer;
+                                }).length
+                            }
+                            format={() =>
+                                `${
+                                    this.props.orders.filter((order) => {
+                                        return order.order.status === "SIGNED";
+                                    }).length
+                                } Orders Signed`
+                            }
+                            strokeColor="#52c418"
+                        />
+                    </div>
+                    <div className="contents">
+                        <div className="dashboard-left">
+                            <h3>Upcoming Deadlines</h3>
+                            <Timeline>
+                                <Timeline.Item color="white" />
+                                {this.props.orders
+                                    .sort((a, b) => {
+                                        return (
+                                            new Date(a.order.timeDue) -
+                                            new Date(b.order.timeDue)
+                                        );
+                                    })
+                                    .filter((order) => {
+                                        return (
+                                            Date.now() <
+                                                new Date(order.order.timeDue) &&
+                                            !order.isTransfer
+                                        );
+                                    })
+                                    .map((order) => {
+                                        return this.timelineOrders(order);
+                                    })}
+                            </Timeline>
+                        </div>
+                        <div className="dashboard-right">
+                            {((this.props.orders.filter((order) => {
+                                return order.isTransfer;
+                            }).length > 0 &&
+                                !this.state.incomingAlertClosed) ||
+                                (this.props.orders.filter((order) => {
+                                    return (
+                                        new Date(order.order.timeDue) -
+                                            Date.now() <
+                                        604800000
+                                    );
+                                }).length > 0 &&
+                                    !this.state.dueAlertClosed)) && (
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        paddingBottom: "5%",
+                                    }}
+                                >
+                                    {this.props.orders.filter((order) => {
+                                        return order.isTransfer;
+                                    }).length > 0 && (
+                                        <Alert
+                                            message="Incoming Orders"
+                                            description={`You have ${
+                                                this.props.orders.filter(
+                                                    (order) => {
+                                                        return order.isTransfer;
+                                                    }
+                                                ).length
+                                            } order(s) ready to be accepted.`}
+                                            type="info"
+                                            showIcon
+                                            banner={true}
+                                            style={{ width: "100%" }}
+                                            closable
+                                            onClose={() => {
+                                                this.setState({
+                                                    incomingAlertClosed: true,
+                                                });
+                                            }}
+                                        />
+                                    )}
+                                    {this.props.orders.filter((order) => {
+                                        return (
+                                            new Date(order.order.timeDue) -
+                                                Date.now() <
+                                            604800000
+                                        );
+                                    }).length > 0 && (
+                                        <Alert
+                                            message="Due Soon"
+                                            description={`You have ${
+                                                this.props.orders.filter(
+                                                    (order) => {
+                                                        return (
+                                                            new Date(
+                                                                order.order.timeDue
+                                                            ) -
+                                                                Date.now() <
+                                                                604800000 &&
+                                                            new Date(
+                                                                order.order.timeDue
+                                                            ) -
+                                                                Date.now() >=
+                                                                0
+                                                        );
+                                                    }
+                                                ).length
+                                            } order(s) due soon.`}
+                                            type="warning"
+                                            showIcon
+                                            banner={true}
+                                            style={{ width: "100%" }}
+                                            closable
+                                            onClose={() => {
+                                                this.setState({
+                                                    dueAlertClosed: true,
+                                                });
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            )}
+                            <div className="favourite-contacts">
+                                <h3>Favourite Contacts</h3>
+                                {this.props.contacts.filter((c) => {
+                                    return c.fav;
+                                }).length === 0 && (
+                                    <div className="favourite-contact-list">
+                                        <Empty
+                                            className="empty-contact-list"
+                                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                        />
+                                    </div>
+                                )}
+                                {this.props.contacts.filter((c) => {
+                                    return c.fav;
+                                }).length > 0 && (
+                                    <div className="favourite-contact-list">
+                                        {this.props.contacts
+                                            .filter((c) => {
+                                                return c.fav;
+                                            })
+                                            .map((contact) => {
+                                                return (
+                                                    <Card
+                                                        key={contact._id}
+                                                        hoverable
+                                                        cover={
+                                                            <Avatar
+                                                                src={
+                                                                    contact.profilePic
+                                                                }
+                                                                referrerPolicy="no-referrer"
+                                                                style={{
+                                                                    height: 120,
+                                                                    width: 120,
+                                                                    marginBottom: 10,
+                                                                    marginLeft: 60,
+                                                                    marginTop: 10,
+                                                                }}
+                                                            />
+                                                        }
+                                                        style={{
+                                                            width: 240,
+                                                            height: 300,
+                                                        }}
+                                                        bodyStyle={{
+                                                            height: 200,
+                                                            width: 230,
+                                                        }}
+                                                    >
+                                                        <h3
+                                                            style={{
+                                                                textAlign:
+                                                                    "center",
+                                                            }}
+                                                        >{`${contact.nameFirst} ${contact.nameLast}`}</h3>
+                                                        <h4>{contact.email}</h4>
+                                                        <h4>
+                                                            {
+                                                                contact.phoneNumber
+                                                            }
+                                                        </h4>
+                                                    </Card>
+                                                );
+                                            })}
+                                    </div>
+                                )}
+                                <div className="recent-orders">
+                                    <h3>Recent Orders</h3>
+                                    <Table
+                                        columns={columns}
+                                        dataSource={this.props.orders
+                                            .filter((order) => {
+                                                return !order.isTransfer;
+                                            })
+                                            .sort((a, b) => {
+                                                return (
+                                                    new Date(
+                                                        b.order.lastModified
+                                                    ) -
+                                                    new Date(
+                                                        a.order.lastModified
+                                                    )
+                                                );
+                                            })
+                                            .map((order) => {
+                                                return {
+                                                    key: order.order._id,
+                                                    orderNumber:
+                                                        order.order.orderNumber,
+                                                    status: order.order.status,
+                                                    timePlaced:
+                                                        order.order.timePlaced.slice(
+                                                            0,
+                                                            10
+                                                        ),
+                                                    timeDue:
+                                                        order.order.timeDue.slice(
+                                                            0,
+                                                            10
+                                                        ),
+                                                    totalFee:
+                                                        order.order.totalFee,
+                                                };
+                                            })
+                                            .slice(0, 5)}
+                                        pagination={false}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    contacts: state.contacts,
-    orders: state.orders,
-  }
-}
+    return {
+        contacts: state.contacts,
+        orders: state.orders,
+    };
+};
 
 export default connect(mapStateToProps)(Dashboard);

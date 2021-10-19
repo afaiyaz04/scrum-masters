@@ -1,9 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const {
-    CONTRACT_CONFIRMED,
-    CONTRACT_FULFILLED,
-} = require("./systemEnums");
+const { CONTRACT_CONFIRMED, CONTRACT_FULFILLED } = require("./systemEnums");
 
 // define the Contract schema
 const contractSchema = new mongoose.Schema({
@@ -17,10 +14,7 @@ const contractSchema = new mongoose.Schema({
     feeAgreed: { type: Number, required: true },
     status: {
         type: String,
-        enum: [
-            CONTRACT_CONFIRMED,
-            CONTRACT_FULFILLED,
-        ],
+        enum: [CONTRACT_CONFIRMED, CONTRACT_FULFILLED],
         default: CONTRACT_CONFIRMED,
         required: true,
     },

@@ -1,12 +1,9 @@
-import express from 'express'
+import express from "express";
 
-import {
-        viewReport,
-        viewAllReports
-} from '../controllers/report.js';
+import { viewReport, viewAllReports } from "../controllers/report.js";
 
-import auth from '../middleware/auth.js';
- 
+import auth from "../middleware/auth.js";
+
 const router = express.Router();
 
 router.get("/:id", auth, viewReport);
