@@ -131,7 +131,19 @@ class Orders extends React.Component {
                 width: "15%",
             },
             {
-                title: "Actions",
+                title: () => {
+                    return (
+                        <Button
+                            className="general-btn"
+                            onClick={() => {
+                                this.setState({ order: initialOrder });
+                                this.endRenderExcept("addOrder");
+                            }}
+                        >
+                            New Order
+                        </Button>
+                    );
+                },
                 dataIndex: "action",
                 key: "action",
                 width: "20%",
@@ -406,13 +418,7 @@ class Orders extends React.Component {
             <div className="Master-div">
                 <Sidebar />
                 <div className="orders">
-                    <Header
-                        page="Orders"
-                        actions={() => {
-                            this.setState({ order: initialOrder });
-                            this.endRenderExcept("addOrder");
-                        }}
-                    />
+                    <Header page="Orders" />
                     <div className="contents">
                         <div className="contents-left">
                             <Collapse bordered={false}>

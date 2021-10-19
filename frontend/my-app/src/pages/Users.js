@@ -12,6 +12,7 @@ import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const initialUser = {
     id: "",
@@ -90,22 +91,30 @@ class Users extends React.Component {
             <div className="Master-div">
                 <Sidebar />
                 <div className="users">
-                    <Header
-                        page="Users"
-                        actions={() => {
-                            this.setState({
-                                addUser: true,
-                                showDetails: false,
-                                user: initialUser,
-                            });
-                        }}
-                    />
+                    <Header page="Users" />
                     <div className="contents">
                         <div className="contents-left">
-                            <span>
-                                <h3 className="content-header">Name</h3>
-                            </span>
                             <List
+                                header={
+                                    <h3>
+                                        <span className="content-header">
+                                            Name
+                                        </span>
+                                        <Button
+                                            className="header-btn"
+                                            style={{ marginRight: "50px" }}
+                                            size="large"
+                                            icon={<AiOutlinePlus />}
+                                            onClick={() => {
+                                                this.setState({
+                                                    addUser: true,
+                                                    showDetails: false,
+                                                    user: initialUser,
+                                                });
+                                            }}
+                                        />
+                                    </h3>
+                                }
                                 itemLayout="horizontal"
                                 dataSource={this.props.users}
                                 renderItem={(item) => (
