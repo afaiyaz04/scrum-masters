@@ -69,7 +69,7 @@ const OrderForm = (props) => {
                                 height: 150,
                                 paddingTop: 5,
                                 overflowY: "scroll",
-                                maxWidth: 250,
+                                maxWidth: "100%",
                                 wordWrap: "break-word",
                             }}
                         >
