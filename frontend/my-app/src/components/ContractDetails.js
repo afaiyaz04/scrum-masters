@@ -32,17 +32,6 @@ const ContractDetails = (props) => {
         },
     ];
 
-    const getClientName = (clientId) => {
-        if (!clientId) return "";
-        let name;
-        Object.keys(contacts).forEach((contact) => {
-            if (contacts[contact]._id === clientId) {
-                name = `${contacts[contact].nameFirst} ${contacts[contact].nameLast}`;
-            }
-        });
-        return name;
-    };
-
     return (
         <Form {...layout}>
             <Form.Item />
@@ -52,7 +41,7 @@ const ContractDetails = (props) => {
             </Form.Item>
             <Form.Item label="Client:">
                 <div className="form-text">
-                    {getClientName(contract.client)}
+                    {contract.clientName}
                 </div>
             </Form.Item>
             <Form.Item label="Total Fee:">
@@ -61,19 +50,31 @@ const ContractDetails = (props) => {
             <Form.Item label="Time Due:">
                 <div className="form-text">{contract.timeDue}</div>
             </Form.Item>
-            <Form.Item label="Status:">
-                <Select
-                    placeholder={contract.status}
-                    onChange={(value) =>
-                        setContract({ ...contract, status: value })
-                    }
-                >
-                    <Select.Option value={"CREATED"}>CREATED</Select.Option>
-                    <Select.Option value={"DISCUSSED"}>DISCUSSED</Select.Option>
-                    <Select.Option value={"AGREED"}>AGREED</Select.Option>
-                    <Select.Option value={"SIGNED"}>SIGNED</Select.Option>
-                </Select>
-            </Form.Item>
+            {
+                (contract.status === "ARCHIVED") &&
+                <Form.Item label="Status:">
+                    <Select
+                        placeholder={contract.status}
+                        disabled={true}
+                    />
+                </Form.Item>
+            }
+            {
+                (contract.status !== "ARCHIVED") &&
+                <Form.Item label="Status:">
+                    <Select
+                        placeholder={contract.status}
+                        onChange={(value) =>
+                            props.updateAction({ ...contract, status: value })
+                        }
+                    >
+                        <Select.Option value={"CREATED"}>CREATED</Select.Option>
+                        <Select.Option value={"DISCUSSED"}>DISCUSSED</Select.Option>
+                        <Select.Option value={"AGREED"}>AGREED</Select.Option>
+                        <Select.Option value={"SIGNED"}>SIGNED</Select.Option>
+                    </Select>
+                </Form.Item>
+            }
             <Form.Item
                 label="Description:"
                 style={{ display: "flex", flexWrap: "wrap" }}
@@ -121,14 +122,36 @@ const ContractDetails = (props) => {
                 </Panel>
             </Collapse>
             <Form.Item />
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                <Button
-                    style={{ paddingLeft: 2, textAlign: "center" }}
-                    onClick={() => props.updateAction(contract)}
+            {
+                (contract.status !== "ARCHIVED") &&
+                <Form.Item
+                    wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                 >
-                    Mark complete
-                </Button>
-            </Form.Item>
+                    <Button
+                        className="general-btn"
+                        block
+                        onClick={() => props.updateAction({ ...contract, status: "ARCHIVED" })}
+                    >
+                        Archive Contract
+                    </Button>
+                </Form.Item>
+
+            }
+            {
+                (contract.status === "ARCHIVED") &&
+                <Form.Item
+                    wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
+                >
+                    <Button
+                        className="general-btn"
+                        block
+                        onClick={() => props.updateAction({ ...contract, status: "AGREED" })}
+                    >
+                        Restore Contract
+                    </Button>
+                </Form.Item>
+
+            }
         </Form>
     );
 };

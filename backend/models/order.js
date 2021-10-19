@@ -5,6 +5,7 @@ import {
     ORDER_DISCUSSED,
     ORDER_AGREED,
     ORDER_SIGNED,
+    ORDER_ARCHIVED,
 } from "./systemEnums.js";
 
 // define the ProductItem child schema
@@ -43,7 +44,7 @@ const orderSchema = new mongoose.Schema({
     totalFee: { type: Number, required: true },
     status: {
         type: String,
-        enum: [ORDER_CREATED, ORDER_DISCUSSED, ORDER_AGREED, ORDER_SIGNED],
+        enum: [ORDER_CREATED, ORDER_DISCUSSED, ORDER_AGREED, ORDER_SIGNED, ORDER_ARCHIVED],
         default: ORDER_CREATED,
         required: true,
     },
