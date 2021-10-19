@@ -25,20 +25,20 @@ import {
 import { fetchUsers } from "../redux/Users/users.actions";
 
 const initialOrder = {
-    _id: "",
-    client: "",
-    timeDue: "",
+    _id: null,
+    client: null,
+    timeDue: null,
     totalFee: 0,
     status: "CREATED",
-    description: "",
+    description: null,
     lineProducts: [],
     log: [],
 };
 
 const initialProduct = {
-    _id: "",
-    name: "",
-    description: "",
+    _id: null,
+    name: null,
+    description: null,
     price: 0,
     quantity: 0,
 };
