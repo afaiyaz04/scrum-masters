@@ -276,6 +276,7 @@ class Orders extends React.Component {
 
     transferOrderHandler = (toUserId, orderIds) => {
         this.endRenderExcept();
+        this.setState({ selectedOrders: [] })
         this.props.dispatch(
             transferOrder(this.state.userId, toUserId, orderIds)
         );

@@ -6,24 +6,19 @@ import { connect } from "react-redux";
 import { List, Button } from "antd";
 import ContractDetails from "../components/ContractDetails";
 import {
-    createOrder,
     fetchOrders,
     updateOrder,
-    deleteOrder,
 } from "../redux/Order/order.actions";
-import ContractForm from "../components/ContractForm";
 
 const initialOrder = {
-    id: null,
+    _id: null,
     timeDue: Date,
     totalFee: 0,
-    description: "",
-    client: "",
-    status: "CREATED",
+    description: null,
+    client: null,
+    status: null,
     lineProducts: [],
-    orderNumber: "",
-    timePlaced: Date,
-    lastModified: Date,
+    orderNumber: null,
 };
 
 class Contracts extends Component {
@@ -34,8 +29,6 @@ class Contracts extends Component {
             products: [],
 
             showDetails: false,
-            addContract: false,
-            contract_added: "",
 
             userId: JSON.parse(localStorage.getItem("userData"))._id,
         };
@@ -46,30 +39,14 @@ class Contracts extends Component {
     }
 
     contractFilter = (order) => {
-        if (order.status === "SIGNED" || order.status === "AGREED") {
+        if (order.order.status === "SIGNED" || order.order.status === "AGREED") {
             return order;
-        }
-    };
-
-    ordersNotContracts = (order) => {
-        if (order.status !== "SIGNED" && order.status !== "AGREED") {
-            return order;
-        }
-    };
-    descriptionLimit = (description) => {
-        if (description.length > 50) {
-            return `${description.slice(0, 50)}...`;
-        } else {
-            return description;
         }
     };
 
     updateOrderHandler = (newItem) => {
-        this.setState({ showDetails: false });
-        console.log("THE CONTRACR IS HGEREE");
-        newItem.status = "SIGNED";
-        console.log(newItem.status);
-        this.props.dispatch(updateOrder(this.state.contract.id, newItem));
+        this.setState({ contract: newItem });
+        this.props.dispatch(updateOrder(this.state.contract._id, newItem));
     };
 
     render() {
@@ -80,16 +57,10 @@ class Contracts extends Component {
                 <div className="orders">
                     <Header
                         page="Contracts"
-                        actions={() => {
-                            this.setState({
-                                addContract: true,
-                                showDetails: false,
-                            });
-                        }}
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            <span>Name</span>
+                            <span></span>
                             <List
                                 itemLayout="horizontal"
                                 dataSource={this.props.orders.filter(
@@ -101,35 +72,24 @@ class Contracts extends Component {
                                         key={item.id}
                                         actions={[
                                             <Button
-                                                type="dashed"
-                                                style={{
-                                                    paddingLeft: 2,
-                                                    textAlign: "center",
-                                                }}
-                                                block
+                                                className="general-btn"
                                                 onClick={() => {
-                                                    // this.props.dispatch(fetchProducts(item._id));
                                                     this.setState({
                                                         showDetails: true,
-                                                        addContract: false,
                                                         contract: {
-                                                            id: item._id,
+                                                            _id: item.order._id,
                                                             client: item.client,
                                                             timeDue:
-                                                                item.timeDue,
+                                                                item.order.timeDue,
                                                             totalFee:
-                                                                item.totalFee,
+                                                                item.order.totalFee,
                                                             description:
-                                                                item.description,
-                                                            status: item.status,
+                                                                item.order.description,
+                                                            status: item.order.status,
                                                             lineProducts:
-                                                                item.lineProducts,
+                                                                item.order.lineProducts,
                                                             orderNumber:
-                                                                item.orderNumber,
-                                                            timePlaced:
-                                                                item.timePlaced,
-                                                            lastModified:
-                                                                item.lastModified,
+                                                                item.order.orderNumber,
                                                         },
                                                     });
                                                 }}
@@ -139,10 +99,8 @@ class Contracts extends Component {
                                         ]}
                                     >
                                         <List.Item.Meta
-                                            title={`Contract No. ${item.orderNumber}`}
-                                            description={this.descriptionLimit(
-                                                item.description
-                                            )}
+                                            title={`Contract No. ${item.order.orderNumber}`}
+                                            description={item.order.description}
                                         />
                                     </List.Item>
                                 )}
@@ -152,25 +110,12 @@ class Contracts extends Component {
                             <div className="contents-right">
                                 <ContractDetails
                                     contract={this.state.contract}
+                                    contacts={this.props.contacts}
                                     closeAction={() =>
                                         this.setState({ showDetails: false })
                                     }
                                     updateAction={this.updateOrderHandler}
                                 ></ContractDetails>
-                            </div>
-                        )}
-                        {this.state.addContract && (
-                            <div className="contents-right">
-                                <ContractForm
-                                    orders={this.props.orders.filter(
-                                        this.ordersNotContracts
-                                    )}
-                                    addFunction={(contract) =>
-                                        this.setState({
-                                            contract_added: contract,
-                                        })
-                                    }
-                                ></ContractForm>
                             </div>
                         )}
                     </div>
