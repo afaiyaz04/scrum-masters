@@ -68,18 +68,10 @@ const ContractDetails = (props) => {
                         setContract({ ...contract, status: value })
                     }
                 >
-                    <Select.Option value={"CREATED"}>
-                        CREATED
-                    </Select.Option>
-                    <Select.Option value={"DISCUSSED"}>
-                        DISCUSSED
-                    </Select.Option>
-                    <Select.Option value={"AGREED"}>
-                        AGREED
-                    </Select.Option>
-                    <Select.Option value={"SIGNED"}>
-                        SIGNED
-                    </Select.Option>
+                    <Select.Option value={"CREATED"}>CREATED</Select.Option>
+                    <Select.Option value={"DISCUSSED"}>DISCUSSED</Select.Option>
+                    <Select.Option value={"AGREED"}>AGREED</Select.Option>
+                    <Select.Option value={"SIGNED"}>SIGNED</Select.Option>
                 </Select>
             </Form.Item>
             <Form.Item
@@ -111,21 +103,20 @@ const ContractDetails = (props) => {
                             expandedRowRender: (record) => (
                                 <p style={{ margin: 0 }}>
                                     Item Description:
-                                    <br/>
+                                    <br />
                                     {record.description}
                                 </p>
-                            )
+                            ),
                         }}
-                        dataSource={contract.lineProducts
-                            .map((product) => {
-                                return {
-                                    key: product._id,
-                                    name: product.name,
-                                    quantity: product.quantity,
-                                    price: product.price,
-                                    description: product.description,
-                                }
-                            })}
+                        dataSource={contract.lineProducts.map((product) => {
+                            return {
+                                key: product._id,
+                                name: product.name,
+                                quantity: product.quantity,
+                                price: product.price,
+                                description: product.description,
+                            };
+                        })}
                     />
                 </Panel>
             </Collapse>

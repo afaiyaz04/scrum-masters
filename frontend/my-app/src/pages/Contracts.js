@@ -5,10 +5,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { List, Button } from "antd";
 import ContractDetails from "../components/ContractDetails";
-import {
-    fetchOrders,
-    updateOrder,
-} from "../redux/Order/order.actions";
+import { fetchOrders, updateOrder } from "../redux/Order/order.actions";
 
 const initialOrder = {
     _id: null,
@@ -39,7 +36,10 @@ class Contracts extends Component {
     }
 
     contractFilter = (order) => {
-        if (order.order.status === "SIGNED" || order.order.status === "AGREED") {
+        if (
+            order.order.status === "SIGNED" ||
+            order.order.status === "AGREED"
+        ) {
             return order;
         }
     };
@@ -55,9 +55,7 @@ class Contracts extends Component {
             <div className="Master-div">
                 <Sidebar />
                 <div className="orders">
-                    <Header
-                        page="Contracts"
-                    />
+                    <Header page="Contracts" />
                     <div className="contents">
                         <div className="contents-left">
                             <span></span>
@@ -80,16 +78,22 @@ class Contracts extends Component {
                                                             _id: item.order._id,
                                                             client: item.client,
                                                             timeDue:
-                                                                item.order.timeDue,
+                                                                item.order
+                                                                    .timeDue,
                                                             totalFee:
-                                                                item.order.totalFee,
+                                                                item.order
+                                                                    .totalFee,
                                                             description:
-                                                                item.order.description,
-                                                            status: item.order.status,
+                                                                item.order
+                                                                    .description,
+                                                            status: item.order
+                                                                .status,
                                                             lineProducts:
-                                                                item.order.lineProducts,
+                                                                item.order
+                                                                    .lineProducts,
                                                             orderNumber:
-                                                                item.order.orderNumber,
+                                                                item.order
+                                                                    .orderNumber,
                                                         },
                                                     });
                                                 }}
