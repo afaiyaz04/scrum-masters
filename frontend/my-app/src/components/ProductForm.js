@@ -26,12 +26,10 @@ const ProductForm = (props) => {
         } else if (props.addProduct) {
             props.createProductAction(product);
         }
-    }
+    };
 
     return (
-        <Form {...layout}
-            onFinish={onSubmit}
-        >
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             {!edit && !props.addProduct && (
@@ -79,7 +77,13 @@ const ProductForm = (props) => {
                     <Form.Item
                         label="Item Name:"
                         name="name"
-                        rules={[{ required: props.addProduct, message: 'Item name required' }]}>
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={product.name}
                             onChange={(e) =>
@@ -90,7 +94,13 @@ const ProductForm = (props) => {
                     <Form.Item
                         label="Price:"
                         name="price"
-                        rules={[{ required: props.addProduct, message: 'Item price required' }]}>
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item price required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(e) =>
                                 setProduct({ ...product, price: e })
@@ -102,7 +112,13 @@ const ProductForm = (props) => {
                     <Form.Item
                         label="Quantity:"
                         name="quantity"
-                        rules={[{ required: props.addProduct, message: 'Item quantity required' }]}>
+                        rules={[
+                            {
+                                required: props.addProduct,
+                                message: "Item quantity required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(e) =>
                                 setProduct({ ...product, quantity: e })

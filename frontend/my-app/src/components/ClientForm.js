@@ -28,12 +28,10 @@ const ClientForm = (props) => {
         } else if (props.addContact) {
             props.createAction(contact);
         }
-    }
+    };
 
     return (
-        <Form {...layout}
-            onFinish={onSubmit}
-        >
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             {!edit && !props.addContact && (
@@ -120,7 +118,13 @@ const ClientForm = (props) => {
                     <Form.Item
                         label="First Name:"
                         name="nameFirst"
-                        rules={[{ required: props.addContact, message: 'First name required' }]}>
+                        rules={[
+                            {
+                                required: props.addContact,
+                                message: "First name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={contact.nameFirst}
                             onChange={(e) =>
@@ -134,7 +138,13 @@ const ClientForm = (props) => {
                     <Form.Item
                         label="Last Name:"
                         name="nameLast"
-                        rules={[{ required: props.addContact, message: 'Last name required' }]}>
+                        rules={[
+                            {
+                                required: props.addContact,
+                                message: "Last name required",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder={contact.nameLast}
                             onChange={(e) =>

@@ -38,12 +38,10 @@ const OrderForm = (props) => {
         } else if (props.addOrder) {
             props.createOrderAction(order);
         }
-    }
+    };
 
     return (
-        <Form {...layout}
-            onFinish={onSubmit}
-        >
+        <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
             <CloseButton closeAction={props.closeAction} />
             <Form.Item label="Order No">
@@ -103,7 +101,13 @@ const OrderForm = (props) => {
                     <Form.Item
                         label="Client:"
                         name="client"
-                        rules={[{ required: props.addOrder, message: 'Client required' }]}>
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Client required",
+                            },
+                        ]}
+                    >
                         <Select
                             placeholder={getClientName(order.client)}
                             style={{ width: "100%" }}
@@ -128,7 +132,13 @@ const OrderForm = (props) => {
                     <Form.Item
                         label="Time Due:"
                         name="timeDue"
-                        rules={[{ required: props.addOrder, message: 'Deadline required' }]}>
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Deadline required",
+                            },
+                        ]}
+                    >
                         <DatePicker
                             showTime
                             placeholder={order.timeDue}
@@ -143,7 +153,13 @@ const OrderForm = (props) => {
                     <Form.Item
                         label="Total Fee:"
                         name="totalFee"
-                        rules={[{ required: props.addOrder, message: 'Total Fee required' }]}>
+                        rules={[
+                            {
+                                required: props.addOrder,
+                                message: "Total Fee required",
+                            },
+                        ]}
+                    >
                         <InputNumber
                             onChange={(value) => {
                                 setOrder({ ...order, totalFee: value });
