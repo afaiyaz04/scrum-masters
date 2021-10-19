@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { List, Button, Divider } from "antd";
-import ContractDetails from "../components/ContractDetails";
+import ContractForm from "../components/ContractForm";
 import { fetchOrders, updateOrder } from "../redux/Order/order.actions";
 
 const initialOrder = {
@@ -175,13 +175,13 @@ class Contracts extends Component {
                         </div>
                         {this.state.showDetails && (
                             <div className="contents-right">
-                                <ContractDetails
+                                <ContractForm
                                     contract={this.state.contract}
                                     closeAction={() =>
                                         this.setState({ showDetails: false })
                                     }
                                     updateAction={this.updateOrderHandler}
-                                ></ContractDetails>
+                                />
                             </div>
                         )}
                     </div>
