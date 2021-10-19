@@ -183,7 +183,13 @@ class Orders extends React.Component {
                     <>
                         <Button
                             className="general-btn"
-                            onClick={() => this.onAccept(record.key, record.client, record.clientId)}
+                            onClick={() =>
+                                this.onAccept(
+                                    record.key,
+                                    record.client,
+                                    record.clientId
+                                )
+                            }
                         >
                             Accept
                         </Button>
@@ -283,8 +289,14 @@ class Orders extends React.Component {
 
     addTransferClientHandler = () => {
         this.endRenderExcept();
-        this.props.dispatch(addTransferClient(this.state.userId, this.state.transferClientId, this.state.transferOrderId));
-    }
+        this.props.dispatch(
+            addTransferClient(
+                this.state.userId,
+                this.state.transferClientId,
+                this.state.transferOrderId
+            )
+        );
+    };
 
     // Stops rendering for all components unless specified
     endRenderExcept = (selectedComponent) => {
@@ -336,7 +348,12 @@ class Orders extends React.Component {
 
     onAccept = (key, clientName, clientId) => {
         this.props.dispatch(acceptOrder(this.state.userId, key));
-        this.setState({ addTransferClient: true, transferOrderId: key, transferClientName: clientName, transferClientId: clientId });
+        this.setState({
+            addTransferClient: true,
+            transferOrderId: key,
+            transferClientName: clientName,
+            transferClientId: clientId,
+        });
     };
 
     onDecline = (key) => {
@@ -578,7 +595,9 @@ class Orders extends React.Component {
                                 users={this.props.users}
                                 userId={this.state.userId}
                                 transferAction={this.transferOrderHandler}
-                                transferClientAction={this.addTransferClientHandler}
+                                transferClientAction={
+                                    this.addTransferClientHandler
+                                }
                                 closeAction={() => this.endRenderExcept()}
                             />
                         )}

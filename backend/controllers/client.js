@@ -146,7 +146,7 @@ export const makeFavourite = async (req, res) => {
 
 export const cloneClient = async (req, res) => {
     const { id } = req.params;
-    
+
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
     }
@@ -189,6 +189,6 @@ export const cloneClient = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
-}
+};
 
 export default router;
