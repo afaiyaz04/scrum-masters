@@ -613,7 +613,6 @@ class Orders extends React.Component {
                         )}
                     </div>
                     <Modal
-                        title={`Add ${this.state.transferClientName} to your contacts?`}
                         visible={this.state.addTransferClient}
                         onCancel={() => this.endRenderExcept()}
                         footer={null}
@@ -623,6 +622,7 @@ class Orders extends React.Component {
                         <h3 style={{ textAlign: "center" }}>
                             {`Do you want to add ${this.state.transferClientName} to your contacts?`}
                         </h3>
+                        <br />
                         <Button
                             type="primary"
                             block
@@ -630,6 +630,13 @@ class Orders extends React.Component {
                             style={{ textAlign: "center" }}
                         >
                             Confirm
+                        </Button>
+                        <Button
+                            block
+                            onClick={() => this.endRenderExcept()}
+                            style={{ textAlign: "center" }}
+                        >
+                            Cancel
                         </Button>
                     </Modal>
                 </div>
