@@ -3,8 +3,8 @@ import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { Component } from "react";
 import { connect } from "react-redux";
-import { List, Button } from "antd";
-import ContractDetails from "../components/ContractDetails";
+import { List, Button, Divider } from "antd";
+import ContractForm from "../components/ContractForm";
 import { fetchOrders, updateOrder } from "../redux/Order/order.actions";
 
 const initialOrder = {
@@ -13,6 +13,7 @@ const initialOrder = {
     totalFee: 0,
     description: null,
     client: null,
+    clientName: null,
     status: null,
     lineProducts: [],
     orderNumber: null,
@@ -44,13 +45,23 @@ class Contracts extends Component {
         }
     };
 
+    archivedFilter = (order) => {
+        return order.order.status === "ARCHIVED";
+    };
+
     updateOrderHandler = (newItem) => {
         this.setState({ contract: newItem });
         this.props.dispatch(updateOrder(this.state.contract._id, newItem));
+        if (
+            newItem.status !== "ARCHIVED" &&
+            newItem.status !== "SIGNED" &&
+            newItem.status !== "AGREED"
+        ) {
+            this.setState({ contract: initialOrder, showDetails: false });
+        }
     };
 
     render() {
-        console.log(this.state.contract);
         return (
             <div className="Master-div">
                 <Sidebar />
@@ -76,7 +87,69 @@ class Contracts extends Component {
                                                         showDetails: true,
                                                         contract: {
                                                             _id: item.order._id,
-                                                            client: item.client,
+                                                            client: item.order
+                                                                .client,
+                                                            clientName:
+                                                                item.clientName,
+                                                            timeDue:
+                                                                item.order
+                                                                    .timeDue,
+                                                            totalFee:
+                                                                item.order
+                                                                    .totalFee,
+                                                            description:
+                                                                item.order
+                                                                    .description,
+                                                            status: item.order
+                                                                .status,
+                                                            lineProducts:
+                                                                item.order
+                                                                    .lineProducts,
+                                                            orderNumber:
+                                                                item.order
+                                                                    .orderNumber,
+                                                        },
+                                                    });
+                                                }}
+                                            >
+                                                Details
+                                            </Button>,
+                                        ]}
+                                    >
+                                        <List.Item.Meta
+                                            title={`Contract No. ${item.order.orderNumber}`}
+                                            description={item.order.description}
+                                        />
+                                    </List.Item>
+                                )}
+                            />
+                            <br />
+                            <span>
+                                <Divider orientation="left" plain>
+                                    Archived Contracts
+                                </Divider>
+                            </span>
+                            <List
+                                itemLayout="horizontal"
+                                dataSource={this.props.orders.filter(
+                                    this.archivedFilter
+                                )}
+                                renderItem={(item) => (
+                                    <List.Item
+                                        className="order-item"
+                                        key={item.id}
+                                        actions={[
+                                            <Button
+                                                className="general-btn"
+                                                onClick={() => {
+                                                    this.setState({
+                                                        showDetails: true,
+                                                        contract: {
+                                                            _id: item.order._id,
+                                                            client: item.order
+                                                                .client,
+                                                            clientName:
+                                                                item.clientName,
                                                             timeDue:
                                                                 item.order
                                                                     .timeDue,
@@ -112,14 +185,13 @@ class Contracts extends Component {
                         </div>
                         {this.state.showDetails && (
                             <div className="contents-right">
-                                <ContractDetails
+                                <ContractForm
                                     contract={this.state.contract}
-                                    contacts={this.props.contacts}
                                     closeAction={() =>
                                         this.setState({ showDetails: false })
                                     }
                                     updateAction={this.updateOrderHandler}
-                                ></ContractDetails>
+                                />
                             </div>
                         )}
                     </div>
@@ -132,7 +204,6 @@ class Contracts extends Component {
 const mapStateToProps = (state) => {
     return {
         orders: state.orders,
-        contacts: state.contacts,
     };
 };
 

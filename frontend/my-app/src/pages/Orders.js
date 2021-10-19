@@ -393,6 +393,14 @@ class Orders extends React.Component {
         );
     };
 
+    filterContract = (order) => {
+        return (
+            order.order.status !== "ARCHIVED" &&
+            order.order.status !== "SIGNED" &&
+            order.order.status !== "AGREED"
+        );
+    };
+
     render() {
         return (
             <div className="Master-div">
@@ -529,7 +537,12 @@ class Orders extends React.Component {
                                     expandedRowRender: this.productRender,
                                 }}
                                 dataSource={this.props.orders
-                                    .filter((order) => !order.isTransfer)
+                                    .filter((order) => {
+                                        return (
+                                            !order.isTransfer &&
+                                            this.filterContract(order)
+                                        );
+                                    })
                                     .map((order) => {
                                         return {
                                             key: order.order._id,
