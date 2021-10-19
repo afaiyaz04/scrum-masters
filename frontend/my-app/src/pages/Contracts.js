@@ -112,7 +112,7 @@ class Contracts extends Component {
                                     >
                                         <List.Item.Meta
                                             title={`Contract No. ${item.order.orderNumber}`}
-                                            description={item.order.description}
+                                            description={`Client: ${item.clientName}, Due: ${item.order.timeDue.slice(0, 10)}`}
                                         />
                                     </List.Item>
                                 )}

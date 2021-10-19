@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../components/sideBar/Sidebar";
 import Header from "../components/Header";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { AiOutlinePlus } from "react-icons/ai";
 import { List, Button, Avatar } from "antd";
 import {
     createContact,
@@ -70,20 +71,29 @@ class Contacts extends React.Component {
                 <div className="contacts">
                     <Header
                         page="Contacts"
-                        actions={() => {
-                            this.setState({
-                                addContact: true,
-                                showDetails: false,
-                                contact: initialContact,
-                            });
-                        }}
                     />
                     <div className="contents">
                         <div className="contents-left">
-                            <span>
-                                <h3 className="content-header">Name</h3>
-                            </span>
                             <List
+                                header={
+                                    <h3>
+                                        <span className="content-header">
+                                            Name
+                                        </span>
+                                        <Button
+                                            className="header-btn"
+                                            size="large"
+                                            icon={<AiOutlinePlus/>}
+                                            onClick={() => {
+                                                this.setState({
+                                                    addContact: true,
+                                                    showDetails: false,
+                                                    contact: initialContact,
+                                                })
+                                            }}
+                                        />
+                                    </h3>
+                                }
                                 itemLayout="horizontal"
                                 dataSource={this.props.contacts.sort((a, b) => {
                                     if (a.fav && !b.fav) {

@@ -241,6 +241,13 @@
   padding-left: 5%;
 }
 
+.header-btn {
+  margin-right: 149px;
+  float: right;
+  border-color: white !important;
+  box-shadow: none !important;
+}
+
 .form-text {
   margin-left: 12px;
 }
