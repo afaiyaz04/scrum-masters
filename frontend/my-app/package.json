@@ -9,8 +9,6 @@
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.16.13",
     "axios": "^0.21.4",
-    "docx": "^7.1.1",
-    "file-saver": "^2.0.5",
     "jwt-decode": "^3.1.2",
     "pdfmake": "^0.2.2",
     "react": "^17.0.2",
