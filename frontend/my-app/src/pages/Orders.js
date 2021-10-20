@@ -23,6 +23,10 @@ import {
     updateProduct,
 } from "../redux/Order/order.actions";
 import { fetchUsers } from "../redux/Users/users.actions";
+import { Document, Packer, Paragraph, TextRun, Header as H, AlignmentType } from "docx";
+import { saveAs } from "file-saver";
+import { generateReport } from "../redux/Report/report.actions";
+
 
 const initialOrder = {
     _id: null,
@@ -44,6 +48,16 @@ const initialProduct = {
 };
 
 const { Panel } = Collapse;
+
+
+
+
+  
+
+
+
+
+
 
 class Orders extends React.Component {
     constructor(props) {
@@ -248,6 +262,7 @@ class Orders extends React.Component {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
         this.props.dispatch(fetchUsers());
+        this.props.dispatch(generateReport(this.state.userId));
     }
 
     createOrderHandler = (newItem) => {
@@ -413,6 +428,126 @@ class Orders extends React.Component {
         );
     };
 
+
+
+    generateReport = () => {
+        // Get information
+        const {
+            name, 
+            orderStatus, 
+            totalClients, 
+            totalOrders, 
+            totalRevenue 
+        } = this.props.report;
+        const date = new Date();
+
+        const zeroPad = (num) => String(num).padStart(2, '0')
+        // Format
+        const dateTime = new TextRun({
+            text: `Generated: ${zeroPad(date.getDate())}/${zeroPad(date.getMonth()+1)}/${date.getFullYear()} @ ${zeroPad(date.getHours())}:${zeroPad(date.getMinutes())}:${zeroPad(date.getSeconds())}`,
+            font: "Calibri",
+            allCaps: true,
+        });
+        const nameFormat = new TextRun({
+            text: `${name} - Report`,
+            bold: true,
+            font: "Calibri",
+            size: 40,
+        });
+        const orderStatusFormat = Object.entries(orderStatus).map(([k, v]) => {
+            return (
+                new Paragraph({
+                    bullet: { level: 0 },
+                    children: [
+                        new TextRun({
+                            text: `${v} - ${k.toLowerCase()}`,
+                            font: "Calibri"
+                        })
+                    ]
+                })
+            )
+        });
+        const totalOrdersFormat = new TextRun({
+            text: `Total Orders = ${totalOrders}`,
+            font: "Calibri",
+        });
+
+        const totalClientsFormat = new TextRun({
+            text: `Number of clients = ${totalClients}`,
+            font: "Calibri",
+        });
+
+        const totalRevenueFormat = new TextRun({
+            text: `Total revenue = $${totalRevenue}`,
+            font: "Calibri",
+            underline: true
+        });
+
+
+        // Make into doc
+        const doc = new Document({
+            sections: [{
+                headers: {
+                    default: new H({
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [dateTime]
+                            })
+                        ]
+                    })
+                },
+                properties: {},
+                children: [
+                    // Title
+                    new Paragraph({
+                        children: [nameFormat]
+                    }),
+
+                    // Orders
+                    new Paragraph({
+                        children: [
+                            new TextRun({
+                                text: "Orders",
+                                font: "Calibri",
+                                size: 24,
+                                bold: true
+                            })
+                        ],
+                        spacing: { before: 200 }
+                    }),
+                    ...orderStatusFormat,
+                    new Paragraph({
+                        children: [totalOrdersFormat]
+                    }),
+
+                    // Clients and Revenue
+                    new Paragraph ({
+                        children: [
+                            new TextRun({
+                                text: "Clients and Revenue",
+                                font: "Calibri",
+                                size: 24,
+                                bold: true
+                            })
+                        ],
+                        spacing: { before: 200 }
+                    }),
+                    new Paragraph ({
+                        children: [totalClientsFormat]
+                    }),
+                    new Paragraph ({
+                        children: [totalRevenueFormat]
+                    })
+                ],
+            }],
+        });
+        // Save the document
+        Packer.toBlob(doc).then((blob) => {
+            saveAs(blob, `Report for ${name}`);
+        });
+      }
+
     render() {
         return (
             <div className="Master-div">
@@ -421,6 +556,13 @@ class Orders extends React.Component {
                     <Header page="Orders" />
                     <div className="contents">
                         <div className="contents-left">
+                            <Button
+                                type="primary"
+                                style={{marginBottom: 25, width: 500}}
+                                onClick= {() => this.generateReport("Report for user")}
+                                >
+                                    Generate Report
+                            </Button>
                             <Collapse bordered={false}>
                                 <Panel
                                     header={`Received Orders (${
@@ -670,6 +812,7 @@ const mapStateToProps = (state) => {
         orders: state.orders,
         contacts: state.contacts,
         users: state.users,
+        report: state.report,
     };
 };
 
