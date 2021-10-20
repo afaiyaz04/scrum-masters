@@ -422,7 +422,7 @@ class Orders extends React.Component {
                 ...this.props.report,
                 orders: this.state.selectedOrders.map((order) => order.order),
             }),
-            `${this.state.userId}-report'`
+            `${this.state.userId}-report`
         );
     };
 

@@ -103,7 +103,7 @@ class Users extends React.Component {
 
         createReport(
             formatUserReport(this.props.reports[reportIndex]),
-            `${userId}'s Report'`
+            `${userId}-report`
         );
     };
 

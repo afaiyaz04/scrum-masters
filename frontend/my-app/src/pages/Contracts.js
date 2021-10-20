@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { List, Button, Divider } from "antd";
 import ContractForm from "../components/ContractForm";
 import { fetchOrders, updateOrder } from "../redux/Order/order.actions";
+import { formatUserReport, createReport } from "../components/Report";
+import { getReport } from "../redux/Report/report.actions";
 
 const initialOrder = {
     _id: null,
@@ -34,6 +36,7 @@ class Contracts extends Component {
 
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
+        this.props.dispatch(getReport(this.state.userId));
     }
 
     contractFilter = (order) => {
@@ -59,6 +62,16 @@ class Contracts extends Component {
         ) {
             this.setState({ contract: initialOrder, showDetails: false });
         }
+    };
+
+    generateReport = (contract) => {
+        createReport(
+            formatUserReport({
+                ...this.props.report,
+                orders: [contract],
+            }),
+            `${this.state.userId}-report`
+        );
     };
 
     render() {
@@ -192,6 +205,7 @@ class Contracts extends Component {
                             <div className="contents-right">
                                 <ContractForm
                                     contract={this.state.contract}
+                                    reportAction={this.generateReport}
                                     closeAction={() =>
                                         this.setState({ showDetails: false })
                                     }
@@ -209,6 +223,7 @@ class Contracts extends Component {
 const mapStateToProps = (state) => {
     return {
         orders: state.orders,
+        report: state.report,
     };
 };
 

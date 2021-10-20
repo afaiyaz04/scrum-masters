@@ -174,6 +174,7 @@ const OrderForm = (props) => {
                             onChange={(value) =>
                                 setOrder({ ...order, status: value })
                             }
+                            disabled={props.addOrder}
                         >
                             <Select.Option value={"CREATED"}>
                                 CREATED

@@ -116,6 +116,16 @@ const ContractForm = (props) => {
                 </Panel>
             </Collapse>
             <Form.Item />
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
+                <Button
+                    className="general-btn"
+                    type="primary"
+                    block
+                    onClick={() => props.reportAction(contract)}
+                >
+                    Generate Report
+                </Button>
+            </Form.Item>
             {contract.status !== "ARCHIVED" && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                     <Button
