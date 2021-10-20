@@ -93,7 +93,7 @@ class Users extends React.Component {
         const pageBodies = this.props.reports.map((o) => {
             return formatUserReport(o);
         });
-        createReport(pageBodies.flat(), "All Reports");
+        createReport(pageBodies.flat(), "all-reports");
     };
 
     generateReport = (userId) => {
@@ -117,7 +117,7 @@ class Users extends React.Component {
                         <div className="contents-left">
                             <Button
                                 type="primary"
-                                bloack
+                                block
                                 style={{ marginBottom: 25 }}
                                 onClick={() => this.generateReports()}
                             >

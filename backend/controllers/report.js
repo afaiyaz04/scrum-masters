@@ -63,6 +63,8 @@ async function generateReport(user) {
     // aggregate order properties
     const orderStatus = {};
     var totalRevenue = 0;
+    let orders = [];
+
     for (var i = 0; i < user.orders.length; i++) {
         var orderId = user.orders[i];
         var order = await Order.findById(orderId);
@@ -87,6 +89,8 @@ async function generateReport(user) {
         }
         var orderFee = order.totalFee;
         totalRevenue += orderFee;
+
+        orders.push(order);
     }
 
     return {
@@ -96,6 +100,7 @@ async function generateReport(user) {
         totalOrders: totalOrders,
         totalClients: totalClients,
         totalRevenue: totalRevenue,
+        orders: orders,
     };
 }
 

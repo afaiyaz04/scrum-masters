@@ -418,8 +418,11 @@ class Orders extends React.Component {
 
     generateReport = () => {
         createReport(
-            formatUserReport(this.props.report),
-            `${this.state.userId}'s Report'`
+            formatUserReport({
+                ...this.props.report,
+                orders: this.state.selectedOrders.map((order) => order.order),
+            }),
+            `${this.state.userId}-report'`
         );
     };
 
@@ -431,14 +434,6 @@ class Orders extends React.Component {
                     <Header page="Orders" />
                     <div className="contents">
                         <div className="contents-left">
-                            <Button
-                                type="primary"
-                                bloack
-                                style={{ marginBottom: 25 }}
-                                onClick={() => this.generateReport()}
-                            >
-                                Generate Report
-                            </Button>
                             <Collapse bordered={false}>
                                 <Panel
                                     header={`Received Orders (${
@@ -548,6 +543,16 @@ class Orders extends React.Component {
                                             }
                                         >
                                             Transfer
+                                        </Button>
+                                        <Button
+                                            className="general-btn"
+                                            type="primary"
+                                            style={{ width: 150 }}
+                                            onClick={() =>
+                                                this.generateReport()
+                                            }
+                                        >
+                                            Generate Report
                                         </Button>
                                     </>
                                 )}
