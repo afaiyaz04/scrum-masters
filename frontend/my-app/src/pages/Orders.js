@@ -23,6 +23,8 @@ import {
     updateProduct,
 } from "../redux/Order/order.actions";
 import { fetchUsers } from "../redux/Users/users.actions";
+import { formatUserReport, createReport } from "../components/Report";
+import { getReport } from "../redux/Report/report.actions";
 
 const initialOrder = {
     _id: null,
@@ -248,6 +250,7 @@ class Orders extends React.Component {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
         this.props.dispatch(fetchUsers());
+        this.props.dispatch(getReport(this.state.userId));
     }
 
     createOrderHandler = (newItem) => {
@@ -413,6 +416,13 @@ class Orders extends React.Component {
         );
     };
 
+    generateReport = () => {
+        createReport(
+            formatUserReport(this.props.report),
+            `${this.state.userId}'s Report'`
+        );
+    };
+
     render() {
         return (
             <div className="Master-div">
@@ -421,6 +431,14 @@ class Orders extends React.Component {
                     <Header page="Orders" />
                     <div className="contents">
                         <div className="contents-left">
+                            <Button
+                                type="primary"
+                                bloack
+                                style={{ marginBottom: 25 }}
+                                onClick={() => this.generateReport()}
+                            >
+                                Generate Report
+                            </Button>
                             <Collapse bordered={false}>
                                 <Panel
                                     header={`Received Orders (${
@@ -670,6 +688,7 @@ const mapStateToProps = (state) => {
         orders: state.orders,
         contacts: state.contacts,
         users: state.users,
+        report: state.report,
     };
 };
 

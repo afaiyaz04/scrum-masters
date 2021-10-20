@@ -67,3 +67,6 @@ export const addLog = (orderId, userId, text) =>
     API.post(`/order/${orderId}/log`, { userId, text });
 
 export const cloneClient = (clientId) => API.post(`/client/${clientId}`);
+
+export const getReport = (userId) => API.get(`/report/${userId}`);
+export const getAllReports = () => API.get(`/report`);

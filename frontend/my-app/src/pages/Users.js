@@ -13,6 +13,8 @@ import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
 import { SIGN_OUT } from "../redux/User/user.types";
 import { AiOutlinePlus } from "react-icons/ai";
+import { getAllReports } from "../redux/Report/report.actions";
+import { formatUserReport, createReport } from "../components/Report";
 
 const initialUser = {
     id: "",
@@ -36,6 +38,7 @@ class Users extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(fetchUsers());
+        this.props.dispatch(getAllReports());
     }
 
     promoteHandler = (toUserId) => {
@@ -86,6 +89,13 @@ class Users extends React.Component {
         this.props.dispatch(registerUser(newUser));
     };
 
+    generateReports = () => {
+        const pageBodies = this.props.reports.map((o) => {
+            return formatUserReport(o);
+        });
+        createReport(pageBodies.flat(), "All Reports");
+    };
+
     render() {
         return (
             <div className="Master-div">
@@ -94,6 +104,14 @@ class Users extends React.Component {
                     <Header page="Users" />
                     <div className="contents">
                         <div className="contents-left">
+                            <Button
+                                type="primary"
+                                bloack
+                                style={{ marginBottom: 25 }}
+                                onClick={() => this.generateReports()}
+                            >
+                                Generate All Reports
+                            </Button>
                             <List
                                 header={
                                     <h3>
@@ -198,6 +216,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.user,
         users: state.users,
+        reports: state.report,
     };
 };
 
