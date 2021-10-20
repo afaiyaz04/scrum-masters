@@ -11,6 +11,7 @@ import { saveAs } from "file-saver";
 
 // Returns the equivalent pageBody
 export const formatUserReport = (reportInfo) => {
+    if (!reportInfo) return [];
     const { name, orderStatus, totalClients, totalOrders, totalRevenue } =
         reportInfo;
 
