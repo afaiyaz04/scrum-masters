@@ -68,7 +68,9 @@ const OrderForm = (props) => {
                         </div>
                     </Form.Item>
                     <Form.Item label="Time Due:">
-                        <div className="form-text">{timeDue}</div>
+                        <div className="form-text">
+                            {order.timeDue ? timeDue : ""}
+                        </div>
                     </Form.Item>
                     <Form.Item label="Total Fee:">
                         <div className="form-text">{order.totalFee}</div>
@@ -150,7 +152,7 @@ const OrderForm = (props) => {
                     >
                         <DatePicker
                             showTime
-                            placeholder={timeDue}
+                            placeholder={order.timeDue ? timeDue : ""}
                             onOk={(value) =>
                                 setOrder({
                                     ...order,
