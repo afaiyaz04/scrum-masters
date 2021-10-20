@@ -6,6 +6,7 @@ const { Panel } = Collapse;
 
 const ContractForm = (props) => {
     const [contract, setContract] = useState({ ...props.contract });
+    const zeroPad = (num) => String(num).padStart(2, "0");
 
     useEffect(() => {
         setContract({ ...props.contract });
@@ -31,6 +32,14 @@ const ContractForm = (props) => {
         },
     ];
 
+    const date = new Date(Date.parse(contract.timeDue));
+
+    const timeDue = `${date.getFullYear()}-${zeroPad(
+        date.getMonth() + 1
+    )}-${zeroPad(date.getDate())} ${zeroPad(date.getHours())}:${zeroPad(
+        date.getMinutes()
+    )}:${zeroPad(date.getSeconds())}`;
+
     return (
         <Form {...layout}>
             <Form.Item />
@@ -45,7 +54,7 @@ const ContractForm = (props) => {
                 <div className="form-text">{contract.totalFee}</div>
             </Form.Item>
             <Form.Item label="Time Due:">
-                <div className="form-text">{contract.timeDue}</div>
+                <div className="form-text">{timeDue}</div>
             </Form.Item>
             {contract.status === "ARCHIVED" && (
                 <Form.Item label="Status:">

@@ -6,6 +6,7 @@ const OrderForm = (props) => {
     const [order, setOrder] = useState({ ...props.order });
     const [edit, setEdit] = useState(false);
     const contacts = { ...props.contacts };
+    const zeroPad = (num) => String(num).padStart(2, "0");
 
     useEffect(() => {
         setOrder({ ...props.order });
@@ -40,6 +41,14 @@ const OrderForm = (props) => {
         }
     };
 
+    const date = new Date(Date.parse(order.timeDue));
+
+    const timeDue = `${date.getFullYear()}-${zeroPad(
+        date.getMonth() + 1
+    )}-${zeroPad(date.getDate())} ${zeroPad(date.getHours())}:${zeroPad(
+        date.getMinutes()
+    )}:${zeroPad(date.getSeconds())}`;
+
     return (
         <Form {...layout} onFinish={onSubmit}>
             <Form.Item />
@@ -59,7 +68,7 @@ const OrderForm = (props) => {
                         </div>
                     </Form.Item>
                     <Form.Item label="Time Due:">
-                        <div className="form-text">{order.timeDue}</div>
+                        <div className="form-text">{timeDue}</div>
                     </Form.Item>
                     <Form.Item label="Total Fee:">
                         <div className="form-text">{order.totalFee}</div>
@@ -141,7 +150,7 @@ const OrderForm = (props) => {
                     >
                         <DatePicker
                             showTime
-                            placeholder={order.timeDue}
+                            placeholder={timeDue}
                             onOk={(value) =>
                                 setOrder({
                                     ...order,
