@@ -98,10 +98,10 @@ function SignUp() {
                     <div>
                         <CarouselWrapper autoplay style={contentStyle}>
                             <div>
-                                <h1>Screen 1</h1>
+                                <h1>Increase your workflow</h1>
                             </div>
                             <div>
-                                <h1>Screen 2</h1>
+                                <h1>Control your business</h1>
                             </div>
                             <div>
                                 <h1>Screen 3</h1>

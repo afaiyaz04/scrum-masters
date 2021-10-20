@@ -96,6 +96,17 @@ class Users extends React.Component {
         createReport(pageBodies.flat(), "All Reports");
     };
 
+    generateReport = (userId) => {
+        const reportIndex = this.props.reports.findIndex((o) => {
+            return o.id === userId;
+        });
+
+        createReport(
+            formatUserReport(this.props.reports[reportIndex]),
+            `${userId}'s Report'`
+        );
+    };
+
     render() {
         return (
             <div className="Master-div">
@@ -202,6 +213,7 @@ class Users extends React.Component {
                                     controlAction={this.controlHandler}
                                     deleteAction={this.deleteHandler}
                                     registerAction={this.registerHandler}
+                                    reportAction={this.generateReport}
                                 />
                             </div>
                         )}

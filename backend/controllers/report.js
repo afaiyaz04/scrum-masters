@@ -90,6 +90,7 @@ async function generateReport(user) {
     }
 
     return {
+        id: user._id,
         name: name,
         orderStatus: orderStatus,
         totalOrders: totalOrders,

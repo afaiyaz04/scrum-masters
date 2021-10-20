@@ -49,6 +49,16 @@ const UsersForm = (props) => {
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
                         className="general-btn"
+                        type="primary"
+                        block
+                        onClick={() => props.reportAction(user.id)}
+                    >
+                        Generate Report
+                    </Button>
+                </Form.Item>
+                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
+                    <Button
+                        className="general-btn"
                         block
                         onClick={() => props.promoteAction(user.id)}
                     >
