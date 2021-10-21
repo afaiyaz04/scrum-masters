@@ -10,6 +10,11 @@ import "./Welcome.css";
 import { GoogleButton } from "react-google-button";
 import styled from "styled-components";
 
+import logoImg from "../images/logo.png";
+import secureImg from "../images/stock.png";
+import stonksImg from "../images/stonks.jpg";
+import slothImg  from "../images/sloth.jpg";
+
 const CarouselWrapper = styled(Carousel)`
     > .slick-dots li button {
         background: grey;
@@ -67,7 +72,7 @@ function SignUp() {
         <div className="welcome-page">
             <Layout>
                 <Header style={{ backgroundColor: "#20639B" }}>
-                    {/* <div className='logo'/> */}
+                    <img className='logo' src={logoImg}/>
                     <div>
                         <h1 className="title">CRM</h1>
                     </div>
@@ -93,21 +98,21 @@ function SignUp() {
                         />
                     </div>
                 </Header>
-
                 <Content>
                     <div>
                         <CarouselWrapper autoplay style={contentStyle}>
                             <div>
                                 <h1>Increase your workflow</h1>
+                                <img style={{width: "50%", marginLeft: "25%"}} src={slothImg}/>
                             </div>
                             <div>
                                 <h1>Control your business</h1>
+                                <img className="screenImg" src={stonksImg}/>
                             </div>
                             <div>
-                                <h1>Screen 3</h1>
-                            </div>
-                            <div>
-                                <h1>Screen 4</h1>
+                                <h1>Keep your business secure</h1>
+                                <img className="screenImg" src={secureImg}/>
+
                             </div>
                         </CarouselWrapper>
                     </div>
