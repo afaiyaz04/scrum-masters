@@ -81,7 +81,6 @@ const ClientForm = (props) => {
                     </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                         <Button
-                            className="general-btn"
                             block
                             onClick={() => setEdit(true)}
                         >
@@ -218,7 +217,6 @@ const ClientForm = (props) => {
                                 <Button
                                     type="primary"
                                     block
-                                    className="general-btn"
                                     htmlType="submit"
                                 >
                                     Update
@@ -228,7 +226,6 @@ const ClientForm = (props) => {
                                 wrapperCol={{ ...layout.wrapperCol, offset: 4 }}
                             >
                                 <Button
-                                    className="general-btn"
                                     block
                                     danger
                                     onClick={() =>
@@ -246,7 +243,6 @@ const ClientForm = (props) => {
                                 wrapperCol={{ ...layout.wrapperCol, offset: 4 }}
                             >
                                 <Button
-                                    className="general-btn"
                                     type="primary"
                                     block
                                     htmlType="submit"
