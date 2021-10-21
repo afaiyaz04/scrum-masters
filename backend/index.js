@@ -21,6 +21,10 @@ app.use("/user", userRoutes);
 app.use("/report", reportRoutes);
 app.use("/signin", signInRoutes);
 
+app.get('/', (req, res) => {
+    res.send('API connected');
+});
+
 if (process.env.NODE_ENV === "test") {
     dotenv.config();
 }
