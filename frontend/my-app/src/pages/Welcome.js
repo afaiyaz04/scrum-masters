@@ -88,7 +88,7 @@ function SignUp() {
                                 </GoogleButton>
                             )}
                             onSuccess={googleSuccess}
-                            onFailure={googleError}
+                            onFailure={() => googleError}
                             cookiePolicy="single_host_origin"
                         />
                     </div>
