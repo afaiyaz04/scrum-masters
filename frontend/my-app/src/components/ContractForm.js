@@ -127,7 +127,6 @@ const ContractForm = (props) => {
             <Form.Item />
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                 <Button
-                    className="general-btn"
                     type="primary"
                     block
                     onClick={() => props.reportAction(contract)}
@@ -138,7 +137,6 @@ const ContractForm = (props) => {
             {contract.status !== "ARCHIVED" && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                     <Button
-                        className="general-btn"
                         block
                         onClick={() =>
                             props.updateAction({
@@ -154,7 +152,6 @@ const ContractForm = (props) => {
             {contract.status === "ARCHIVED" && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                     <Button
-                        className="general-btn"
                         block
                         onClick={() =>
                             props.updateAction({

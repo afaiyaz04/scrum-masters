@@ -61,11 +61,7 @@ const ProductForm = (props) => {
                         </div>
                     </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
-                        <Button
-                            className="general-btn"
-                            block
-                            onClick={() => setEdit(true)}
-                        >
+                        <Button block onClick={() => setEdit(true)}>
                             Edit Details
                         </Button>
                     </Form.Item>
@@ -140,30 +136,23 @@ const ProductForm = (props) => {
                         />
                     </Form.Item>
                     {props.addProduct && !props.showProductDetails && (
-                        <Form.Item
-                            wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
-                        >
-                            <Button
-                                className="general-btn"
-                                type="primary"
-                                block
-                                htmlType="submit"
+                        <>
+                            <Form.Item
+                                wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                             >
-                                Create
-                            </Button>
-                        </Form.Item>
+                                <Button type="primary" block htmlType="submit">
+                                    Create
+                                </Button>
+                            </Form.Item>
+                            <Form.Item />
+                        </>
                     )}
                     {!props.addProduct && props.showProductDetails && (
                         <>
                             <Form.Item
                                 wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                             >
-                                <Button
-                                    className="general-btn"
-                                    type="primary"
-                                    block
-                                    htmlType="submit"
-                                >
+                                <Button type="primary" block htmlType="submit">
                                     Update
                                 </Button>
                             </Form.Item>
@@ -171,7 +160,6 @@ const ProductForm = (props) => {
                                 wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                             >
                                 <Button
-                                    className="general-btn"
                                     danger
                                     block
                                     onClick={() =>

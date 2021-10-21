@@ -48,7 +48,6 @@ const UsersForm = (props) => {
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
-                        className="general-btn"
                         type="primary"
                         block
                         onClick={() => props.reportAction(user.id)}
@@ -57,26 +56,17 @@ const UsersForm = (props) => {
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        className="general-btn"
-                        block
-                        onClick={() => props.promoteAction(user.id)}
-                    >
+                    <Button block onClick={() => props.promoteAction(user.id)}>
                         Promote
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        className="general-btn"
-                        block
-                        onClick={() => props.controlAction(user.id)}
-                    >
+                    <Button block onClick={() => props.controlAction(user.id)}>
                         Control
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                     <Button
-                        className="general-btn"
                         type="primary"
                         danger
                         block
@@ -122,11 +112,7 @@ const UsersForm = (props) => {
                     />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        className="general-btn"
-                        block
-                        onClick={() => props.registerAction(user)}
-                    >
+                    <Button block onClick={() => props.registerAction(user)}>
                         Register
                     </Button>
                 </Form.Item>
