@@ -463,7 +463,7 @@ class Orders extends React.Component {
                                                     </p>
                                                     <br />
                                                     <p style={{ margin: 0 }}>
-                                                        Products:
+                                                        Items:
                                                     </p>
                                                     <br />
                                                     {record.lineProducts.map(
@@ -546,6 +546,32 @@ class Orders extends React.Component {
                                         </Button>
                                         <Button
                                             className="general-btn"
+                                            type="primary"
+                                            style={{ width: 150 }}
+                                            onClick={() =>
+                                                this.generateReport()
+                                            }
+                                        >
+                                            Generate Report
+                                        </Button>
+                                    </>
+                                )}
+                                {this.state.selectedOrders.length === 0 && (
+                                    <>
+                                        <Button
+                                            className="general-btn"
+                                            disabled
+                                            onClick={() =>
+                                                this.endRenderExcept(
+                                                    "transferOrder"
+                                                )
+                                            }
+                                        >
+                                            Transfer
+                                        </Button>
+                                        <Button
+                                            className="general-btn"
+                                            disabled
                                             type="primary"
                                             style={{ width: 150 }}
                                             onClick={() =>
