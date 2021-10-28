@@ -23,6 +23,9 @@ export const createUser = async (req, res) => {
     }
 
     try {
+        const user = await User.findOne({ email: email });
+        if (user) return res.json({ message: "User already exists!" });
+
         const newUser = new User({
             email: email,
             networkId: networkId,
