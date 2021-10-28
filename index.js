@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "test") {
 
 // hardcoded values will be provided to process.env once deployed
 const CONNECTION_URL =
-    process.env.DB_URL ||
+    process.env.MONGODB_URI ||
     "mongodb+srv://admin:admin@scrummasters-it-project.gtsnj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const PORT = process.env.PORT || 5000;
 
@@ -42,6 +42,10 @@ mongoose
     })
     .then(() => app.listen(PORT, () => console.log("MongoDB connected")))
     .catch((error) => console.log(error.message));
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'))
+}
 
 // // Set up Mongoose
 // require("dotenv").config();
