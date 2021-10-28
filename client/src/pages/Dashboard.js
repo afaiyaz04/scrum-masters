@@ -107,13 +107,13 @@ class Dashboard extends React.Component {
             case "AGREED":
                 return (
                     <Timeline.Item key={order.order._id} color="blue">
-                        {this.timelineOrderText(order)}
+                        {this.timelineContractText(order)}
                     </Timeline.Item>
                 );
             case "SIGNED":
                 return (
                     <Timeline.Item key={order.order._id} color="green">
-                        {this.timelineOrderText(order)}
+                        {this.timelineContractText(order)}
                     </Timeline.Item>
                 );
             default:
@@ -133,6 +133,24 @@ class Dashboard extends React.Component {
             return (
                 <div>
                     Order {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
+                </div>
+            );
+        }
+    };
+
+    timelineContractText = (order) => {
+        if (new Date(order.order.timeDue) - Date.now() < 604800000) {
+            return (
+                <div style={{ color: "red" }}>
+                    Contract {order.order.orderNumber}, due:{" "}
+                    {order.order.timeDue.slice(0, 10)}
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    Contract {order.order.orderNumber}, due:{" "}
                     {order.order.timeDue.slice(0, 10)}
                 </div>
             );
@@ -214,7 +232,7 @@ class Dashboard extends React.Component {
                                     this.props.orders.filter((order) => {
                                         return order.order.status === "AGREED";
                                     }).length
-                                } Orders Agreed`
+                                } Contracts Agreed`
                             }
                             strokeColor="#1890ff"
                         />
@@ -231,7 +249,7 @@ class Dashboard extends React.Component {
                                     this.props.orders.filter((order) => {
                                         return order.order.status === "SIGNED";
                                     }).length
-                                } Orders Signed`
+                                } Contracts Signed`
                             }
                             strokeColor="#52c418"
                         />
@@ -307,7 +325,12 @@ class Dashboard extends React.Component {
                                         return (
                                             new Date(order.order.timeDue) -
                                                 Date.now() <
-                                            604800000
+                                            604800000  &&
+                                            new Date(
+                                                order.order.timeDue
+                                            ) -
+                                                Date.now() >=
+                                                0
                                         );
                                     }).length > 0 && (
                                         <Alert
