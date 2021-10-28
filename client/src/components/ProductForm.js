@@ -61,10 +61,7 @@ const ProductForm = (props) => {
                         </div>
                     </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
-                        <Button
-                            block
-                            onClick={() => setEdit(true)}
-                        >
+                        <Button block onClick={() => setEdit(true)}>
                             Edit Details
                         </Button>
                     </Form.Item>
@@ -143,11 +140,7 @@ const ProductForm = (props) => {
                             <Form.Item
                                 wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                             >
-                                <Button
-                                    type="primary"
-                                    block
-                                    htmlType="submit"
-                                >
+                                <Button type="primary" block htmlType="submit">
                                     Create
                                 </Button>
                             </Form.Item>
@@ -159,11 +152,7 @@ const ProductForm = (props) => {
                             <Form.Item
                                 wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
                             >
-                                <Button
-                                    type="primary"
-                                    block
-                                    htmlType="submit"
-                                >
+                                <Button type="primary" block htmlType="submit">
                                     Update
                                 </Button>
                             </Form.Item>

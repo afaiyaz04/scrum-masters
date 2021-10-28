@@ -80,10 +80,7 @@ const ClientForm = (props) => {
                         <div className="form-text">{contact.address}</div>
                     </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                        <Button
-                            block
-                            onClick={() => setEdit(true)}
-                        >
+                        <Button block onClick={() => setEdit(true)}>
                             Edit Details
                         </Button>
                     </Form.Item>
@@ -214,11 +211,7 @@ const ClientForm = (props) => {
                             <Form.Item
                                 wrapperCol={{ ...layout.wrapperCol, offset: 4 }}
                             >
-                                <Button
-                                    type="primary"
-                                    block
-                                    htmlType="submit"
-                                >
+                                <Button type="primary" block htmlType="submit">
                                     Update
                                 </Button>
                             </Form.Item>
@@ -242,11 +235,7 @@ const ClientForm = (props) => {
                             <Form.Item
                                 wrapperCol={{ ...layout.wrapperCol, offset: 4 }}
                             >
-                                <Button
-                                    type="primary"
-                                    block
-                                    htmlType="submit"
-                                >
+                                <Button type="primary" block htmlType="submit">
                                     Create
                                 </Button>
                             </Form.Item>

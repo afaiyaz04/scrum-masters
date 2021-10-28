@@ -12,7 +12,7 @@ import styled from "styled-components";
 import logoImg from "../images/logo.png";
 import secureImg from "../images/stock.png";
 import stonksImg from "../images/stonks.jpg";
-import slothImg  from "../images/sloth.jpg";
+import slothImg from "../images/sloth.jpg";
 
 const CarouselWrapper = styled(Carousel)`
     > .slick-dots li button {

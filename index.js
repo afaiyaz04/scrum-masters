@@ -24,9 +24,15 @@ app.use("/user", userRoutes);
 app.use("/report", reportRoutes);
 app.use("/signin", signInRoutes);
 
+<<<<<<< HEAD:index.js
 // app.get('/', (req, res) => {
 //     res.send('API connected');
 // });
+=======
+app.get("/", (req, res) => {
+    res.send("API connected");
+});
+>>>>>>> deploy:backend/index.js
 
 if (process.env.NODE_ENV === "test") {
     dotenv.config();
