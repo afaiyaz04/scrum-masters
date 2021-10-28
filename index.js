@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 import clientRoutes from "./routes/client.js";
 import orderRoutes from "./routes/order.js";
@@ -21,9 +22,9 @@ app.use("/user", userRoutes);
 app.use("/report", reportRoutes);
 app.use("/signin", signInRoutes);
 
-app.get('/', (req, res) => {
-    res.send('API connected');
-});
+// app.get('/', (req, res) => {
+//     res.send('API connected');
+// });
 
 if (process.env.NODE_ENV === "test") {
     dotenv.config();
@@ -44,7 +45,11 @@ mongoose
     .catch((error) => console.log(error.message));
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'))
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    });
 }
 
 // // Set up Mongoose
