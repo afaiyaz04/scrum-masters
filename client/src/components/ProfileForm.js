@@ -46,7 +46,7 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: JSON.parse(localStorage.getItem("userData")),
+            user: JSON.parse(localStorage.getItem("user")),
             showDelete: false,
             input: { nameFirst: "", nameLast: "" },
         };

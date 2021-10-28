@@ -38,7 +38,7 @@ class Contacts extends React.Component {
             showDetails: false,
             addContact: false,
 
-            userId: JSON.parse(localStorage.getItem("userData"))._id,
+            userId: JSON.parse(localStorage.getItem("user"))._id,
         };
     }
 

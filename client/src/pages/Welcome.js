@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { Carousel, Layout } from "antd";
 
-import { SET_USER } from "../redux/User/user.types";
 import { setUser } from "../redux/User/user.actions";
 import React from "react";
 import "./Welcome.css";
@@ -40,10 +39,6 @@ function SignUp() {
         );
 
         try {
-            dispatch({
-                type: SET_USER,
-                data: { email, nameFirst, nameLast, profilePic, token },
-            });
             dispatch(
                 setUser(
                     { email, nameFirst, nameLast, profilePic, token },
@@ -72,7 +67,7 @@ function SignUp() {
         <div className="welcome-page">
             <Layout>
                 <Header style={{ backgroundColor: "#20639B" }}>
-                    <img className='logo' src={logoImg}/>
+                    <img className='logo' src={logoImg} alt=""/>
                     <div>
                         <h1 className="title">CRM</h1>
                     </div>
@@ -103,15 +98,15 @@ function SignUp() {
                         <CarouselWrapper autoplay style={contentStyle}>
                             <div>
                                 <h1>Increase your workflow</h1>
-                                <img style={{width: "50%", marginLeft: "25%"}} src={slothImg}/>
+                                <img style={{width: "50%", marginLeft: "25%"}} src={slothImg} alt=""/>
                             </div>
                             <div>
                                 <h1>Control your business</h1>
-                                <img className="screenImg" src={stonksImg}/>
+                                <img className="screenImg" src={stonksImg} alt=""/>
                             </div>
                             <div>
                                 <h1>Keep your business secure</h1>
-                                <img className="screenImg" src={secureImg}/>
+                                <img className="screenImg" src={secureImg} alt=""/>
 
                             </div>
                         </CarouselWrapper>

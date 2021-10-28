@@ -8,6 +8,7 @@ import Profile from "../ProfileForm";
 import { SIGN_OUT } from "../../redux/User/user.types";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { revertUser } from "../../redux/User/user.actions";
 
 class ProfileButton extends React.Component {
     constructor(props) {
@@ -17,14 +18,8 @@ class ProfileButton extends React.Component {
         };
     }
 
-    nextPath(path) {
-        this.props.history.push(path);
-    }
-
     revertProfileAction = () => {
-        localStorage.setItem("userData", localStorage.getItem("originalData"));
-        localStorage.removeItem("originalData");
-        this.nextPath("/dashboard");
+        this.props.dispatch(revertUser(this.props.history));
         window.location.reload(true);
     };
 
@@ -55,7 +50,7 @@ class ProfileButton extends React.Component {
     );
 
     render() {
-        if (localStorage.getItem("originalData")) {
+        if (localStorage.getItem("original")) {
             return (
                 <Button
                     type="primary"

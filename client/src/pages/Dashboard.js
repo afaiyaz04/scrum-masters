@@ -81,7 +81,7 @@ class Dashboard extends React.Component {
             incomingAlertClosed: false,
             dueAlertClosed: false,
 
-            userId: JSON.parse(localStorage.getItem("userData"))._id,
+            userId: JSON.parse(localStorage.getItem("user"))._id,
         };
     }
 

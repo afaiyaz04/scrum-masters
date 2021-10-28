@@ -7,7 +7,7 @@ import { IconContext } from "react-icons";
 // import { Avatar } from "antd";
 
 function Navbar() {
-    const user = JSON.parse(localStorage.getItem("userData"));
+    const user = JSON.parse(localStorage.getItem("user"));
     const { nameFirst, nameLast, profilePic, type } = user;
 
     return (

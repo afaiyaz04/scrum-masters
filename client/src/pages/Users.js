@@ -8,13 +8,12 @@ import {
     deleteUser,
     registerUser,
 } from "../redux/Users/users.actions";
-import { fetchUser } from "../redux/api";
 import UsersForm from "../components/UsersForm";
 import { connect } from "react-redux";
-import { SIGN_OUT } from "../redux/User/user.types";
 import { AiOutlinePlus } from "react-icons/ai";
 import { getAllReports } from "../redux/Report/report.actions";
 import { formatUserReport, createReport } from "../components/Report";
+import { deleteSelf, switchUser } from "../redux/User/user.actions";
 
 const initialUser = {
     id: "",
@@ -32,7 +31,7 @@ class Users extends React.Component {
             user: initialUser,
             showDetails: false,
             addUser: false,
-            userId: JSON.parse(localStorage.getItem("userData"))._id,
+            userId: JSON.parse(localStorage.getItem("user"))._id,
         };
     }
 
@@ -47,35 +46,24 @@ class Users extends React.Component {
     };
 
     controlHandler = (toUserId) => {
-        if (!localStorage.getItem("originalData")) {
-            localStorage.setItem(
-                "originalData",
-                localStorage.getItem("userData")
-            );
-        }
-        fetchUser(toUserId).then((res) => {
-            localStorage.setItem("userData", JSON.stringify(res.data));
-            this.props.history.push("/dashboard");
-        });
+        this.props.dispatch(switchUser(toUserId, this.props.history));
     };
 
     deleteHandler = (userId) => {
         if (
             this.state.userId === userId &&
-            !localStorage.getItem("originalData")
+            !localStorage.getItem("original")
         ) {
-            this.props.dispatch(deleteUser(userId));
-            this.props.dispatch({ type: SIGN_OUT });
-            this.props.history.push("/");
+            this.props.dispatch(deleteSelf(userId, this.props.history));
         } else if (
             this.state.userId === userId &&
-            localStorage.getItem("originalData")
+            localStorage.getItem("original")
         ) {
             localStorage.setItem(
-                "userData",
-                localStorage.getItem("originalData")
+                "user",
+                localStorage.getItem("original")
             );
-            localStorage.removeItem("originalData");
+            localStorage.removeItem("original");
             this.props.dispatch(deleteUser(userId));
             this.props.history.push("/dashboard");
         } else {
