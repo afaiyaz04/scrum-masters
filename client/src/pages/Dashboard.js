@@ -325,10 +325,8 @@ class Dashboard extends React.Component {
                                         return (
                                             new Date(order.order.timeDue) -
                                                 Date.now() <
-                                            604800000  &&
-                                            new Date(
-                                                order.order.timeDue
-                                            ) -
+                                                604800000 &&
+                                            new Date(order.order.timeDue) -
                                                 Date.now() >=
                                                 0
                                         );

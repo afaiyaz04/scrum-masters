@@ -83,8 +83,10 @@ export const signIn = async (req, res) => {
             _id: newUser._id,
             networkId: newUser._id,
         };
-    
-        const user = await User.findByIdAndUpdate(newUser._id, updatedUser, { new: true });
+
+        const user = await User.findByIdAndUpdate(newUser._id, updatedUser, {
+            new: true,
+        });
 
         return res.status(201).json(user);
     } catch (error) {

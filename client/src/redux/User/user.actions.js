@@ -22,7 +22,7 @@ export const setAsNewUser = (formData, router) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const switchUser = (toUserId, router) => async (dispatch) => {
     try {
@@ -41,7 +41,7 @@ export const revertUser = (router) => async (dispatch) => {
     localStorage.removeItem("original");
     dispatch({ type: SET_USER, data });
     router.push("/dashboard");
-}
+};
 
 export const updateUser = (userId, formData) => async (dispatch) => {
     try {

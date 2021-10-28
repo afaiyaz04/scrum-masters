@@ -56,18 +56,12 @@ const UsersForm = (props) => {
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        block
-                        onClick={() => props.promoteAction(user.id)}
-                    >
+                    <Button block onClick={() => props.promoteAction(user.id)}>
                         Promote
                     </Button>
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        block
-                        onClick={() => props.controlAction(user.id)}
-                    >
+                    <Button block onClick={() => props.controlAction(user.id)}>
                         Control
                     </Button>
                 </Form.Item>
@@ -118,10 +112,7 @@ const UsersForm = (props) => {
                     />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button
-                        block
-                        onClick={() => props.registerAction(user)}
-                    >
+                    <Button block onClick={() => props.registerAction(user)}>
                         Register
                     </Button>
                 </Form.Item>
