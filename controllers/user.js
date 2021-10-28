@@ -23,6 +23,9 @@ export const createUser = async (req, res) => {
     }
 
     try {
+        const user = await User.findOne({ email: email });
+        if (user) return res.json({ message: "User already exists!" });
+
         const newUser = new User({
             email: email,
             networkId: networkId,
@@ -147,9 +150,9 @@ export const getAllUsers = async (req, res) => {
     }
 
     try {
-        if (!(await await isAdmin(req.userId))) {
-            return res.json({ message: "No permission!" });
-        }
+        // if (!(await await isAdmin(req.userId))) {
+        //     return res.json({ message: "No permission!" });
+        // }
 
         const allUsers = await User.find({ networkId: id });
 
