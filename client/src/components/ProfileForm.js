@@ -46,7 +46,7 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: JSON.parse(localStorage.getItem("userData")),
+            user: JSON.parse(localStorage.getItem("user")),
             showDelete: false,
             input: { nameFirst: "", nameLast: "" },
         };
@@ -78,7 +78,7 @@ class Profile extends React.Component {
     };
 
     resetToGoogle = () => {
-        const googleData = JSON.parse(localStorage.getItem("user"));
+        const googleData = JSON.parse(localStorage.getItem("google-data"));
 
         this.setState({
             user: {

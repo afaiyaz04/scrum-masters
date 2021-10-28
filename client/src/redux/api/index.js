@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const API = axios.create({ baseURL: "https://scrummasters-crm-project.herokuapp.com/" });
+// const API = axios.create({ baseURL: "http://localhost:5000" });
 
 API.interceptors.request.use((req) => {
-    if (localStorage.getItem("user")) {
+    if (localStorage.getItem("token")) {
         req.headers.Authorization = `Bearer ${
-            JSON.parse(localStorage.getItem("user")).token
+            JSON.parse(localStorage.getItem("token"))
         }`;
     }
 
@@ -13,6 +14,8 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchUser = (userId) => API.get(`/user/${userId}`);
+export const hasEmail = (email) => API.get(`/user/email/${email}`);
+
 export const setUser = (formData) => API.post("/signIn", formData);
 export const updateUser = (userId, formData) =>
     API.patch(`/user/${userId}`, formData);
@@ -30,7 +33,7 @@ export const deleteClient = (clientId) => API.delete(`/client/${clientId}`);
 export const favouriteClient = (clientId, isFav) =>
     API.patch(`/client/${clientId}/fav`, { isFav });
 
-export const fetchUsers = () => API.get("/user");
+export const fetchUsers = (networkId) => API.get(`/user/s/${networkId}`);
 export const promoteUser = (userId) => API.patch(`/user/${userId}/promote`);
 
 export const registerUser = (formData) => API.post("/user", formData);
@@ -69,4 +72,4 @@ export const addLog = (orderId, userId, text) =>
 export const cloneClient = (clientId) => API.post(`/client/${clientId}`);
 
 export const getReport = (userId) => API.get(`/report/${userId}`);
-export const getAllReports = () => API.get(`/report`);
+export const getAllReports = (networkId) => API.get(`/report/s/${networkId}`);

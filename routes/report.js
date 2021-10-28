@@ -7,6 +7,6 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/:id", auth, viewReport);
-router.get("/", auth, viewAllReports);
+router.get("/s/:id", auth, viewAllReports);
 
 export default router;

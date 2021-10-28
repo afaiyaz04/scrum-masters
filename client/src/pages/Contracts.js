@@ -30,7 +30,7 @@ class Contracts extends Component {
 
             showDetails: false,
 
-            userId: JSON.parse(localStorage.getItem("userData"))._id,
+            userId: JSON.parse(localStorage.getItem("user"))._id,
         };
     }
 

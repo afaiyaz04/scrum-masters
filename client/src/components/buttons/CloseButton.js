@@ -3,14 +3,14 @@ const CloseButton = (props) => {
         <button
             type="button"
             aria-label="Close"
-            class="ant-modal-close"
+            className="ant-modal-close"
             onClick={props.closeAction}
         >
-            <span class="ant-modal-close-x">
+            <span className="ant-modal-close-x">
                 <span
                     role="img"
                     aria-label="close"
-                    class="anticon anticon-close ant-modal-close-icon"
+                    className="anticon anticon-close ant-modal-close-icon"
                 >
                     <svg
                         viewBox="64 64 896 896"

@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
     clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "Client" }],
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
     receivedOrders: { type: [receivedOrdersSchema], required: true },
+    networkId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 // compile into Model

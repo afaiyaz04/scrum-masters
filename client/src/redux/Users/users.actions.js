@@ -15,9 +15,9 @@ export const promoteUser = (userId) => async (dispatch) => {
     }
 };
 
-export const fetchUsers = () => async (dispatch) => {
+export const fetchUsers = (networkId) => async (dispatch) => {
     try {
-        const { data } = await api.fetchUsers();
+        const { data } = await api.fetchUsers(networkId);
         dispatch({ type: GET_ALL_USERS, payload: data });
     } catch (error) {
         console.log(error);

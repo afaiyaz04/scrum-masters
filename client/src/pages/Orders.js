@@ -69,7 +69,8 @@ class Orders extends React.Component {
             transferClientName: null,
             transferClientId: null,
 
-            userId: JSON.parse(localStorage.getItem("userData"))._id,
+            userId: JSON.parse(localStorage.getItem("user"))._id,
+            networkId: JSON.parse(localStorage.getItem("user")).networkId,
         };
 
         this.renderBool = [
@@ -249,7 +250,7 @@ class Orders extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
-        this.props.dispatch(fetchUsers());
+        this.props.dispatch(fetchUsers(this.state.networkId));
         this.props.dispatch(getReport(this.state.userId));
     }
 
@@ -463,7 +464,7 @@ class Orders extends React.Component {
                                                     </p>
                                                     <br />
                                                     <p style={{ margin: 0 }}>
-                                                        Products:
+                                                        Items:
                                                     </p>
                                                     <br />
                                                     {record.lineProducts.map(
@@ -546,6 +547,32 @@ class Orders extends React.Component {
                                         </Button>
                                         <Button
                                             className="general-btn"
+                                            type="primary"
+                                            style={{ width: 150 }}
+                                            onClick={() =>
+                                                this.generateReport()
+                                            }
+                                        >
+                                            Generate Report
+                                        </Button>
+                                    </>
+                                )}
+                                {this.state.selectedOrders.length === 0 && (
+                                    <>
+                                        <Button
+                                            className="general-btn"
+                                            disabled
+                                            onClick={() =>
+                                                this.endRenderExcept(
+                                                    "transferOrder"
+                                                )
+                                            }
+                                        >
+                                            Transfer
+                                        </Button>
+                                        <Button
+                                            className="general-btn"
+                                            disabled
                                             type="primary"
                                             style={{ width: 150 }}
                                             onClick={() =>
