@@ -39,7 +39,16 @@ function SignUp() {
         );
 
         try {
-            localStorage.setItem("google-data", JSON.stringify({ email, nameFirst, nameLast, profilePic, token }));
+            localStorage.setItem(
+                "google-data",
+                JSON.stringify({
+                    email,
+                    nameFirst,
+                    nameLast,
+                    profilePic,
+                    token,
+                })
+            );
             dispatch(
                 setUser(
                     { email, nameFirst, nameLast, profilePic, token },
@@ -68,7 +77,7 @@ function SignUp() {
         <div className="welcome-page">
             <Layout>
                 <Header style={{ backgroundColor: "#20639B" }}>
-                    <img className='logo' src={logoImg} alt=""/>
+                    <img className="logo" src={logoImg} alt="" />
                     <div>
                         <h1 className="title">CRM</h1>
                     </div>
@@ -99,16 +108,27 @@ function SignUp() {
                         <CarouselWrapper autoplay style={contentStyle}>
                             <div>
                                 <h1>Increase your workflow</h1>
-                                <img style={{width: "50%", marginLeft: "25%"}} src={slothImg} alt=""/>
+                                <img
+                                    style={{ width: "50%", marginLeft: "25%" }}
+                                    src={slothImg}
+                                    alt=""
+                                />
                             </div>
                             <div>
                                 <h1>Control your business</h1>
-                                <img className="screenImg" src={stonksImg} alt=""/>
+                                <img
+                                    className="screenImg"
+                                    src={stonksImg}
+                                    alt=""
+                                />
                             </div>
                             <div>
                                 <h1>Keep your business secure</h1>
-                                <img className="screenImg" src={secureImg} alt=""/>
-
+                                <img
+                                    className="screenImg"
+                                    src={secureImg}
+                                    alt=""
+                                />
                             </div>
                         </CarouselWrapper>
                     </div>
