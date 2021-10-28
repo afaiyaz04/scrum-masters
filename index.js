@@ -10,6 +10,8 @@ import userRoutes from "./routes/user.js";
 import reportRoutes from "./routes/report.js";
 import signInRoutes from "./routes/signIn.js";
 
+const __dirname = path.resolve();
+
 const app = express();
 
 app.use(express.json());
