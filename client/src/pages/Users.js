@@ -51,19 +51,13 @@ class Users extends React.Component {
     };
 
     deleteHandler = (userId) => {
-        if (
-            this.state.userId === userId &&
-            !localStorage.getItem("original")
-        ) {
+        if (this.state.userId === userId && !localStorage.getItem("original")) {
             this.props.dispatch(deleteSelf(userId, this.props.history));
         } else if (
             this.state.userId === userId &&
             localStorage.getItem("original")
         ) {
-            localStorage.setItem(
-                "user",
-                localStorage.getItem("original")
-            );
+            localStorage.setItem("user", localStorage.getItem("original"));
             localStorage.removeItem("original");
             this.props.dispatch(deleteUser(userId));
             this.props.history.push("/dashboard");
@@ -75,7 +69,9 @@ class Users extends React.Component {
 
     registerHandler = (newUser) => {
         this.setState({ addUser: false });
-        this.props.dispatch(registerUser({ ...newUser, networkId: this.state.networkId }));
+        this.props.dispatch(
+            registerUser({ ...newUser, networkId: this.state.networkId })
+        );
         console.log({ ...newUser, networkId: this.state.networkId });
     };
 

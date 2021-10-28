@@ -18,10 +18,7 @@ const reducer = (state = INITIAL_STATE, action) => {
             return { ...state, authData: null, loading: false, errors: null };
 
         case UPDATE_USER:
-            localStorage.setItem(
-                "user",
-                JSON.stringify({ ...action?.data })
-            );
+            localStorage.setItem("user", JSON.stringify({ ...action?.data }));
             return {
                 ...state,
                 authData: action.data,
