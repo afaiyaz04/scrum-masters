@@ -70,6 +70,7 @@ class Orders extends React.Component {
             transferClientId: null,
 
             userId: JSON.parse(localStorage.getItem("user"))._id,
+            networkId: JSON.parse(localStorage.getItem("user")).networkId,
         };
 
         this.renderBool = [
@@ -249,7 +250,7 @@ class Orders extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchOrders(this.state.userId));
         this.props.dispatch(fetchContacts(this.state.userId));
-        this.props.dispatch(fetchUsers());
+        this.props.dispatch(fetchUsers(this.state.networkId));
         this.props.dispatch(getReport(this.state.userId));
     }
 

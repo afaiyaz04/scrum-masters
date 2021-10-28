@@ -32,6 +32,8 @@ export const viewReport = async (req, res) => {
 };
 
 export const viewAllReports = async (req, res) => {
+    const { id } = req.params;
+
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
     }
@@ -41,7 +43,7 @@ export const viewAllReports = async (req, res) => {
     }
 
     try {
-        const allUsers = await User.find();
+        const allUsers = await User.find({ networkId: id });
         const allReports = [];
         for (var i = 0; i < allUsers.length; i++) {
             const userReport = await generateReport(allUsers[i]);

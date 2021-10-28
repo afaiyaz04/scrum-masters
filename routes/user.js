@@ -22,7 +22,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 // CRUD
-router.get("/", auth, getAllUsers);
+router.get("/s/:id", auth, getAllUsers);
 router.post("/", auth, createUser);
 router.get("/:id", auth, getUser);
 router.patch("/:id", auth, updateUser);

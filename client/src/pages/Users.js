@@ -32,12 +32,13 @@ class Users extends React.Component {
             showDetails: false,
             addUser: false,
             userId: JSON.parse(localStorage.getItem("user"))._id,
+            networkId: JSON.parse(localStorage.getItem("user")).networkId,
         };
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchUsers());
-        this.props.dispatch(getAllReports());
+        this.props.dispatch(fetchUsers(this.state.networkId));
+        this.props.dispatch(getAllReports(this.state.networkId));
     }
 
     promoteHandler = (toUserId) => {
@@ -74,7 +75,8 @@ class Users extends React.Component {
 
     registerHandler = (newUser) => {
         this.setState({ addUser: false });
-        this.props.dispatch(registerUser(newUser));
+        this.props.dispatch(registerUser({ ...newUser, networkId: this.state.networkId }));
+        console.log({ ...newUser, networkId: this.state.networkId });
     };
 
     generateReports = () => {

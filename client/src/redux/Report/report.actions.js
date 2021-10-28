@@ -10,9 +10,9 @@ export const getReport = (userId) => async (dispatch) => {
     }
 };
 
-export const getAllReports = () => async (dispatch) => {
+export const getAllReports = (networkId) => async (dispatch) => {
     try {
-        const { data } = await api.getAllReports();
+        const { data } = await api.getAllReports(networkId);
         dispatch({ type: FETCH_REPORT, payload: data });
     } catch (error) {
         console.log(error);

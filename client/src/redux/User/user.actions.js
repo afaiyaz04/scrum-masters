@@ -12,6 +12,18 @@ export const setUser = (formData, router) => async (dispatch) => {
     }
 };
 
+export const setAsNewUser = (formData, router) => async (dispatch) => {
+    try {
+        localStorage.setItem("token", JSON.stringify(formData.token));
+        await api.registerUser(formData);
+        const { data } = await api.setUser(formData);
+        dispatch({ type: SET_USER, data });
+        router.push("/dashboard");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const switchUser = (toUserId, router) => async (dispatch) => {
     try {
         const { data } = await api.fetchUser(toUserId);

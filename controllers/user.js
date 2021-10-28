@@ -12,7 +12,7 @@ const router = express.Router();
 
 // Create user
 export const createUser = async (req, res) => {
-    const { email } = req.body;
+    const { email, networkId } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
@@ -25,6 +25,7 @@ export const createUser = async (req, res) => {
     try {
         const newUser = new User({
             email: email,
+            networkId: networkId,
         });
 
         await newUser.save();
@@ -139,6 +140,8 @@ export const deleteUser = async (req, res) => {
 
 // Get all users
 export const getAllUsers = async (req, res) => {
+    const { id } = req.params;
+
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
     }
@@ -148,7 +151,7 @@ export const getAllUsers = async (req, res) => {
             return res.json({ message: "No permission!" });
         }
 
-        const allUsers = await User.find();
+        const allUsers = await User.find({ networkId: id });
 
         res.status(200).json(allUsers);
     } catch (error) {
