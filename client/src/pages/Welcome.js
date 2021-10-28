@@ -39,6 +39,7 @@ function SignUp() {
         );
 
         try {
+            localStorage.setItem("google-data", JSON.stringify({ email, nameFirst, nameLast, profilePic, token }));
             dispatch(
                 setUser(
                     { email, nameFirst, nameLast, profilePic, token },

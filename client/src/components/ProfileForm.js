@@ -78,7 +78,7 @@ class Profile extends React.Component {
     };
 
     resetToGoogle = () => {
-        const googleData = JSON.parse(localStorage.getItem("user"));
+        const googleData = JSON.parse(localStorage.getItem("google-data"));
 
         this.setState({
             user: {
