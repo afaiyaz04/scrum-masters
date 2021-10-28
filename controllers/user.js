@@ -147,9 +147,9 @@ export const getAllUsers = async (req, res) => {
     }
 
     try {
-        if (!(await await isAdmin(req.userId))) {
-            return res.json({ message: "No permission!" });
-        }
+        // if (!(await await isAdmin(req.userId))) {
+        //     return res.json({ message: "No permission!" });
+        // }
 
         const allUsers = await User.find({ networkId: id });
 
