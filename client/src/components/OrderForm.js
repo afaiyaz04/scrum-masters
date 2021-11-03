@@ -105,7 +105,10 @@ const OrderForm = (props) => {
                             type="primary"
                             block
                             onClick={() =>
-                                setOrder({ ...order, status: "CONTRACT" })
+                                props.updateOrderAction({
+                                    ...order,
+                                    status: "CONTRACT",
+                                })
                             }
                         >
                             Convert to Contract

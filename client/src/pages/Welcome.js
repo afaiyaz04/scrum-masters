@@ -10,9 +10,10 @@ import { GoogleButton } from "react-google-button";
 import styled from "styled-components";
 
 import logoImg from "../images/logo.png";
-import secureImg from "../images/stock.png";
-import stonksImg from "../images/stonks.jpg";
-import slothImg from "../images/sloth.jpg";
+// import secureImg from "../images/stock.png";
+// import stonksImg from "../images/stonks.jpg";
+// import slothImg from "../images/sloth.jpg";
+import manageImg from "../images/manage.png";
 
 const CarouselWrapper = styled(Carousel)`
     > .slick-dots li button {
@@ -105,8 +106,20 @@ function SignUp() {
                 </Header>
                 <Content>
                     <div>
-                        <CarouselWrapper autoplay style={contentStyle}>
+                        <CarouselWrapper style={contentStyle}>
                             <div>
+                                <img
+                                    style={{
+                                        width: "75%",
+                                        marginLeft: "14.5%",
+                                        paddingTop: "5%",
+                                    }}
+                                    src={manageImg}
+                                    alt=""
+                                />
+                            </div>
+                            <div />
+                            {/* <div>
                                 <h1>Increase your workflow</h1>
                                 <img
                                     style={{ width: "50%", marginLeft: "25%" }}
@@ -129,7 +142,7 @@ function SignUp() {
                                     src={secureImg}
                                     alt=""
                                 />
-                            </div>
+                            </div> */}
                         </CarouselWrapper>
                     </div>
                 </Content>
