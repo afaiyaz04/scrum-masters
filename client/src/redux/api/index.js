@@ -68,8 +68,8 @@ export const declineOrder = (userId, orderId) =>
 
 export const fetchClient = (clientId) => API.get(`/client/${clientId}`);
 
-export const addLog = (orderId, userId, text) =>
-    API.post(`/order/${orderId}/log`, { userId, text });
+export const addLog = (orderId, userId, text, timeCreated) =>
+    API.post(`/order/${orderId}/log`, { userId, text, timeCreated });
 
 export const cloneClient = (clientId) => API.post(`/client/${clientId}`);
 

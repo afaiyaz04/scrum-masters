@@ -211,7 +211,7 @@ function findLineProduct(order, productId) {
 
 export const addLog = async (req, res) => {
     const { id } = req.params;
-    const { userId, text } = req.body;
+    const { userId, text, timeCreated } = req.body;
 
     if (!req.userId) {
         return res.json({ message: "Unauthenticated!" });
@@ -235,6 +235,7 @@ export const addLog = async (req, res) => {
         const newLog = {
             user: userId,
             text: text,
+            timeCreated: timeCreated,
             userName: `${user.nameFirst} ${user.nameLast}`,
         };
         order.log.push(newLog);

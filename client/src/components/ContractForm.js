@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Select, Button, Table, Collapse } from "antd";
+import { Form, Button, Table, Collapse } from "antd";
 import CloseButton from "./buttons/CloseButton";
 
 const { Panel } = Collapse;
@@ -48,7 +48,7 @@ const ContractForm = (props) => {
                 <div className="form-text">{contract.orderNumber}</div>
             </Form.Item>
             <Form.Item label="Client:">
-                <div className="form-text">{contract.clientName}</div>
+                <div className="form-text">{contract.clientName.slice(0, 30)}</div>
             </Form.Item>
             <Form.Item label="Total Fee:">
                 <div className="form-text">{contract.totalFee}</div>
@@ -56,28 +56,6 @@ const ContractForm = (props) => {
             <Form.Item label="Time Due:">
                 <div className="form-text">{timeDue}</div>
             </Form.Item>
-            {contract.status === "ARCHIVED" && (
-                <Form.Item label="Status:">
-                    <Select placeholder={contract.status} disabled={true} />
-                </Form.Item>
-            )}
-            {contract.status !== "ARCHIVED" && (
-                <Form.Item label="Status:">
-                    <Select
-                        placeholder={contract.status}
-                        onChange={(value) =>
-                            props.updateAction({ ...contract, status: value })
-                        }
-                    >
-                        <Select.Option value={"CREATED"}>CREATED</Select.Option>
-                        <Select.Option value={"DISCUSSED"}>
-                            DISCUSSED
-                        </Select.Option>
-                        <Select.Option value={"AGREED"}>AGREED</Select.Option>
-                        <Select.Option value={"SIGNED"}>SIGNED</Select.Option>
-                    </Select>
-                </Form.Item>
-            )}
             <Form.Item
                 label="Description:"
                 style={{ display: "flex", flexWrap: "wrap" }}
@@ -134,6 +112,19 @@ const ContractForm = (props) => {
                     Generate Report
                 </Button>
             </Form.Item>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
+                <Button
+                    block
+                    onClick={() =>
+                        props.updateAction({
+                            ...contract,
+                            status: "SIGNED",
+                        })
+                    }
+                >
+                    Revert to Order
+                </Button>
+            </Form.Item>
             {contract.status !== "ARCHIVED" && (
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                     <Button
@@ -156,7 +147,7 @@ const ContractForm = (props) => {
                         onClick={() =>
                             props.updateAction({
                                 ...contract,
-                                status: "AGREED",
+                                status: "CONTRACT",
                             })
                         }
                     >

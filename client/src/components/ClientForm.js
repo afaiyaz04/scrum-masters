@@ -59,25 +59,25 @@ const ClientForm = (props) => {
                         />
                     </Form.Item>
                     <Form.Item label="First Name:">
-                        <div className="form-text">{contact.nameFirst}</div>
+                        <div className="form-text">{contact.nameFirst ? contact.nameFirst.slice(0, 30) : contact.nameFirst}</div>
                     </Form.Item>
                     <Form.Item label="Last Name:">
-                        <div className="form-text">{contact.nameLast}</div>
+                        <div className="form-text">{contact.nameLast ? contact.nameLast.slice(0, 30) : contact.nameLast}</div>
                     </Form.Item>
                     <Form.Item label="Title:">
-                        <div className="form-text">{contact.title}</div>
+                        <div className="form-text">{contact.title ? contact.title.slice(0, 30) : contact.title}</div>
                     </Form.Item>
                     <Form.Item label="Company:">
-                        <div className="form-text">{contact.company}</div>
+                        <div className="form-text">{contact.company ? contact.company.slice(0, 30) : contact.company}</div>
                     </Form.Item>
                     <Form.Item label="Email:">
-                        <div className="form-text">{contact.email}</div>
+                        <div className="form-text">{contact.email ? contact.email.slice(0, 30) : contact.email}</div>
                     </Form.Item>
                     <Form.Item label="Phone Number:">
-                        <div className="form-text">{contact.phoneNumber}</div>
+                        <div className="form-text">{contact.phoneNumber ? contact.phoneNumber.slice(0, 30) : contact.phoneNumber}</div>
                     </Form.Item>
                     <Form.Item label="Address:">
-                        <div className="form-text">{contact.address}</div>
+                        <div className="form-text">{contact.address ? contact.address.slice(0, 30) : contact.address}</div>
                     </Form.Item>
                     <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                         <Button block onClick={() => setEdit(true)}>

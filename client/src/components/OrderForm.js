@@ -64,7 +64,7 @@ const OrderForm = (props) => {
                 <>
                     <Form.Item label="Client:">
                         <div className="form-text">
-                            {getClientName(order.client)}
+                            {getClientName(order.client).slice(0, 30)}
                         </div>
                     </Form.Item>
                     <Form.Item label="Time Due:">
@@ -100,7 +100,19 @@ const OrderForm = (props) => {
                             Edit Details
                         </Button>
                     </Form.Item>
-                    <Form.Item />
+                    <Form.Item
+                        wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
+                    >
+                        <Button
+                            type="primary"
+                            block
+                            onClick={() =>
+                                setOrder({ ...order, status: "CONTRACT" })
+                            }
+                            >
+                            Convert to Contract
+                        </Button>
+                    </Form.Item>
                 </>
             )}
             {(edit || props.addOrder) && (
@@ -116,7 +128,7 @@ const OrderForm = (props) => {
                         ]}
                     >
                         <Select
-                            placeholder={getClientName(order.client)}
+                            placeholder={getClientName(order.client).slice(0, 30)}
                             style={{ width: "100%" }}
                             onChange={(value) =>
                                 setOrder({ ...order, client: value })
@@ -128,9 +140,7 @@ const OrderForm = (props) => {
                                         key={contacts[contact]._id}
                                         value={contacts[contact]._id}
                                     >
-                                        {contacts[contact].nameFirst +
-                                            " " +
-                                            contacts[contact].nameLast}
+                                        {`${contacts[contact].nameFirst} ${contacts[contact].nameLast}`.slice(0, 30)}
                                     </Select.Option>
                                 );
                             })}
@@ -172,6 +182,7 @@ const OrderForm = (props) => {
                                 setOrder({ ...order, totalFee: value });
                             }}
                             min={0}
+                            precision={2}
                             placeholder={order.totalFee}
                         />
                     </Form.Item>

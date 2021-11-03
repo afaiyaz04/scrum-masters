@@ -412,8 +412,7 @@ class Orders extends React.Component {
     filterContract = (order) => {
         return (
             order.order.status !== "ARCHIVED" &&
-            order.order.status !== "SIGNED" &&
-            order.order.status !== "AGREED"
+            order.order.status !== "CONTRACT"
         );
     };
 
