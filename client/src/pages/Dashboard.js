@@ -166,7 +166,7 @@ class Dashboard extends React.Component {
 
     filterOrders = () => {
         return this.props.orders.filter((order) => {
-            return !order.isTransfer && order.order.status !== "ARCHIVED";
+            return !order.isTransfer && order.order.status !== "ARCHIVED" && order.order.status !== "CONTRACT";
         });
     };
 

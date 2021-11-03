@@ -129,10 +129,7 @@ const OrderForm = (props) => {
                         ]}
                     >
                         <Select
-                            placeholder={getClientName(order.client).slice(
-                                0,
-                                30
-                            )}
+                            placeholder={getClientName(order.client) ? getClientName(order.client).slice(0, 30) : getClientName(order.client)}
                             style={{ width: "100%" }}
                             onChange={(value) =>
                                 setOrder({ ...order, client: value })
