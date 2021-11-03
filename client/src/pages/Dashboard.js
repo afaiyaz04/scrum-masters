@@ -11,6 +11,7 @@ import {
     Avatar,
     Alert,
     Tag,
+    Statistic,
 } from "antd";
 import { fetchOrders } from "../redux/Order/order.actions";
 import "./Dashboard.css";
@@ -107,12 +108,18 @@ class Dashboard extends React.Component {
             case "AGREED":
                 return (
                     <Timeline.Item key={order.order._id} color="blue">
-                        {this.timelineContractText(order)}
+                        {this.timelineOrderText(order)}
                     </Timeline.Item>
                 );
             case "SIGNED":
                 return (
                     <Timeline.Item key={order.order._id} color="green">
+                        {this.timelineOrderText(order)}
+                    </Timeline.Item>
+                );
+            case "CONTRACT":
+                return (
+                    <Timeline.Item key={order.order._id} color="black">
                         {this.timelineContractText(order)}
                     </Timeline.Item>
                 );
@@ -232,7 +239,7 @@ class Dashboard extends React.Component {
                                     this.props.orders.filter((order) => {
                                         return order.order.status === "AGREED";
                                     }).length
-                                } Contracts Agreed`
+                                } Orders Agreed`
                             }
                             strokeColor="#1890ff"
                         />
@@ -249,13 +256,24 @@ class Dashboard extends React.Component {
                                     this.props.orders.filter((order) => {
                                         return order.order.status === "SIGNED";
                                     }).length
-                                } Contracts Signed`
+                                } Orders Signed`
                             }
                             strokeColor="#52c418"
                         />
                     </div>
                     <div className="contents">
                         <div className="dashboard-left">
+                            <Statistic
+                                title="Current Contracts"
+                                value={
+                                    this.props.orders.filter((order) => {
+                                        return (
+                                            order.order.status === "CONTRACT"
+                                        );
+                                    }).length
+                                }
+                            />
+                            <br />
                             <h3>Upcoming Deadlines</h3>
                             <Timeline>
                                 <Timeline.Item color="white" />
@@ -321,7 +339,7 @@ class Dashboard extends React.Component {
                                             }}
                                         />
                                     )}
-                                    {this.props.orders.filter((order) => {
+                                    {this.filterOrders().filter((order) => {
                                         return (
                                             new Date(order.order.timeDue) -
                                                 Date.now() <
@@ -334,7 +352,7 @@ class Dashboard extends React.Component {
                                         <Alert
                                             message="Due Soon"
                                             description={`You have ${
-                                                this.props.orders.filter(
+                                                this.filterOrders().filter(
                                                     (order) => {
                                                         return (
                                                             new Date(
@@ -419,12 +437,27 @@ class Dashboard extends React.Component {
                                                                 textAlign:
                                                                     "center",
                                                             }}
-                                                        >{`${contact.nameFirst} ${contact.nameLast}`}</h3>
-                                                        <h4>{contact.email}</h4>
+                                                        >
+                                                            {`${contact.nameFirst} ${contact.nameLast}`.slice(
+                                                                0,
+                                                                20
+                                                            )}
+                                                        </h3>
                                                         <h4>
-                                                            {
-                                                                contact.phoneNumber
-                                                            }
+                                                            {contact.email
+                                                                ? contact.email.slice(
+                                                                      0,
+                                                                      20
+                                                                  )
+                                                                : contact.email}
+                                                        </h4>
+                                                        <h4>
+                                                            {contact.phoneNumber
+                                                                ? contact.phoneNumber.slice(
+                                                                      0,
+                                                                      20
+                                                                  )
+                                                                : contact.phoneNumber}
                                                         </h4>
                                                     </Card>
                                                 );

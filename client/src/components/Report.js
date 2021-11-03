@@ -20,14 +20,14 @@ export const formatUserReport = (reportInfo) => {
         {
             ul: [
                 ...Object.entries(orderStatus).map(([k, v]) => {
-                    return `${v} - ${k.toLowerCase()}`;
+                    return `${v} - ${k}`;
                 }),
             ],
         },
         { text: "\nClients and Revenue\n\n", fontSize: 16 },
         `Total Orders = ${totalOrders}`,
         `Number of clients = ${totalClients}`,
-        `Total revenue = $${totalRevenue}`,
+        `Total revenue = ${totalRevenue}`,
     ];
 
     const productDetails = (order) => [

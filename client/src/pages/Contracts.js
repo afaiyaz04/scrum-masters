@@ -40,10 +40,7 @@ class Contracts extends Component {
     }
 
     contractFilter = (order) => {
-        if (
-            order.order.status === "SIGNED" ||
-            order.order.status === "AGREED"
-        ) {
+        if (order.order.status === "CONTRACT") {
             return order;
         }
     };
@@ -55,11 +52,7 @@ class Contracts extends Component {
     updateOrderHandler = (newItem) => {
         this.setState({ contract: newItem });
         this.props.dispatch(updateOrder(this.state.contract._id, newItem));
-        if (
-            newItem.status !== "ARCHIVED" &&
-            newItem.status !== "SIGNED" &&
-            newItem.status !== "AGREED"
-        ) {
+        if (newItem.status !== "ARCHIVED" && newItem.status !== "CONTRACT") {
             this.setState({ contract: initialOrder, showDetails: false });
         }
     };
@@ -195,7 +188,7 @@ class Contracts extends Component {
                                     >
                                         <List.Item.Meta
                                             title={`Contract No. ${item.order.orderNumber}`}
-                                            description={item.order.description}
+                                            description={item.clientName}
                                         />
                                     </List.Item>
                                 )}

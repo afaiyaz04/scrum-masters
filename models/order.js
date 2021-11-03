@@ -5,6 +5,7 @@ import {
     ORDER_DISCUSSED,
     ORDER_AGREED,
     ORDER_SIGNED,
+    ORDER_CONTRACT,
     ORDER_ARCHIVED,
 } from "./systemEnums.js";
 
@@ -49,6 +50,7 @@ const orderSchema = new mongoose.Schema({
             ORDER_DISCUSSED,
             ORDER_AGREED,
             ORDER_SIGNED,
+            ORDER_CONTRACT,
             ORDER_ARCHIVED,
         ],
         default: ORDER_CREATED,

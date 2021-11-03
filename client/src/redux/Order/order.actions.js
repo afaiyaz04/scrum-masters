@@ -166,7 +166,7 @@ export const addTransferClient =
 
 export const addLog = (userId, orderId, text) => async (dispatch) => {
     try {
-        const { data } = await api.addLog(orderId, userId, text);
+        const { data } = await api.addLog(orderId, userId, text, Date.now());
         const clientData = await api.fetchClient(data.client);
         dispatch({
             type: UPDATE_ORDER,
