@@ -100,10 +100,19 @@ const UsersForm = (props) => {
         );
     } else {
         return (
-            <Form {...layout}>
+            <Form {...layout} onFinish={() => props.registerAction(user)}>
                 <Form.Item />
                 <CloseButton closeAction={props.closeAction} />
-                <Form.Item label="Email:">
+                <Form.Item
+                    label="Email:"
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            message: "User email required",
+                        },
+                    ]}
+                >
                     <Input
                         placeholder={user.email}
                         onChange={(e) =>
@@ -112,7 +121,7 @@ const UsersForm = (props) => {
                     />
                 </Form.Item>
                 <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
-                    <Button block onClick={() => props.registerAction(user)}>
+                    <Button block htmlType="submit">
                         Register
                     </Button>
                 </Form.Item>

@@ -263,8 +263,17 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="contents">
                         <div className="dashboard-left">
-                            <Statistic title="Current Contracts" value={this.props.orders.filter((order) => { return order.order.status === "CONTRACT" }).length} />
-                            <br/>
+                            <Statistic
+                                title="Current Contracts"
+                                value={
+                                    this.props.orders.filter((order) => {
+                                        return (
+                                            order.order.status === "CONTRACT"
+                                        );
+                                    }).length
+                                }
+                            />
+                            <br />
                             <h3>Upcoming Deadlines</h3>
                             <Timeline>
                                 <Timeline.Item color="white" />
@@ -428,12 +437,27 @@ class Dashboard extends React.Component {
                                                                 textAlign:
                                                                     "center",
                                                             }}
-                                                        >{`${contact.nameFirst} ${contact.nameLast}`.slice(0, 20)}</h3>
-                                                        <h4>{contact.email ? contact.email.slice(0, 20) : contact.email}</h4>
+                                                        >
+                                                            {`${contact.nameFirst} ${contact.nameLast}`.slice(
+                                                                0,
+                                                                20
+                                                            )}
+                                                        </h3>
                                                         <h4>
-                                                            {
-                                                                contact.phoneNumber ? contact.phoneNumber.slice(0, 20) : contact.phoneNumber
-                                                            }
+                                                            {contact.email
+                                                                ? contact.email.slice(
+                                                                      0,
+                                                                      20
+                                                                  )
+                                                                : contact.email}
+                                                        </h4>
+                                                        <h4>
+                                                            {contact.phoneNumber
+                                                                ? contact.phoneNumber.slice(
+                                                                      0,
+                                                                      20
+                                                                  )
+                                                                : contact.phoneNumber}
                                                         </h4>
                                                     </Card>
                                                 );

@@ -260,6 +260,9 @@ class Orders extends React.Component {
     };
 
     updateOrderHandler = (newItem) => {
+        if (newItem.status === "CONTRACT") {
+            this.setState({ showDetails: false });
+        }
         this.setState({ order: newItem });
         this.props.dispatch(updateOrder(this.state.order._id, newItem));
     };

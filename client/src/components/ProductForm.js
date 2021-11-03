@@ -35,7 +35,11 @@ const ProductForm = (props) => {
             {!edit && !props.addProduct && (
                 <>
                     <Form.Item label="Item Name:">
-                        <div className="form-text">{product.name ? product.name.slice(0, 30) : product.name}</div>
+                        <div className="form-text">
+                            {product.name
+                                ? product.name.slice(0, 30)
+                                : product.name}
+                        </div>
                     </Form.Item>
                     <Form.Item label="Price:">
                         <div className="form-text">{product.price}</div>
@@ -81,7 +85,11 @@ const ProductForm = (props) => {
                         ]}
                     >
                         <Input
-                            placeholder={product.name ? product.name.slice(0, 30) : product.name}
+                            placeholder={
+                                product.name
+                                    ? product.name.slice(0, 30)
+                                    : product.name
+                            }
                             onChange={(e) =>
                                 setProduct({ ...product, name: e.target.value })
                             }

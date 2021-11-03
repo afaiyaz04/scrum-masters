@@ -100,16 +100,17 @@ const OrderForm = (props) => {
                             Edit Details
                         </Button>
                     </Form.Item>
-                    <Form.Item
-                        wrapperCol={{ ...layout.wrapperCol, offset: 2 }}
-                    >
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }}>
                         <Button
                             type="primary"
                             block
                             onClick={() =>
-                                setOrder({ ...order, status: "CONTRACT" })
+                                props.updateOrderAction({
+                                    ...order,
+                                    status: "CONTRACT",
+                                })
                             }
-                            >
+                        >
                             Convert to Contract
                         </Button>
                     </Form.Item>
@@ -128,7 +129,10 @@ const OrderForm = (props) => {
                         ]}
                     >
                         <Select
-                            placeholder={getClientName(order.client).slice(0, 30)}
+                            placeholder={getClientName(order.client).slice(
+                                0,
+                                30
+                            )}
                             style={{ width: "100%" }}
                             onChange={(value) =>
                                 setOrder({ ...order, client: value })
@@ -140,7 +144,10 @@ const OrderForm = (props) => {
                                         key={contacts[contact]._id}
                                         value={contacts[contact]._id}
                                     >
-                                        {`${contacts[contact].nameFirst} ${contacts[contact].nameLast}`.slice(0, 30)}
+                                        {`${contacts[contact].nameFirst} ${contacts[contact].nameLast}`.slice(
+                                            0,
+                                            30
+                                        )}
                                     </Select.Option>
                                 );
                             })}

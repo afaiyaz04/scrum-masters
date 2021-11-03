@@ -48,7 +48,9 @@ const ContractForm = (props) => {
                 <div className="form-text">{contract.orderNumber}</div>
             </Form.Item>
             <Form.Item label="Client:">
-                <div className="form-text">{contract.clientName.slice(0, 30)}</div>
+                <div className="form-text">
+                    {contract.clientName.slice(0, 30)}
+                </div>
             </Form.Item>
             <Form.Item label="Total Fee:">
                 <div className="form-text">{contract.totalFee}</div>
