@@ -436,28 +436,17 @@ class Dashboard extends React.Component {
                                                             style={{
                                                                 textAlign:
                                                                     "center",
+                                                                overflowWrap: "break-word",
+                                                                whiteSpace: "normal",
                                                             }}
                                                         >
-                                                            {`${contact.nameFirst} ${contact.nameLast}`.slice(
-                                                                0,
-                                                                20
-                                                            )}
+                                                            {`${contact.nameFirst} ${contact.nameLast}`}
                                                         </h3>
                                                         <h4>
-                                                            {contact.email
-                                                                ? contact.email.slice(
-                                                                      0,
-                                                                      20
-                                                                  )
-                                                                : contact.email}
+                                                            {contact.email}
                                                         </h4>
                                                         <h4>
-                                                            {contact.phoneNumber
-                                                                ? contact.phoneNumber.slice(
-                                                                      0,
-                                                                      20
-                                                                  )
-                                                                : contact.phoneNumber}
+                                                            {contact.phoneNumber}
                                                         </h4>
                                                     </Card>
                                                 );

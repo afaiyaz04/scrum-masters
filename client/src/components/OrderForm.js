@@ -64,7 +64,7 @@ const OrderForm = (props) => {
                 <>
                     <Form.Item label="Client:">
                         <div className="form-text">
-                            {getClientName(order.client).slice(0, 30)}
+                            {getClientName(order.client) ? getClientName(order.client).slice(0, 30) : getClientName(order.client)}
                         </div>
                     </Form.Item>
                     <Form.Item label="Time Due:">
