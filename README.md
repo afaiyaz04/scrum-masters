@@ -13,3 +13,16 @@ All team members split into smaller functional groups in order to bring about di
 Confluence Documentation: https://scrummasters21.atlassian.net/wiki/spaces/TG/pages/164008/Project+Documentation
 
 Heroku Deployment: https://scrummasters-crm-project.herokuapp.com/
+
+## Installation and Running the Application Locally
+### Installing Dependencies
+1. Navigate to root folder, and run the following command
+`npm install`
+2. Navigate to `/client` folder, and run the following command
+`npm install`
+### Running the app
+1. Start the backend by navigating to the root folder, and run the following command
+`npm run start`
+2. In another terminal window, navigate to the `/client` folder, and run the following command
+`npm run start`
+3. The application is now running on http://localhost:3000
