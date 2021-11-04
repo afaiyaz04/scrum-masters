@@ -12,7 +12,7 @@ All team members split into smaller functional groups in order to bring about di
 
 Confluence Documentation: https://scrummasters21.atlassian.net/wiki/spaces/TG/pages/164008/Project+Documentation
 
-Heroku Deployment: https://comp30022-scrummaster-crm.herokuapp.com/
+Heroku Deployment: https://scrummasters-crm-project.herokuapp.com/
 
 ## Installation and Running the Application Locally
 ### Installing Dependencies
